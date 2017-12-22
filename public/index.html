@@ -3,13 +3,51 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Made with Thimble</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Practice drawing shapes</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="script.js"></script>
   </head>
   <body>
+
+    <div id="nav-bar" class="transform">
+      <div id="nav-expand-menu-item">
+        <span id="nav-expand-button-icon" class="glyphicon glyphicon-menu-hamburger menu-icon"></span>
+      </div>
+      <div class="separator"></div>
+      
+      <div id="nav-line-menu-item" class="menu-item nav-selected">
+        <span id="nav-line-button-icon" class="glyphicon glyphicon-pencil menu-icon"></span>
+        <span class="menu-item-text">Draw lines</span>
+      </div>
+      <div class="separator"></div>
+      
+      <div id="nav-line-menu-item" class="menu-item">
+        <span id="nav-line-button-icon" class="glyphicon glyphicon-pencil menu-icon"></span>
+        <span class="menu-item-text">Draw Ellipses</span>
+      </div>
+      <div class="separator"></div>
+      
+      <div id="nav-settings-menu-item" class="menu-item">
+        <span id="nav-settings-button-icon" class="glyphicon glyphicon-cog menu-icon"></span>
+        <span class="menu-item-text">Settings</span>
+      </div>
+      <div class="separator"></div>
+    </div>
+    
+    
+    <div id="canvas">
+    </div>
+    
+    
+    
+<!--
     <h1>Welcome to Thimble</h1>
     <p>
       Make something <strong>amazing</strong> with the web!
     </p>
+-->
   </body>
 </html>

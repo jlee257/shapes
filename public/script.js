@@ -11,9 +11,21 @@ Learn more about JavaScript at https://developer.mozilla.org/en-US/Learn/JavaScr
 When you're done, you can delete all of this grey text, it's just a comment.
 */
 
-function greetMe(name) {
-  var today = new Date().toDateString();
-  console.log("Hello " + name + ", today is " + today);
-}
-
-greetMe("World");
+$(document).ready(function () {
+  $("#nav-expand-menu-item").click(function() {
+    $('#nav-bar').toggleClass('transform-active');
+    
+    $('#nav-expand-button-icon').toggleClass('glyphicon glyphicon-menu-hamburger').toggleClass('glyphicon glyphicon-menu-left');
+  });
+  
+  $(".menu-item").click(function() {
+    
+    $(".menu-item").removeClass('nav-selected');
+    $(this).addClass('nav-selected');
+    
+    if (!$('#nav-bar').hasClass('transform-active')) {
+      $('#nav-bar').toggleClass('transform-active');
+      $('#nav-expand-button-icon').toggleClass('glyphicon glyphicon-menu-hamburger').toggleClass('glyphicon glyphicon-menu-left');
+    }
+  });
+});

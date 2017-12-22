@@ -2,8 +2,118 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
 @import url('https://fonts.googleapis.com/css?family=Merriweather:400,700');
 
+
+
+:root {
+  --primary-base: #00A094;
+  --primary-dark: #007d74;
+  --secondary-base: #FFA700;
+  --light-gray: #DDDDDD;
+}
+
+
+html {
+  background-color: var(--primary-dark);
+}
+
 body {
+  background-color: transparent;
+  margin: 0;
+}
+
+#nav-bar {
+  position:fixed;
+  width: 60px;
+  height: 100vh;
+  background: white;
+}
+
+#nav-bar.transform-active {
+  width: 250px;
+}
+
+.transform {
+  -webkit-transition: all 0.2s ease;  
+  -moz-transition: all 0.2s ease;  
+  -o-transition: all 0.2s ease;  
+  -ms-transition: all 0.2s ease;  
+  transition: all 0.2s ease;
+}
+
+.menu-item {
+  height: 60px;
+  width: 100%;
+  overflow:hidden;
   background-color: white;
+}
+
+.menu-item-text {
+  font-family: "Open Sans", sans-serif;
+  padding-top: 15px;
+  padding-left: 5px;
+  font-size: 20px;
+  width: 190px;
+  float: right;
+  overflow: hidden;
+}
+
+#nav-expand-menu-item {
+  height: 60px;
+  width: 100%;
+  overflow:hidden;
+  background-color: white;
+}
+
+#nav-expand-button-icon {
+  float:right;
+}
+
+.menu-icon {
+  font-size: 30px;
+  height: 100%;
+  width: 60px;
+  text-align: center;
+  padding-top: 14px;
+  color: var(--primary-base);
+  margin: 0;
+}
+
+.separator {
+  width: 100%;
+  height: 2px;
+  background: var(--light-gray);
+}
+
+.nav-selected {
+  background-color: var(--primary-base) !important;
+  color: white !important;
+}
+
+.nav-selected > .menu-icon {
+  color: white !important;
+}
+
+#canvas {
+  height: 80vh;
+  width: 120vh;
+  background-color: white;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 5px 10px;
+}
+
+/*
+
+.transform-active {
+  width: 250px;
+  color: red;
+}
+*/
+/*
+body {
   font-family: "Open Sans", sans-serif;
   padding: 5px 25px;
   font-size: 18px;
@@ -15,3 +125,4 @@ h1 {
   font-family: "Merriweather", serif;
   font-size: 32px;
 }
+*/

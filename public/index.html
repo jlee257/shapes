@@ -4,44 +4,58 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Practice drawing shapes</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/glyphicons.css">
+    <script type="text/javascript" src="js/script.js"></script>
   </head>
   <body>
 
-    <div id="nav-bar" class="transform">
+    <div id="nav-bar" class="transform lvl2 transform-active">
       <div id="nav-expand-menu-item">
-        <span id="nav-expand-button-icon" class="glyphicon glyphicon-menu-hamburger menu-icon"></span>
+        <span id="nav-expand-button-icon" class="glyphicons glyphicons-chevron-left menu-icon"></span>
       </div>
       <div class="separator"></div>
       
       <div id="nav-line-menu-item" class="menu-item nav-selected">
-        <span id="nav-line-button-icon" class="glyphicon glyphicon-pencil menu-icon"></span>
+        <span id="nav-line-button-icon" class="glyphicons glyphicons-vector-path-line menu-icon"></span>
         <span class="menu-item-text">Draw lines</span>
       </div>
       <div class="separator"></div>
       
-      <div id="nav-line-menu-item" class="menu-item">
-        <span id="nav-line-button-icon" class="glyphicon glyphicon-pencil menu-icon"></span>
-        <span class="menu-item-text">Draw Ellipses</span>
+      <div id="nav-curve-menu-item" class="menu-item">
+        <span id="nav-line-button-icon" class="glyphicons glyphicons-vector-path-curve menu-icon"></span>
+        <span class="menu-item-text">Draw curves</span>
+      </div>
+      <div class="separator"></div>
+      
+      <div id="nav-ellipses-menu-item" class="menu-item">
+        <span id="nav-line-button-icon" class="glyphicons glyphicons-vector-path-circle menu-icon"></span>
+        <span class="menu-item-text">Draw ellipses</span>
       </div>
       <div class="separator"></div>
       
       <div id="nav-settings-menu-item" class="menu-item">
-        <span id="nav-settings-button-icon" class="glyphicon glyphicon-cog menu-icon"></span>
+        <span id="nav-settings-button-icon" class="glyphicons glyphicons-cogwheel menu-icon"></span>
         <span class="menu-item-text">Settings</span>
       </div>
       <div class="separator"></div>
     </div>
     
     
-    <div id="canvas">
+
+    <div id="canvas-container" class="lvl1">
+      
+      <div id="sometext">hey</div>
+      
+      <canvas id="main-canvas" width="3000" height="2000">Unfortunately, your browser is currently unsupported by our web application.</canvas>
+
+      <div id="function-icon" class="glyphicons glyphicons-cogwheel side-icon"></div>
+
+      <div id="ruler-icon" class="glyphicons glyphicons-ruler side-icon"></div>
     </div>
-    
-    
+
     
 <!--
     <h1>Welcome to Thimble</h1>

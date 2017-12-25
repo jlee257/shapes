@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Practice drawing shapes</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/glyphicons.css">
     <script type="text/javascript" src="js/script.js"></script>
@@ -14,54 +14,85 @@
 
     <div id="nav-bar" class="transform lvl2 transform-active">
       <div id="nav-expand-menu-item">
-        <span id="nav-expand-button-icon" class="glyphicons glyphicons-chevron-left menu-icon"></span>
+        <span id="nav-expand-button-icon" class="glyphicons glyphicons-menu-hamburger menu-icon"></span>
       </div>
       <div class="separator"></div>
-      
+
       <div id="nav-line-menu-item" class="menu-item nav-selected">
         <span id="nav-line-button-icon" class="glyphicons glyphicons-vector-path-line menu-icon"></span>
         <span class="menu-item-text">Draw lines</span>
       </div>
       <div class="separator"></div>
-      
+
       <div id="nav-curve-menu-item" class="menu-item">
         <span id="nav-line-button-icon" class="glyphicons glyphicons-vector-path-curve menu-icon"></span>
         <span class="menu-item-text">Draw curves</span>
       </div>
       <div class="separator"></div>
-      
-      <div id="nav-ellipses-menu-item" class="menu-item">
+
+      <div id="nav-ellipse-menu-item" class="menu-item">
         <span id="nav-line-button-icon" class="glyphicons glyphicons-vector-path-circle menu-icon"></span>
         <span class="menu-item-text">Draw ellipses</span>
       </div>
       <div class="separator"></div>
-      
+
       <div id="nav-settings-menu-item" class="menu-item">
         <span id="nav-settings-button-icon" class="glyphicons glyphicons-cogwheel menu-icon"></span>
         <span class="menu-item-text">Settings</span>
       </div>
       <div class="separator"></div>
     </div>
-    
-    
+
+
 
     <div id="canvas-container" class="lvl1">
-      
+
       <div id="sometext">hey</div>
-      
+
       <canvas id="main-canvas" width="3000" height="2000">Unfortunately, your browser is currently unsupported by our web application.</canvas>
+      
+      <canvas id="front-canvas" width="3000" height="2000"></canvas>
 
-      <div id="function-icon" class="glyphicons glyphicons-cogwheel side-icon"></div>
+      <div id="function-icon" class="glyphicons glyphicons-cogwheel side-icon side-icon1"></div>
 
-      <div id="ruler-icon" class="glyphicons glyphicons-ruler side-icon"></div>
+      <div id="ruler-icon" class="glyphicons glyphicons-ruler side-icon side-icon2"></div>
+
+      <div id="pencil-icon" class="glyphicons glyphicons-pencil side-icon side-icon3"></div>
     </div>
 
-    
-<!--
-    <h1>Welcome to Thimble</h1>
-    <p>
-      Make something <strong>amazing</strong> with the web!
-    </p>
+
+
+    <div id="pencil-modal" class="modal">
+      <div id="pencil-modal-content" class="modal-content">
+        <div class="modal-header lvl1">
+          <span>Pencil Settings</span>
+          <span class="close-button glyphicons glyphicons-remove" />
+        </div>
+        <form class="modal-body-content">
+          <p>Pen color:</p>
+          <input type="color" id="input-pen-color" value="#000000" placeholder="#rrggbb[aa]" />
+          <br>
+          <p>Pen Transparency:</p>
+          <input type="range" id="input-pen-transparency" value="100" min="0" max="100"/>
+          <div id="input-pen-transparency-value" class="input-value">100</div>
+          <br>
+          <p>Pen size:</p>
+          <input type="range" id="input-pen-size" value="3" min="1" max="30"/>
+          <div id="input-pen-size-value" class="input-value">3</div>
+
+
+          <div class="input-reset">
+            <p>Reset to default</p>
+            <span class="glyphicons glyphicons-undo input-reset-icon" />
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--
+<h1>Welcome to Thimble</h1>
+<p>
+Make something <strong>amazing</strong> with the web!
+</p>
 -->
   </body>
 </html>

@@ -142,6 +142,7 @@ body {
 }
 
 #sometext {
+  z-index: 3;
   position: absolute;
 }
 

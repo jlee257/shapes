@@ -35,6 +35,7 @@ $(document).ready(function () {
     menuItemClick($(this));
     status = "ellipse";
     clearPage();
+    drawRandomEllipse();
   });
 
   $("#nav-settings-menu-item").click(function() {
@@ -191,7 +192,28 @@ $(document).ready(function () {
     return Math.random() * (max - min) + min;
   }
 
+  function rotationMatrix(px, py, xoff, yoff, degree) {
+    var cos0 = Math.cos(degree);
+    var sin0 = Math.sin(degree);
+    return {
+      x: xoff*cos0 - yoff*sin0 + px,
+      y: xoff*sin0 + yoff*cos0 + py
+    }
+  }
 
+  function getRotation(px, py, xoff, yoff) {
+    if (xoff < px) {
+      return Math.atan((yoff-py)/(xoff-px)) + Math.PI;
+    } else if (yoff < py){
+      return Math.atan((yoff-py)/(xoff-px)) + 2*Math.PI;
+    } else {
+      return Math.atan((yoff-py)/(xoff-px));
+    }
+  }
+
+  function getRotationBucket(px, py, xoff, yoff) {
+    return Math.floor(getRotation(px, py, xoff, yoff) * 5 / Math.PI);
+  }
 
 
 
@@ -213,6 +235,8 @@ $(document).ready(function () {
 
   var is_drawing, points = [];
   var curve_points = [];
+  var ellipse_points = [];
+  var ellipse_radius = 0;
 
   function clearPage() {
     clearMainPage();
@@ -222,6 +246,10 @@ $(document).ready(function () {
   function clearMainPage() {
     console.log("clearMainPage");
     main_context.clearRect(0, 0, main_canvas.width, main_canvas.height);
+    points.length = 0;
+    curve_points.length = 0;
+    ellipse_points.length = 0;
+    ellipse_radius = 0;
   }
   
   function clearFrontPage() {
@@ -423,6 +451,8 @@ $(document).ready(function () {
       linearRegression();
     } else if (status == "curve") {
       curveApproximation();
+    } else if (status == "ellipse") {
+      ellipseErrorCalculation();
     }
     points.length = 0;
   };
@@ -459,6 +489,8 @@ $(document).ready(function () {
       linearRegression();
     } else if (status == "curve") {
       curveApproximation();
+    } else if (status == "ellipse") {
+      ellipseErrorCalculation();
     }
     points.length = 0;
   }
@@ -681,6 +713,7 @@ $(document).ready(function () {
     // });
   }
 
+
   function curveApproximation() {
 
     var err = 0;
@@ -712,10 +745,87 @@ $(document).ready(function () {
     }
 
     // console.log("final e=" + (err/points.length + errz/curve_points.length) + " points=" + points.length + " errtotal=" + err);
-
     $("#sometext").html("err=" + (err/points.length + errz/curve_points.length));
+
   }
 
+  function drawRandomEllipse() {
+
+    var center, f1, f2;
+    var a, b, c, degree;
+
+    b = ranv(100, 500);
+    a = ranv(b, 500);
+    degree = ranv(0, Math.PI);
+    ellipse_radius = 2*a;
+
+    center = {
+      x:ranv(1400, 1600),
+      y:ranv(950, 1050)
+    }
+
+    c = Math.sqrt(a**2 - b**2);
+
+    f1 = rotationMatrix(center.x, center.y, c, 0, degree);
+    f2 = rotationMatrix(center.x, center.y, -c, 0, degree);
+
+    drawDot(main_context, f1.x, f1.y, 12);
+    drawDot(main_context, f2.x, f2.y, 12);
+
+    ellipse_points.push(center, f1, f2);
+
+    console.log(center, a, b, c, degree, f1, f2);
+
+    main_context.strokeStyle = "#ff0000"
+    main_context.lineWidth = 3;
+    main_context.beginPath();
+    main_context.ellipse(center.x, center.y, a, b, degree, 0, 2 * Math.PI);
+    main_context.stroke();
+    main_context.moveTo(center.x + a*Math.cos(degree), center.y + a*Math.sin(degree));
+    main_context.lineTo(center.x - a*Math.cos(degree), center.y - a*Math.sin(degree));
+    main_context.stroke();
+    main_context.moveTo(center.x - b*Math.sin(degree), center.y + b*Math.cos(degree));
+    main_context.lineTo(center.x + b*Math.sin(degree), center.y - b*Math.cos(degree));
+    main_context.stroke();
+  }
+
+  function ellipseErrorCalculation() {
+
+    var err = 0;
+    var errz = 0;
+
+    var center = ellipse_points[0];
+    var f1 = ellipse_points[1];
+    var f2 = ellipse_points[2];
+
+    var completeness = [];
+    for (var _ = 0; _ < 10; _++) {
+      completeness.push(700);
+    }
+
+    for (var i = 0, ilen = points.length; i < ilen; i++) {
+      var dist = distanceBetween(f1.x, f1.y, points[i].x, points[i].y);
+      dist += distanceBetween(f2.x, f2.y, points[i].x, points[i].y);
+
+      var e = Math.abs(dist - ellipse_radius);
+      err += e;
+
+      var bucket = getRotationBucket(center.x, center.y, points[i].x, points[i].y);
+      console.log("x:" + (points[i].x - center.x) + " y:" + (points[i].y - center.y) + " bucket=" + bucket);
+      if (completeness[bucket] > e) {
+        completeness[bucket] = e;
+      }
+    }
+
+    for (var b = 0, len = completeness.length; b < len; b++) {
+      errz += completeness[b];
+    }
+
+    console.log(completeness);
+    console.log("error=" + (err/points.length + errz/completeness.length) + " n=" + points.length);
+
+    $("#sometext").html("err=" + (err/points.length + errz/completeness.length));
+  }
 
 
   //  var canvas, context, isDrawing;

@@ -12,7 +12,97 @@ When you're done, you can delete all of this grey text, it's just a comment.
 */
 
 $(document).ready(function () {
+  /* Initialization */
+  var status = "line";
+  var main_canvas = document.getElementById('main-canvas');
+  var front_canvas = document.getElementById('front-canvas');
+  var main_context = main_canvas.getContext('2d');
+  var front_context = front_canvas.getContext('2d');
 
+  // Default Settings
+  var PEN_COLOR = "#000000ff";
+  var PEN_SIZE = 5;
+  var TOOL_POSITION = "Bottom right";
+  var LINE_SIZE_MIN = 20;
+  var LINE_SIZE_MAX = 50;
+  var LINE_ANGLE_MIN = 0;
+  var LINE_ANGLE_MAX = 180;
+  var CURVE_SIZE_MIN = 45;
+  var CURVE_SIZE_MAX = 80;
+  var CURVE_COMPLEX_MIN = 1;
+  var CURVE_COMPLEX_MAX = 3;
+  var ELLIPSE_SIZE_MIN = 20;
+  var ELLIPSE_SIZE_MAX = 50;
+  var ELLIPSE_ROUND_MIN = 50;
+  var ELLIPSE_ROUND_MAX = 85;
+  var ELLIPSE_ANGLE_MIN = 0;
+  var ELLIPSE_ANGLE_MAX = 90;
+  var GUIDE_LINE_COLOR = "#ff8700";
+  var GUIDE_LINE_SIZE = 10;
+  var GUIDE_LINE_STYLE = [20, 20];
+  
+  // Settings
+  var pen_color = PEN_COLOR;
+  var pen_size = PEN_SIZE;
+  var tool_position = TOOL_POSITION;
+  var line_size_min = LINE_SIZE_MIN;
+  var line_size_max = LINE_SIZE_MAX;
+  var line_angle_min = LINE_ANGLE_MIN;
+  var line_angle_max = LINE_ANGLE_MAX;
+  var curve_size_min = CURVE_SIZE_MIN;
+  var curve_size_max = CURVE_SIZE_MAX;
+  var curve_complex_min = CURVE_COMPLEX_MIN;
+  var curve_complex_max = CURVE_COMPLEX_MAX;
+  var ellipse_size_min = ELLIPSE_SIZE_MIN;
+  var ellipse_size_max = ELLIPSE_SIZE_MAX;
+  var ellipse_round_min = ELLIPSE_ROUND_MIN;
+  var ellipse_round_max = ELLIPSE_ROUND_MAX;
+  var ellipse_angle_min = ELLIPSE_ANGLE_MIN;
+  var ellipse_angle_max = ELLIPSE_ANGLE_MAX;
+  var guide_line_color = GUIDE_LINE_COLOR;
+  var guide_line_size = GUIDE_LINE_SIZE;
+  var guide_line_style = GUIDE_LINE_STYLE;
+  
+
+  
+  main_context.lineWidth = pen_size;
+  main_context.lineJoin = main_context.lineCap = 'round';
+
+  front_context.lineWidth = pen_size;
+  front_context.lineJoin = front_context.lineCap = 'round';
+
+  var is_drawing, points = [];
+  var line_points = [];
+  var curve_points = [];
+  var ellipse_points = [];
+  var ellipse_radius = 0;
+  
+  function clearPage() {
+    clearOverlay();
+    clearMainPage();
+    clearFrontPage();
+  }
+
+  function clearMainPage() {
+    console.log("clearMainPage");
+    main_context.clearRect(0, 0, main_canvas.width, main_canvas.height);
+    points.length = 0;
+    curve_points.length = 0;
+    ellipse_points.length = 0;
+    ellipse_radius = 0;
+  }
+
+  function clearFrontPage() {
+    front_context.clearRect(0, 0, front_canvas.width, front_canvas.height);
+  }
+  
+  function clearOverlay() {
+    $("#intro-overlay").css("display", "none");
+  }
+  
+  
+  
+  
   /* Menu Item Clicks */
   $("#nav-expand-menu-item").click(function() {
     menuItemClick($(this));
@@ -21,27 +111,49 @@ $(document).ready(function () {
   $("#nav-line-menu-item").click(function() {
     menuItemClick($(this));
     status = "line";
-    clearPage();
+    showCanvas();
+    drawRandomLine();
   });
 
   $("#nav-curve-menu-item").click(function() {
     menuItemClick($(this));
     status = "curve";
-    clearPage();
+    showCanvas();
     drawRandomCurve();
   });
-  
+
   $("#nav-ellipse-menu-item").click(function() {
     menuItemClick($(this));
     status = "ellipse";
-    clearPage();
+    showCanvas();
     drawRandomEllipse();
   });
 
-  $("#nav-settings-menu-item").click(function() {
+  $("#nav-note-menu-item").click(function() {
     menuItemClick($(this));
-    status = "curve";
-    clearPage();
+    status = "note";
+    hideCanvas();
+  });
+  
+  $("#license-info").click(function() {
+    if ($("#license-info-text").css("display") == "none") {
+      $("#license-info-text").css("display", "block");
+    } else {
+      $("#license-info-text").css("display", "none")
+    }
+  });
+  
+  $("#copyright").html("Copyright © " + (new Date().getFullYear()) + " Sanlok Lee");
+  
+  $("#email-info").click(function() {
+    var t1 = "jlee", t2 = "257";
+    var t3 = "berkeley", t4 = "edu";
+    $("#email-info-text").html(t1 + t2 + "@" + t3 + "." + t4);
+    if ($("#email-info-text").css("display") == "none") {
+      $("#email-info-text").css("display", "inline-block");
+    } else {
+      $("#email-info-text").css("display", "none");
+    }
   });
 
   function menuItemClick(item) {
@@ -57,21 +169,36 @@ $(document).ready(function () {
       openMenu();
     }
   }
-  
+
   function openMenu() {
     $("#nav-bar").addClass('transform-active');
     $('#nav-expand-button-icon').addClass('glyphicons-chevron-left').removeClass('glyphicons-menu-hamburger');
+    console.log("adding nav-open");
+    $("#note").addClass("nav-open");
   }
-  
+
   function closeMenu() {
     $("#nav-bar").removeClass('transform-active');
     $('#nav-expand-button-icon').removeClass('glyphicons-chevron-left').addClass('glyphicons-menu-hamburger');
+    console.log("removing nav-open");
+    $("#note").removeClass("nav-open");
   }
+  
+  function showCanvas() {
+    clearPage();
+    $("#canvas-container").css("display", "block");
+    $("#note").css("display", "none");
+  }
+  
+  function hideCanvas() {
+    $("#canvas-container").css("display", "none");
+    $("#note").css("display", "block");
+  }
+  
 
 
-  /* Side Icon Clicks */
+  /* Side Icon Modals - Pencil */
   $("#ruler-icon").click(function() {
-
     console.log("grid");
 
     var interval = 500;
@@ -91,13 +218,22 @@ $(document).ready(function () {
 
   $("#pencil-icon").click(function() {
     $("#input-pen-color").val(pen_color.substring(0, 7));
-    var t_val = Math.floor(parseInt(pen_color.substring(7), 16) * 100 / 255);
-    $("#input-pen-transparency").val(t_val);
-    $("#input-pen-size").val(pen_size);
-    $("#input-pen-transparency-value").html(t_val);
-    $("#input-pen-size-value").html(pen_size);
+    $("#input-pen-transparency").slider( "option", "value", getAlpha(pen_color));
+    $("#input-pen-size").slider( "option", "value", pen_size);
+    
     console.log("pencil - pen-color:" + pen_color + " pen-size:" + pen_size);
     $("#pencil-modal").css("display", "block");
+  });
+
+  $("#refresh-icon").click(function() {
+    clearPage();
+    if (status == "line") {
+      drawRandomLine();
+    } else if (status == "curve") {
+      drawRandomCurve();
+    } else if (status == "ellipse") {
+      drawRandomEllipse();
+    }
   });
 
   $("#input-pen-color").change(function(event) {
@@ -106,35 +242,260 @@ $(document).ready(function () {
     console.log("pen-color:" + pen_color);
   });
 
-  $("#input-pen-transparency").change(function(event) {
-    var txt = $(this).val();
-    if (txt == 100) {
-      pen_color = pen_color.substring(0, 7) + "ff";
-    } else {
-      pen_color = pen_color.substring(0, 7) + Math.floor(txt * 255 / 100.0).toString(16);
+  $("#input-pen-transparency").slider({
+    change: function(event, ui) {
+      pen_color = putAlpha(pen_color, ui.value);
+      $("#input-pen-transparency-value").text(ui.value);
+      console.log("pen-transparency:" + ui.value + " new-color:" + pen_color);
+    },
+    range: "min",
+    orientation: "horizontal",
+    min: 0,
+    max: 100,
+    value: getAlpha(PEN_COLOR),
+    slide: function(event, ui) {
+      $("#input-pen-transparency-value").text(ui.value);
     }
-    console.log("pen-transparency:" + txt + " new-color:" + pen_color);
-    $("#input-pen-transparency-value").html(txt);
-  }); 
+  });
+  
+  $("#input-pen-size").slider({
+    change: function(event, ui) {
+      pen_size = ui.value;
+      console.log("pen-size:" + pen_size);
+      $("#input-pen-size-value").text(ui.value);
+    },
+    range: "min",
+    orientation: "horizontal",
+    min: 1,
+    max: 60,
+    value: PEN_SIZE,
+    slide: function(event, ui) {
+      $("#input-pen-size-value").text(ui.value);
+    }
+  });
 
-  $("#input-pen-size").change(function(event) {
-    var n = $(this).val();
-    pen_size = n;
-    console.log("pen-size:" + pen_size);
-    $("#input-pen-size-value").html(n);
-  }); 
-
-  $(".input-reset").click(function () {
-    pen_color = "#000000ff";
-    pen_size = 3;
-    $("#input-pen-color").val("#000000");
-    $("#input-pen-transparency").val(100);
-    $("#input-pen-size").val(3);
-    $("#input-pen-transparency-value").html(100);
-    $("#input-pen-size-value").html(3);
+  $("#input-pencil-reset").click(function () {
+    pen_color = PEN_COLOR;
+    $("#input-pen-color").val(PEN_COLOR.substring(0, 7));
+    $("#input-pen-transparency").slider( "option", "value", getAlpha(PEN_COLOR));
+    $("#input-pen-size").slider( "option", "value", PEN_SIZE);
 
     console.log("reset - pen-color:" + pen_color + " pen-size:" + pen_size);
   });
+  
+  
+  
+  
+  /* Side Icon Modals - CircleSettings */
+  $("#function-icon").click(function() {
+    $('#input-tool-position').val(tool_position);
+    $('#input-tool-position').selectmenu("refresh");
+    if (status == "line") {
+      console.log("open settings - line");
+      $("#input-line-setting").css("display", "block");
+      $("#input-curve-setting").css("display", "none");
+      $("#input-ellipse-setting").css("display", "none");
+      $("#input-line-size").slider("option", "values", [line_size_min, line_size_max]);
+      $("#input-line-angle").slider("option", "values", [line_angle_min, line_angle_max]);
+    } else if (status == "curve") {
+      console.log("open settings - curve");
+      $("#input-line-setting").css("display", "none");
+      $("#input-curve-setting").css("display", "block");
+      $("#input-ellipse-setting").css("display", "none");
+      $("#input-curve-size").slider("option", "values", [curve_size_min, curve_size_max]);
+      $("#input-curve-complex").slider("option", "values", [curve_complex_min, curve_complex_max]);
+    } else if (status == "ellipse") {
+      console.log("open settings - ellipse");
+      $("#input-line-setting").css("display", "none");
+      $("#input-curve-setting").css("display", "none");
+      $("#input-ellipse-setting").css("display", "block");
+      $("#input-ellipse-size").slider("option", "values", [ellipse_size_min, ellipse_size_max]);
+      $("#input-ellipse-round").slider("option", "values", [ellipse_round_min, ellipse_round_max]);
+      $("#input-ellipse-angle").slider("option", "values", [ellipse_angle_min, ellipse_angle_max]);
+    }
+    $("#settings-modal").css("display", "block");
+  });
+  
+  $("#input-tool-position").selectmenu({
+    change: function( event, ui ) {
+      console.log("tool position=" + ui.item.value);
+      $("#side-icon-container").removeClass("position1");
+      $("#side-icon-container").removeClass("position2");
+      $("#side-icon-container").removeClass("position3");
+      $("#side-icon-container").removeClass("position4");
+
+      if (ui.item.value == "Top left") {
+        $("#side-icon-container").addClass("position1");
+      } else if (ui.item.value == "Top right") {
+        $("#side-icon-container").addClass("position2");
+      } else if (ui.item.value == "Bottom left") {
+        $("#side-icon-container").addClass("position3");
+      } else {
+        $("#side-icon-container").addClass("position4");
+      }
+    }
+  });
+  
+  $("#input-line-size").slider({
+    change: function(event, ui) {
+      line_size_min = ui.values[0];
+      line_size_max = ui.values[1];
+      $("#input-line-size-min-value").text(ui.values[0]);
+      $("#input-line-size-max-value").text(ui.values[1]);
+      console.log("line-size:" + line_size_min + "-" + line_size_max);
+    },
+    range: true,
+    orientation: "horizontal",
+    min: 1,
+    max: 100,
+    values: [LINE_SIZE_MIN, LINE_SIZE_MAX],
+    slide: function(event, ui) {
+      $("#input-line-size-min-value").text(ui.values[0]);
+      $("#input-line-size-max-value").text(ui.values[1]);
+    }
+  });
+  
+  $("#input-line-angle").slider({
+    change: function(event, ui) {
+      line_angle_min = ui.values[0];
+      line_angle_max = ui.values[1];
+      $("#input-line-angle-min-value").text(ui.values[0]);
+      $("#input-line-angle-max-value").text(ui.values[1]);
+      console.log("line-angle:" + line_angle_min + "-" + line_angle_max);
+    },
+    range: true,
+    orientation: "horizontal",
+    min: 0,
+    max: 180,
+    values: [LINE_ANGLE_MIN, LINE_ANGLE_MAX],
+    slide: function(event, ui) {
+      $("#input-line-angle-min-value").text(ui.values[0]);
+      $("#input-line-angle-max-value").text(ui.values[1]);
+    }
+  });
+  
+  $("#input-curve-size").slider({
+    change: function(event, ui) {
+      curve_size_min = ui.values[0];
+      curve_size_max = ui.values[1];
+      $("#input-curve-size-min-value").text(ui.values[0]);
+      $("#input-curve-size-max-value").text(ui.values[1]);
+      console.log("curve-size:" + curve_size_min + "-" + curve_size_max);
+    },
+    range: true,
+    orientation: "horizontal",
+    min: 1,
+    max: 100,
+    values: [CURVE_SIZE_MIN, CURVE_SIZE_MAX],
+    slide: function(event, ui) {
+      $("#input-curve-size-min-value").text(ui.values[0]);
+      $("#input-curve-size-max-value").text(ui.values[1]);
+    }
+  });
+
+  $("#input-curve-complex").slider({
+    change: function(event, ui) {
+      curve_complex_min = ui.values[0];
+      curve_complex_max = ui.values[1];
+      $("#input-curve-complex-min-value").text(ui.values[0]);
+      $("#input-curve-complex-max-value").text(ui.values[1]);
+      console.log("curve-complexity:" + curve_complex_min + "-" + curve_complex_max);
+    },
+    range: true,
+    orientation: "horizontal",
+    min: 1,
+    max: 10,
+    values: [CURVE_COMPLEX_MIN, CURVE_COMPLEX_MAX],
+    slide: function(event, ui) {
+      $("#input-curve-complex-min-value").text(ui.values[0]);
+      $("#input-curve-complex-max-value").text(ui.values[1]);
+    }
+  });
+
+  $("#input-ellipse-size").slider({
+    change: function(event, ui) {
+      ellipse_size_min = ui.values[0];
+      ellipse_size_max = ui.values[1];
+      $("#input-ellipse-size-min-value").text(ui.values[0]);
+      $("#input-ellipse-size-max-value").text(ui.values[1]);
+      console.log("ellipse-size:" + ellipse_size_min + "-" + ellipse_size_max);
+    },
+    range: true,
+    orientation: "horizontal",
+    min: 1,
+    max: 100,
+    values: [ELLIPSE_SIZE_MIN, ELLIPSE_SIZE_MAX],
+    slide: function(event, ui) {
+      $("#input-ellipse-size-min-value").text(ui.values[0]);
+      $("#input-ellipse-size-max-value").text(ui.values[1]);
+    }
+  });
+  
+  $("#input-ellipse-round").slider({
+    change: function(event, ui) {
+      ellipse_round_min = ui.values[0];
+      ellipse_round_max = ui.values[1];
+      $("#input-ellipse-round-min-value").text(ui.values[0]);
+      $("#input-ellipse-round-max-value").text(ui.values[1]);
+      console.log("ellipse-roundness:" + ellipse_round_min + "-" + ellipse_round_max);
+    },
+    range: true,
+    orientation: "horizontal",
+    min: 1,
+    max: 100,
+    values: [ELLIPSE_ROUND_MIN, ELLIPSE_ROUND_MAX],
+    slide: function(event, ui) {
+      $("#input-ellipse-force-round").prop('checked', false);
+      $("#input-ellipse-round-min-value").text(ui.values[0]);
+      $("#input-ellipse-round-max-value").text(ui.values[1]);
+    }
+  });
+  
+  $("#input-ellipse-force-round").change(function() {
+    if (this.checked) {
+      $("#input-ellipse-round").slider("option", "values", [100, 100]);
+    }
+  });
+  
+  $("#input-ellipse-angle").slider({
+    change: function(event, ui) {
+      ellipse_angle_min = ui.values[0];
+      ellipse_angle_max = ui.values[1];
+      $("#input-ellipse-angle-min-value").text(ui.values[0]);
+      $("#input-ellipse-angle-max-value").text(ui.values[1]);
+      console.log("ellipse-angle:" + ellipse_angle_min + "-" + ellipse_angle_max);
+    },
+    range: true,
+    orientation: "horizontal",
+    min: 0,
+    max: 180,
+    values: [ELLIPSE_ANGLE_MIN, ELLIPSE_ANGLE_MAX],
+    slide: function(event, ui) {
+      $("#input-ellipse-angle-min-value").text(ui.values[0]);
+      $("#input-ellipse-angle-max-value").text(ui.values[1]);
+    }
+  });
+  
+  $("#input-settings-reset").click(function () {
+    $('#input-tool-position').val(TOOL_POSITION);
+    $('#input-tool-position').selectmenu("refresh");
+    if (status == "line") {
+      console.log("reset settings - line");
+      $("#input-line-size").slider("option", "values", [LINE_SIZE_MIN, LINE_SIZE_MAX]);
+      $("#input-line-angle").slider("option", "values", [LINE_ANGLE_MIN, LINE_ANGLE_MAX]);
+    } else if (status == "curve") {
+      console.log("reset settings - curve");
+      $("#input-curve-size").slider("option", "values", [CURVE_SIZE_MIN, CURVE_SIZE_MAX]);
+      $("#input-curve-complex").slider("option", "values", [CURVE_COMPLEX_MIN, CURVE_COMPLEX_MAX]);
+    } else if (status == "ellipse") {
+      console.log("reset settings - ellipse");
+      $("#input-ellipse-force-round").prop('checked', false);
+      $("#input-ellipse-size").slider("option", "values", [ELLIPSE_SIZE_MIN, ELLIPSE_SIZE_MAX]);
+      $("#input-ellipse-round").slider("option", "values", [ELLIPSE_ROUND_MIN, ELLIPSE_ROUND_MAX]);
+      $("#input-ellipse-angle").slider("option", "values", [ELLIPSE_ANGLE_MIN, ELLIPSE_ANGLE_MAX]);
+    }
+  });
+
 
 
   $(".close-button").click(function() {
@@ -142,7 +503,7 @@ $(document).ready(function () {
   });
 
   $(window).click(function(e) {
-//    console.log("window");
+    //    console.log("window");
     var $w = $(e.target);
     if ($w.hasClass("modal")) {
       console.log("window clicked");
@@ -175,19 +536,34 @@ $(document).ready(function () {
   } 
 
   function drawDot(ctx,x,y,size) {
-    // Let's use black by setting RGB values to 0, and 255 alpha (completely opaque)
-    r=0; g=0; b=0; a=255;
-
-    // Select a fill style
-    // ctx.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
-
     // Draw a filled circle
+    main_context.fillStyle = guide_line_color;
     main_context.beginPath();
     main_context.arc(x, y, size, 0, Math.PI*2, true); 
     main_context.closePath();
     main_context.fill();
-  } 
+  }
+  
+  function drawX(x, size=5) {
+    main_context.strokeStyle = guide_line_color;
+    main_context.lineWidth = size;
+    main_context.setLineDash(guide_line_style);
+    main_context.beginPath();
+    main_context.moveTo(x, 0);
+    main_context.lineTo(x, 2000);
+    main_context.stroke();
+  }
 
+  function drawY(y, size=5) {
+    main_context.strokeStyle = guide_line_color;
+    main_context.lineWidth = size;
+    main_context.setLineDash(guide_line_style);
+    main_context.beginPath();
+    main_context.moveTo(0, y);
+    main_context.lineTo(3000, y);
+    main_context.stroke();
+  }
+  
   function ranv(min, max) {
     return Math.random() * (max - min) + min;
   }
@@ -214,50 +590,23 @@ $(document).ready(function () {
   function getRotationBucket(px, py, xoff, yoff) {
     return Math.floor(getRotation(px, py, xoff, yoff) * 5 / Math.PI);
   }
-
-
-
-  /* Initialization */
-  var status = "line";
-  var main_canvas = document.getElementById('main-canvas');
-  var front_canvas = document.getElementById('front-canvas');
-  var main_context = main_canvas.getContext('2d');
-  var front_context = front_canvas.getContext('2d');
-
-  var pen_color = "#000000ff"
-  var pen_size = 5;
   
-  main_context.lineWidth = pen_size;
-  main_context.lineJoin = main_context.lineCap = 'round';
-
-  front_context.lineWidth = pen_size;
-  front_context.lineJoin = front_context.lineCap = 'round';
-
-  var is_drawing, points = [];
-  var curve_points = [];
-  var ellipse_points = [];
-  var ellipse_radius = 0;
-
-  function clearPage() {
-    clearMainPage();
-    clearFrontPage();
-  }
-
-  function clearMainPage() {
-    console.log("clearMainPage");
-    main_context.clearRect(0, 0, main_canvas.width, main_canvas.height);
-    points.length = 0;
-    curve_points.length = 0;
-    ellipse_points.length = 0;
-    ellipse_radius = 0;
+  function getAlpha(color) {
+    return Math.floor(parseInt(color.substring(7), 16) * 100 / 255);
   }
   
-  function clearFrontPage() {
-    front_context.clearRect(0, 0, front_canvas.width, front_canvas.height);
+  function putAlpha(color, alpha) {
+    if (alpha == 100) {
+      return color.substring(0, 7) + "ff";
+    } else {
+      alpha = Math.floor(alpha * 255 / 100.0).toString(16);
+      if (alpha.length == 1) { alpha = "0" + alpha; }
+      return color.substring(0, 7) + alpha;
+    }
   }
-
-
-
+  
+  
+  
 
 
 
@@ -289,9 +638,10 @@ $(document).ready(function () {
     e.preventDefault();
     console.log("onmousedown");
     closeMenu();
-    if (status == "line") {
-      clearPage();
-    }
+    clearOverlay();
+//    if (status == "line") {
+//      clearPage();
+//    }
     e = getMousePoint(e);
     is_drawing = true;
     front_context.strokeStyle = pen_color;
@@ -302,9 +652,10 @@ $(document).ready(function () {
   front_canvas.ontouchstart = function(e) {
     e.preventDefault();
     closeMenu();
-    if (status == "line") {
-      clearPage();
-    }
+    clearOverlay();
+//    if (status == "line") {
+//      clearPage();
+//    }
     e = getTouchPoint(e);
     is_drawing = true;
     front_context.strokeStyle = pen_color;
@@ -345,28 +696,28 @@ $(document).ready(function () {
     // the bezier control point
     //    ctx.lineTo(p1.x, p1.y);
     front_context.stroke();
-    
-    
-//    var len = points.length;
-//    if (len >= 3) {
-//
-//
-//      var p1 = midPointBtw(points[len-3], points[len-2]);
-////      drawDot(ctx, p1.x, p1.y, pen_size/2);
-//
-//      ctx.beginPath();
-//      ctx.moveTo(p1.x, p1.y);
-//      var midPoint = midPointBtw(points[len-2], points[len-1]);
-//      ctx.quadraticCurveTo(points[len-2].x, points[len-2].y, midPoint.x, midPoint.y);
-//      ctx.stroke();
-//    } else if (len == 2) {
-//      ctx.beginPath();
-//      ctx.moveTo(points[0].x, points[0].y);
-//      ctx.lineTo(points[1].x, points[1].y);
-//      ctx.stroke();
-//    } else {
-//      return;
-//    }
+
+
+    //    var len = points.length;
+    //    if (len >= 3) {
+    //
+    //
+    //      var p1 = midPointBtw(points[len-3], points[len-2]);
+    ////      drawDot(ctx, p1.x, p1.y, pen_size/2);
+    //
+    //      ctx.beginPath();
+    //      ctx.moveTo(p1.x, p1.y);
+    //      var midPoint = midPointBtw(points[len-2], points[len-1]);
+    //      ctx.quadraticCurveTo(points[len-2].x, points[len-2].y, midPoint.x, midPoint.y);
+    //      ctx.stroke();
+    //    } else if (len == 2) {
+    //      ctx.beginPath();
+    //      ctx.moveTo(points[0].x, points[0].y);
+    //      ctx.lineTo(points[1].x, points[1].y);
+    //      ctx.stroke();
+    //    } else {
+    //      return;
+    //    }
   };
 
   front_canvas.ontouchmove = function(e) {
@@ -424,28 +775,7 @@ $(document).ready(function () {
   front_canvas.onmouseup = function() {
     is_drawing = false;
 
-    clearFrontPage();
-    main_context.strokeStyle = pen_color;
-    main_context.lineWidth = pen_size;
-    main_context.beginPath();
-
-    var p1 = points[0];
-    var p2 = points[1];
-
-    main_context.moveTo(p1.x, p1.y);
-    //    console.log(points);
-
-    for (var i = 1, len = points.length; i < len; i++) {
-      // we pick the point between pi+1 & pi+2 as the
-      // end point and p1 as our control point
-      var mid_point = midPointBtw(p1, p2);
-      //      drawDot(ctx, p1.x, p1.y, 6);
-      //      drawDot(ctx, midPoint.x, midPoint.y, 12);
-      main_context.quadraticCurveTo(p1.x, p1.y, mid_point.x, mid_point.y);
-      p1 = points[i];
-      p2 = points[i+1];
-    }
-    main_context.stroke();
+    copyToMainCanvas();
 
     if (status == "line") {
       linearRegression();
@@ -459,11 +789,25 @@ $(document).ready(function () {
 
   front_canvas.ontouchend = function() {
     is_drawing = false;
-
+    
+    copyToMainCanvas();
+    
+    if (status == "line") {
+      linearRegression();
+    } else if (status == "curve") {
+      curveApproximation();
+    } else if (status == "ellipse") {
+      ellipseErrorCalculation();
+    }
+    points.length = 0;
+  }
+  
+  function copyToMainCanvas() {
     clearFrontPage();
 
     main_context.strokeStyle = pen_color;
     main_context.lineWidth = pen_size;
+    main_context.setLineDash([]);
     main_context.beginPath();
 
     var p1 = points[0];
@@ -483,16 +827,6 @@ $(document).ready(function () {
       p2 = points[i+1];
     }
     main_context.stroke();
-
-
-    if (status == "line") {
-      linearRegression();
-    } else if (status == "curve") {
-      curveApproximation();
-    } else if (status == "ellipse") {
-      ellipseErrorCalculation();
-    }
-    points.length = 0;
   }
 
 
@@ -500,6 +834,38 @@ $(document).ready(function () {
 
 
   /* Drawing Calculations */
+  function drawRandomLine() {
+    var center, p1, p2, degree, size;
+    
+    center = {
+      x:ranv(1400, 1600),
+      y:ranv(950, 1050)
+    }
+    
+    degree = Math.PI - ranv(line_angle_min * Math.PI / 180, line_angle_max * Math.PI / 180);
+    size = ranv(line_size_min*8, line_size_max*8);
+
+    p1 = rotationMatrix(center.x, center.y, size, 0, degree);
+    p2 = rotationMatrix(center.x, center.y, -size, 0, degree);
+    
+    line_points.length = 0;
+    line_points.push(p1, p2);
+    
+    drawDot(main_context, p1.x, p1.y, guide_line_size*2);
+    drawDot(main_context, p2.x, p2.y, guide_line_size*2);
+    
+    console.log("Drawing line: length=" + size + " angle=" + degree + " p1=" + JSON.stringify(p1) + " p2=" + JSON.stringify(p2));
+
+    main_context.strokeStyle = guide_line_color;
+    main_context.lineWidth = guide_line_size;
+    main_context.setLineDash(guide_line_style);
+    main_context.beginPath();
+    main_context.moveTo(p1.x, p1.y);
+    main_context.lineTo(p2.x, p2.y);
+    main_context.stroke();
+  }
+  
+  
   function linearEstimation() {
     var start = points[0];
     var last = points[points.length - 1];
@@ -546,7 +912,7 @@ $(document).ready(function () {
       y2_sum += points[i].y**2;
       xy_sum += points[i].x * points[i].y;
     }
-    console.log(x_sum, x2_sum, y_sum, y2_sum, xy_sum);
+    // console.log(x_sum, x2_sum, y_sum, y2_sum, xy_sum);
 
     var ssxx = x2_sum - x_sum / points.length * x_sum;
     var ssyy = y2_sum - y_sum / points.length * y_sum;
@@ -578,7 +944,7 @@ $(document).ready(function () {
       y2_sum += points[i].y**2;
       xy_sum += points[i].x * points[i].y;
     }
-    console.log(x_sum, x2_sum, y_sum, y2_sum, xy_sum);
+    // console.log(x_sum, x2_sum, y_sum, y2_sum, xy_sum);
 
     var ssxx = x2_sum - x_sum / points.length * x_sum;
     var ssyy = y2_sum - y_sum / points.length * y_sum;
@@ -664,21 +1030,52 @@ $(document).ready(function () {
     curve_points.length = 0;
 
     var p1, p2, p3, p4, p5;
+    var s = ranv(curve_size_min, curve_size_max);
+    var c = ranv(curve_complex_min, curve_complex_max);
+    
+    var xmin = 1500-(1200*s/100);
+    var xmax = 1500+(1200*s/100);
+    var ymin = 1000-(800*s/100);
+    var ymax = 1000+(800*s/100);
+    
+    var xc = (xmax-xmin)*(c+1)/11;
+    var yc = (ymax-ymin)*(c+1)/11;
+    
+    1500, 1000
+//    
+//    drawX(xmin, 10);
+//    drawX(xmin+xc, 5);
+//    drawX(xmax-xc, 5);
+//    drawX(xmax, 10);
+//    drawY(ymin, 10);
+//    drawY(ymax, 10);
+//    drawY(ymin+yc, 5);
+//    drawY(ymax-yc, 5);
 
-    p1 = { x:ranv(300, 2000), y:ranv(300, 1700) };
-    p2 = { x:ranv(500, 2500), y:ranv(300, 1700) };
-    p4 = { x:ranv(500, 2500), y:ranv(300, 1700) };
-    p5 = { x:ranv(1000, 2700), y:ranv(300, 1700), z: 9000000 };
-    p3 = midPointBtw(p2, p4, ranv(0.2, 0.8));
 
-    drawDot(main_context,p1.x,p1.y,12);
-    drawDot(main_context,p2.x,p2.y,12);
-    drawDot(main_context,p3.x,p3.y,12);
-    drawDot(main_context,p4.x,p4.y,12);
-    drawDot(main_context,p5.x,p5.y,12);
+    p1 = { x:ranv(xmin, xmin+xc), y:ranv(ymin, ymax) };
+    p2 = { x:ranv(1500-xc/2, 1500+xc/2), y:ranv(ymin, ymin+yc) };
+    p4 = { x:ranv(1500-xc/2, 1500+xc/2), y:ranv(ymax-yc, ymax) };
+    p5 = { x:ranv(xmax-xc, xmax), y:ranv(ymin, ymax), z: 9000000 };
+    p3 = midPointBtw(p2, p4, ranv(0.5-(c+1)/22, 0.5+(c+1)/22));
+    
+    if (ranv(0, 1) > 0.5) {
+      var pt = p2;
+      p2 = p4;
+      p4 = pt;
+    }
+    
+    console.log("Drawing curve: size=" + s + " complexity=" + c);
 
-    main_context.strokeStyle = "#ff0000"
-    main_context.lineWidth = 3;
+    drawDot(main_context,p1.x,p1.y,guide_line_size*2);
+    drawDot(main_context,p2.x,p2.y,guide_line_size*2);
+    drawDot(main_context,p3.x,p3.y,guide_line_size*2);
+    drawDot(main_context,p4.x,p4.y,guide_line_size*2);
+    drawDot(main_context,p5.x,p5.y,guide_line_size*2);
+
+    main_context.strokeStyle = guide_line_color;
+    main_context.lineWidth = guide_line_size;
+    main_context.setLineDash(guide_line_style);
     main_context.beginPath();
     main_context.moveTo(p1.x, p1.y);
     main_context.quadraticCurveTo(p2.x, p2.y, p3.x, p3.y);
@@ -738,8 +1135,7 @@ $(document).ready(function () {
       // console.log("point=" + i + "{" + points[i].x + "," + points[i].y + "} err=" + e);
       err += e;
     }
-
-
+    
     for (var j = 0, jlen = curve_points.length; j < jlen; j++) {
       errz += curve_points[j].z;
     }
@@ -754,9 +1150,11 @@ $(document).ready(function () {
     var center, f1, f2;
     var a, b, c, degree;
 
-    b = ranv(100, 500);
-    a = ranv(b, 500);
-    degree = ranv(0, Math.PI);
+
+    a = ranv(ellipse_size_min*8, ellipse_size_max*8);
+    b = ranv(ellipse_round_min*a/100, ellipse_round_max*a/100);
+    degree = Math.PI - ranv(ellipse_angle_min * Math.PI / 180, ellipse_angle_max * Math.PI / 180);
+    console.log("Drawing Ellipse: a=" + a + " b=" + b + " rotation=" + degree);
     ellipse_radius = 2*a;
 
     center = {
@@ -769,15 +1167,15 @@ $(document).ready(function () {
     f1 = rotationMatrix(center.x, center.y, c, 0, degree);
     f2 = rotationMatrix(center.x, center.y, -c, 0, degree);
 
-    drawDot(main_context, f1.x, f1.y, 12);
-    drawDot(main_context, f2.x, f2.y, 12);
+    drawDot(main_context, f1.x, f1.y, guide_line_size*2);
+    drawDot(main_context, f2.x, f2.y, guide_line_size*2);
 
+    ellipse_points.length = 0;
     ellipse_points.push(center, f1, f2);
 
-    console.log(center, a, b, c, degree, f1, f2);
-
-    main_context.strokeStyle = "#ff0000"
-    main_context.lineWidth = 3;
+    main_context.strokeStyle = guide_line_color;
+    main_context.lineWidth = guide_line_size;
+    main_context.setLineDash(guide_line_style);
     main_context.beginPath();
     main_context.ellipse(center.x, center.y, a, b, degree, 0, 2 * Math.PI);
     main_context.stroke();
@@ -896,6 +1294,10 @@ $(document).ready(function () {
   //  }
   //
   //  init();
+  
+  if (status == "line") {
+    drawRandomLine();
+  }
 });
 
 

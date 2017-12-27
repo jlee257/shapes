@@ -1,14 +1,20 @@
 /* Fonts from Google Fonts - more at https://fonts.google.com */
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
-@import url('https://fonts.googleapis.com/css?family=Merriweather:400,700');
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Dancing+Script|Shadows+Into+Light|Varela+Round|Roboto');
 
 
 :root {
-  --primary-base: #00A094;
-  --primary-dark: #007d74;
-  --secondary-base: #FFA700;
-  --light-gray: #DDDDDD;
+  
+  --primary-dark: #0493ad;
+  --primary-base: #026f83;
+  --secondary-base: #ff8700;
+/*  --primary-base: #00A094;*/
+/*  --primary-dark: #007d74;*/
+/*  --secondary-base: #FFA700;*/
+  --light-gray-web: #eaecef;
+  --light-gray: #dddddd;
+  --overlay-gray: #888888;
+  --dark-gray: #555555;
+  --font-gray: #24292e;
 }
 
 
@@ -17,7 +23,7 @@ html {
 }
 
 body {
-  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Roboto', Arial, sans-serif;
   background-color: transparent;
   margin: 0;
 }
@@ -46,7 +52,6 @@ body {
 
 .menu-item {
   height: 60px;
-  width: 100%;
   overflow:hidden;
   display: block;
   background-color: white;
@@ -56,7 +61,7 @@ body {
   position: relative;
   padding-top: 16px;
   padding-left: 5px;
-  font-size: 20px;
+  font-size: 1.25em;
   width: 140px;
   float: right;
   overflow: hidden;
@@ -106,6 +111,7 @@ body {
 #canvas-container {
   margin: 0;
   position: absolute;
+  display: block;
   top: 50%;
   left: calc(50% + 30px);
   transform: translate(-50%, -50%);
@@ -126,19 +132,50 @@ body {
 }
 
 #front-canvas {
+  z-index: 1;
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-.side-icon {
-  font-size: 30px;
-  height: 40px;
-  width: 40px;
+#side-icon-container {
   position: absolute;
-  top: 100%;
-  left: 100%;
+}
+
+.side-icon {
+  font-size: 32px;
+  margin: 7px;
+  height: 47px;
+  width: 47px;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#intro-overlay {
+  color: var(--overlay-gray);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+
+#intro-overlay div:nth-child(1) {
+  margin-top: 20%;
+  font-size: 2.4em;
+  font-family: 'Varela Round', Arial, sans-serif;
+}
+
+#intro-overlay div:nth-child(2) {
+
+  font-size: 2.2em;
+  font-family: 'Dancing Script', cursive;
+}
+
+#intro-overlay div:nth-child(3) {
+  margin-top: 5%;
+  color: var(--light-gray);
+  font-size: 2.7em;
+  font-family: 'Shadows Into Light', cursive;
 }
 
 #sometext {
@@ -149,12 +186,68 @@ body {
 
 
 
+/* Note */
+#note {
+  margin-top: 30px;
+  position: absolute;
+  display: none;
+  left: calc(50% + 30px);
+  transform: translate(-50%, 0);
+
+  width: calc(90vw - 60px);
+  max-width: 1200px;
+  background-color: white;
+}
+
+#note.nav-open {
+  left: calc(50% + 105px);
+  width: calc(90vw - 210px);
+}
+
+#note-header {
+  font-size: 1.7em;
+  padding: 30px;
+  background-color: var(--primary-base);
+  color: white;
+}
+
+#note-body {
+  font-family: Arial, sans-serif;
+  color: var(--font-gray);
+  padding: 0px 70px 100px;
+}
+
+#note-body h1 {
+  margin-top: 60px;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 7px;
+}
+
+#note-footer {
+  padding: 17px 25px 15px;
+  font-size: 0.8em;
+  color: #888888;
+  background-color: var(--dark-gray);
+}
+
+#note-footer .height-align {
+  line-height: 1.9em;
+}
+
+.page-load-hide {
+  display: none;
+}
+
+
+
+
+
+
 
 /* Modals */
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -165,6 +258,10 @@ body {
   z-index: 10;
 }
 
+#settings-modal {
+  display: none;
+}
+
 .modal-content {
   position: relative;
   background-color: #ffffff;
@@ -172,12 +269,17 @@ body {
   padding: 0;
   /*border: 1px solid #888;*/
   width: 80vw;
+  max-width: 800px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
   animation-duration: 0.4s;
   padding-bottom: 10px;
+}
+
+.modal-padding {
+  height: 40px;
 }
 
 @-webkit-keyframes animatetop {
@@ -199,7 +301,7 @@ body {
 .modal-header > span {
   padding: 20px;
   line-height: 38px;
-  font-size: 25px;
+  font-size: 1.7em;
   display: inline-block;
 }
 
@@ -212,9 +314,23 @@ body {
   background-color: white;
 }
 
-.modal-body-content > p {
-  margin-top: 40px;
-  margin-bottom: 10px;
+#wacom-warning-setting {
+  text-align: center;
+  border: 1px solid red;
+  border-radius: 7px;
+  background-color: pink;
+  padding: 15px;
+  margin-bottom: 40px;
+}
+
+.modal-setting > label {
+  margin-bottom: 7px;
+  display: block;
+}
+
+.modal-separator {
+  display: block;
+  height: 50px;
 }
 
 .close-button {
@@ -224,19 +340,6 @@ body {
 
 .close-button:hover {
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-input[type=range] {
-  margin: 0;
-  display: inline-block;
-  width: 200px;
-}
-
-.input-value {
-  width: 40px;
-  font-size: 16px;
-  text-align: center;
-  display: inline-block;
 }
 
 .input-reset {
@@ -261,7 +364,7 @@ input[type=range] {
 
 .input-reset-icon {
   padding: 2px;
-  font-size: 34px;
+  font-size: 1.7em;
   float: right;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
@@ -285,7 +388,6 @@ input[type=range] {
   text-shadow: none;
 }
 
-
 @-webkit-keyframes animateReset {
   from {width: 50px} 
   to {width: 190px}
@@ -297,6 +399,126 @@ input[type=range] {
 }
 
 
+
+
+
+
+
+
+/* UI Elements - Slider*/
+.slider {
+  width: 200px;
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.slider .ui-slider-handle {
+  height: 14px !important;
+}
+
+.ui-slider-horizontal {
+  height: 6px !important;
+  width: 200px;
+}
+
+.slider .ui-slider-range {
+  background: var(--primary-base);
+}
+
+.slider-value {
+  margin-right: 10px;
+  border: 1px solid var(--light-gray);
+  border-radius: 5px;
+  width: 35px;
+  font-size: 0.8em;
+  text-align: center;
+  display: inline-block;
+}
+
+/* UI Elements - Selectmenu*/
+.ui-menu-item-wrapper {
+  font-size: 0.8em;
+}
+
+.ui-menu-item-wrapper.ui-state-active {
+  background: lightgray !important;
+}
+
+.ui-selectmenu-button > span {
+  font-size: 0.8em !important;
+}
+
+.ui-selectmenu-button {
+  padding: 5px 15px !important;
+}
+
+
+/* UI Elements - Checkbox*/
+.checkbox-container {
+  display: block;
+  width: 140px;
+  margin: 10px 0;
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+  color: var(--dark-gray);
+  font-size: 0.9em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--primary-base);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 
 
 
@@ -316,30 +538,56 @@ input[type=range] {
 
 
 @media (orientation:portrait) {
-  .side-icon1 {
-    transform: translate(-95%, 30%);
+  #side-icon-container {
+    width: 210px;
+  }
+  
+  #side-icon-container.position1 {
+    transform: translate(0%, -100%);
   }
 
-  .side-icon2 {
-    transform: translate(-220%, 30%);
+  #side-icon-container.position2 {
+    transform: translate(-100%, -100%);
+    left:100%;
   }
 
-  .side-icon3 {
-    transform: translate(-345%, 30%);
+  #side-icon-container.position3 {
+    top:100%;
+  }
+
+  #side-icon-container.position4 {
+    top:100%;
+    left:100%;
+    transform: translate(-100%, 0%);
+  }
+  
+  .side-icon {
+    display: inline-block !important;
   }
 }
 
 @media (orientation:landscape) {
-  .side-icon1 {
-    transform: translate(30%, -95%);
+  #side-icon-container.position1 {
+    transform: translate(-100%, 0%);
   }
 
-  .side-icon2 {
-    transform: translate(30%, -220%);
+  #side-icon-container.position2 {
+    left:100%;
   }
 
-  .side-icon3 {
-    transform: translate(30%, -345%);
+  #side-icon-container.position3 {
+    top:100%;
+    transform: translate(-100%, -100%);
+  }
+
+  #side-icon-container.position4 {
+    top:100%;
+    left:100%;
+    transform: translate(0%, -100%);
+  }
+  
+  .side-icon {
+    display: block !important;
   }
 }
 

@@ -3,18 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <title>Practice drawing shapes</title>
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/glyphicons.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
   </head>
   <body>
 
     <div id="nav-bar" class="transform lvl2 transform-active">
       <div id="nav-expand-menu-item">
-        <span id="nav-expand-button-icon" class="glyphicons glyphicons-menu-hamburger menu-icon"></span>
+        <span id="nav-expand-button-icon" class="glyphicons glyphicons-chevron-left menu-icon"></span>
       </div>
       <div class="separator"></div>
 
@@ -36,57 +40,214 @@
       </div>
       <div class="separator"></div>
 
-      <div id="nav-settings-menu-item" class="menu-item">
-        <span id="nav-settings-button-icon" class="glyphicons glyphicons-cogwheel menu-icon"></span>
-        <span class="menu-item-text">Settings</span>
+      <div id="nav-note-menu-item" class="menu-item">
+        <span id="nav-note-button-icon" class="glyphicons glyphicons-puzzle-2 menu-icon"></span>
+        <span class="menu-item-text">More stuffff</span>
       </div>
       <div class="separator"></div>
     </div>
 
 
-
+    <!--Canvas-->
     <div id="canvas-container" class="lvl1">
 
-      <div id="sometext">hey</div>
+      <div id="sometext">err</div>
 
       <canvas id="main-canvas" width="3000" height="2000">Unfortunately, your browser is currently unsupported by our web application.</canvas>
+
+      <div id="intro-overlay">
+        <div>The Ultimate Online Drawing Practice Tool</div>
+        <div>- For Digital Artists -</div>
+        <div>Start drawing here!</div>
+      </div>
       
       <canvas id="front-canvas" width="3000" height="2000"></canvas>
 
-      <div id="function-icon" class="glyphicons glyphicons-cogwheel side-icon side-icon1"></div>
-
-      <div id="ruler-icon" class="glyphicons glyphicons-ruler side-icon side-icon2"></div>
-
-      <div id="pencil-icon" class="glyphicons glyphicons-pencil side-icon side-icon3"></div>
+      <div id="side-icon-container" class="position4">
+        <div id="refresh-icon" class="glyphicons glyphicons-refresh side-icon"></div>
+        <div id="pencil-icon" class="glyphicons glyphicons-pencil side-icon"></div>
+        <div id="function-icon" class="glyphicons glyphicons-cogwheel side-icon"></div>
+      </div>
+    </div>
+    
+    
+    
+    <!--Note-->
+    <div id="note" class="lvl1 nav-open">
+      <div id="note-header" class="lvl1">
+        Thank you for using this tool! YAY!
+      </div>
+      
+      <div id="note-body">
+        <h1>Practice digital drawing everyday</h1>
+        A free online drawing practice tool for digital artists of all skill levels. Get familiarize with your new digital art tool by practicing drawing lines, curves, and ellipses. Spend 5-10 minuates every day to complete practice challenges, get score, and track your progress toward your ultimate goal.
+        <br>
+        <br>
+        Start your day by doing:
+        <ul>
+          <li>20 Straight lines</li>
+          <li>20 Curved lines</li>
+          <li>20 Ellipses</li>
+        </ul>
+        
+        New to pens or digitizers? New to drawing completely? Start drawing TODAY!
+        
+        
+        <h1>Looking for more free materials?</h1>
+        There are tons of free materials that can help you boast your drawing skill. Here are some of my favorites:
+        <br>
+        <ul>
+          <li>Draw a Box by Irshad Karim: <a href="https://drawabox.com/">https://drawabox.com/</a></li>
+          <li>Ctrl+Paint by Matt Kohr: <a href="https://www.ctrlpaint.com/">https://www.ctrlpaint.com/</a></li>
+        </ul>
+        If you know more sources, please let me know so that I can add on to this list.
+        
+        
+        <h1>Support</h1>
+        Need more features? If you have any suggestion or found, although I am pretty sure there's none, any bug, feel free to reach out to the developer using the contact information at the bottom of the page.
+      </div>
+      
+      <div id="note-footer" class="lvl1">
+        <span id="license-info" class="height-align">license information</span>
+        <div style="float:right">
+          <span id="copyright" class="height-align">Copyright &copy; 2017 Sanlok Lee</span>
+          <span id="email-info" class="glyphicons glyphicons-envelope"></span>
+          <span id="email-info-text" class="page-load-hide height-align"></span></div>
+        <br>
+        <div id="license-info-text" class="page-load-hide">
+          <ul>
+            <li>JQuery: <a href="https://jquery.org/license/">https://jquery.org/license/</a></li>
+            <li>Glyphicons: <a href="http://glyphicons.com/license/">http://glyphicons.com/license/</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-
-
+    <!--Pencil Modal-->
     <div id="pencil-modal" class="modal">
+      <div class="modal-padding"></div>
       <div id="pencil-modal-content" class="modal-content">
         <div class="modal-header lvl1">
           <span>Pencil Settings</span>
           <span class="close-button glyphicons glyphicons-remove" />
         </div>
-        <form class="modal-body-content">
-          <p>Pen color:</p>
+        <div class="modal-body-content">
+          <label for="input-pen-color">Pen color</label>
           <input type="color" id="input-pen-color" value="#000000" placeholder="#rrggbb[aa]" />
-          <br>
-          <p>Pen Transparency:</p>
-          <input type="range" id="input-pen-transparency" value="100" min="0" max="100"/>
-          <div id="input-pen-transparency-value" class="input-value">100</div>
-          <br>
-          <p>Pen size:</p>
-          <input type="range" id="input-pen-size" value="5" min="1" max="60"/>
-          <div id="input-pen-size-value" class="input-value">5</div>
+          <div class="modal-separator"></div>
 
+          
+          <label>Pen Transparency</label>
+          <div id="input-pen-transparency" class="slider"></div>
+          <div id="input-pen-transparency-value" class="slider-value">100</div>
+          <div class="modal-separator"></div>
 
-          <div class="input-reset">
+          <label>Pen Size</label>
+          <div id="input-pen-size" class="slider"></div>
+          <div id="input-pen-size-value" class="slider-value">5</div>
+
+          <div id="input-pencil-reset" class="input-reset">
             <p>Reset to default</p>
-            <span class="glyphicons glyphicons-undo input-reset-icon" />
+            <span class="glyphicons glyphicons-restart input-reset-icon" />
           </div>
-        </form>
+        </div>
       </div>
+      <div class="modal-padding"></div>
+    </div>
+    
+    
+    <div id="settings-modal" class="modal">
+      <div class="modal-padding"></div>
+      <div id="settings-modal-content" class="modal-content">
+        <div class="modal-header lvl1">
+          <span class="modal-title">Ellipse Settings</span>
+          <span class="close-button glyphicons glyphicons-remove" />
+        </div>
+        <div class="modal-body-content">
+          <div id="wacom-warning-setting">
+            If you are using Wacom tablet or digitizer, disable <b>Use Windows Ink</b> feature, if you have not already. More information on this in the "More Stuff" section.
+          </div>
+          
+          
+          <div id="input-common-setting" class="modal-setting modal-common">
+            <h3>Common</h3>
+            <label>Side tool position</label>
+            <select name="speed" id="input-tool-position">
+              <option>Top left</option>
+              <option>Top right</option>
+              <option>Bottom left</option>
+              <option selected="selected">Bottom right</option>
+            </select>
+            <div class="modal-separator"></div>
+          </div>
+          
+          <div id="input-line-setting" class="modal-setting modal-line">
+            <h3>Line Settings</h3>
+            <label>Length</label>
+            <div id="input-line-size-min-value" class="slider-value">1</div>
+            <div id="input-line-size" class="slider"></div>
+            <div id="input-line-size-max-value" class="slider-value">100</div>
+            <div class="modal-separator"></div>
+
+            <label>Angle</label>
+            <div id="input-line-angle-min-value" class="slider-value">0</div>
+            <div id="input-line-angle" class="slider"></div>
+            <div id="input-line-angle-max-value" class="slider-value">180</div>
+            <div class="modal-separator"></div>
+          </div>
+          
+          <div id="input-curve-setting" class="modal-setting modal-curve">
+            <h3>Curve Settings</h3>
+            <label>Size</label>
+            <div id="input-curve-size-min-value" class="slider-value">1</div>
+            <div id="input-curve-size" class="slider"></div>
+            <div id="input-curve-size-max-value" class="slider-value">100</div>
+            <div class="modal-separator"></div>
+
+            <label>Randomness</label>
+            <div id="input-curve-complex-min-value" class="slider-value">1</div>
+            <div id="input-curve-complex" class="slider"></div>
+            <div id="input-curve-complex-max-value" class="slider-value">3</div>
+            <div class="modal-separator"></div>
+          </div>
+
+          <div id="input-ellipse-reset" class="input-reset">
+            <p>Reset to default</p>
+            <span class="glyphicons glyphicons-restart input-reset-icon" />
+          </div>
+          
+          <div id="input-ellipse-setting" class="modal-setting modal-ellipse">
+            <h3>Ellipses Settings</h3>
+            <label>Size</label>
+            <div id="input-ellipse-size-min-value" class="slider-value">1</div>
+            <div id="input-ellipse-size" class="slider"></div>
+            <div id="input-ellipse-size-max-value" class="slider-value">100</div>
+            <div class="modal-separator"></div>
+          
+            <label>Roundness</label>
+            <div id="input-ellipse-round-min-value" class="slider-value">1</div>
+            <div id="input-ellipse-round" class="slider"></div>
+            <div id="input-ellipse-round-max-value" class="slider-value">100</div>
+            <label class="checkbox-container">
+              <input id="input-ellipse-force-round" type="checkbox">
+              <span class="checkmark"></span>
+              Practice circles only
+            </label>
+            <div class="modal-separator"></div>
+
+            <label>Rotation</label>
+            <div id="input-ellipse-angle-min-value" class="slider-value">0</div>
+            <div id="input-ellipse-angle" class="slider"></div>
+            <div id="input-ellipse-angle-max-value" class="slider-value">180</div>
+          </div>
+
+          <div id="input-settings-reset" class="input-reset">
+            <p>Reset to default</p>
+            <span class="glyphicons glyphicons-restart input-reset-icon" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-padding"></div>
     </div>
     <!--
 <h1>Welcome to Thimble</h1>

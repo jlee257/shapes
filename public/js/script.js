@@ -612,7 +612,7 @@ $(document).ready(function () {
 
   /* Input Handling */
   function getTouchPoint(ev) {
-    var rect = front_context.getBoundingClientRect();
+    var rect = front_canvas.getBoundingClientRect();
     ev._x = (ev.touches[0].clientX - rect.left)*3000/front_canvas.clientWidth;
     ev._y = (ev.touches[0].clientY - rect.top)*2000/front_canvas.clientHeight;
     return ev;

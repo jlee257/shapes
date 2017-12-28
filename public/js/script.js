@@ -635,31 +635,34 @@ $(document).ready(function () {
 
 
   front_canvas.onmousedown = function(e) {
+
     e.preventDefault();
-    console.log("onmousedown");
     closeMenu();
     clearOverlay();
-//    if (status == "line") {
-//      clearPage();
-//    }
-    e = getMousePoint(e);
-    is_drawing = true;
+
     front_context.strokeStyle = pen_color;
     front_context.lineWidth = pen_size;
+
+    console.log("onmousedown: pen_color=" + pen_color + " pen_size=" + pen_size);
+
+    e = getMousePoint(e);
+    is_drawing = true;
     points.push({ x: e._x, y: e._y });
   };
 
   front_canvas.ontouchstart = function(e) {
+
     e.preventDefault();
     closeMenu();
     clearOverlay();
-//    if (status == "line") {
-//      clearPage();
-//    }
-    e = getTouchPoint(e);
-    is_drawing = true;
+
     front_context.strokeStyle = pen_color;
     front_context.lineWidth = pen_size;
+
+    console.log("ontouchdown: pen_color=" + pen_color + " pen_size=" + pen_size);
+
+    e = getTouchPoint(e);
+    is_drawing = true;
     points.push({ x: e._x, y: e._y });
   }
 
@@ -739,36 +742,15 @@ $(document).ready(function () {
     //    console.log(points);
 
     for (var i = 1, len = points.length; i < len; i++) {
-      // we pick the point between pi+1 & pi+2 as the
-      // end point and p1 as our control point
+      
       var mid_point = midPointBtw(p1, p2);
-      //      drawDot(ctx, p1.x, p1.y, 6);
-      //      drawDot(ctx, midPoint.x, midPoint.y, 12);
+      
       front_context.quadraticCurveTo(p1.x, p1.y, mid_point.x, mid_point.y);
       p1 = points[i];
       p2 = points[i+1];
     }
-    // Draw last line as a straight line while
-    // we wait for the next point to be able to calculate
-    // the bezier control point
-    //    ctx.lineTo(p1.x, p1.y);
+    
     front_context.stroke();
-    // var len = points.length;
-    // if (len >= 3) {
-    //   ctx.beginPath();
-    //   var p1 = midPointBtw(points[len-3], points[len-2]);
-    //   ctx.moveTo(p1.x, p1.y);
-    //   var midPoint = midPointBtw(points[len-2], points[len-1]);
-    //   ctx.quadraticCurveTo(points[len-2].x, points[len-2].y, midPoint.x, midPoint.y);
-    //   ctx.stroke();
-    // } else if (len == 2) {
-    //   ctx.beginPath();
-    //   ctx.moveTo(points[0].x, points[0].y);
-    //   ctx.lineTo(points[1].x, points[1].y);
-    //   ctx.stroke();
-    // } else {
-    //   return;
-    // }
   };
 
 
@@ -808,6 +790,7 @@ $(document).ready(function () {
     main_context.strokeStyle = pen_color;
     main_context.lineWidth = pen_size;
     main_context.setLineDash([]);
+    console.log("copyToMainCanvas: pen_color=" + pen_color + " pen_size=" + pen_size);
     main_context.beginPath();
 
     var p1 = points[0];
@@ -1295,7 +1278,29 @@ $(document).ready(function () {
   //
   //  init();
   
-  if (status == "line") {
+  var initial_status = window.location.hash;
+  
+  console.log("link to: " + initial_status);
+
+  if (initial_status == "#line") {
+    status = "line";
+    menuItemClick($("#nav-line-menu-item"));
+    drawRandomLine();
+  } else if (initial_status == "#curve") {
+    status = "curve";
+    menuItemClick($("#nav-curve-menu-item"));
+    drawRandomCurve();
+  } else if (initial_status == "#ellipse") {
+    status = "ellipse";
+    menuItemClick($("#nav-ellipse-menu-item"));
+    drawRandomEllipse();
+  } else if (initial_status == "#more-stuffff") {
+    status = "note";
+    menuItemClick($("#nav-note-menu-item"));
+    hideCanvas();
+  } else {
+    status = "line";
+    menuItemClick($("#nav-line-menu-item"));
     drawRandomLine();
   }
 });

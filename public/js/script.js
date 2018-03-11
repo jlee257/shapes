@@ -138,6 +138,7 @@ $(document).ready(function () {
   $("#license-info").click(function() {
     if ($("#license-info-text").css("display") == "none") {
       $("#license-info-text").css("display", "block");
+      $(window).scrollTop($("#license-info-text").offset().top);
     } else {
       $("#license-info-text").css("display", "none")
     }

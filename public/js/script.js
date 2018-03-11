@@ -20,7 +20,7 @@ $(document).ready(function () {
   var front_context = front_canvas.getContext('2d');
 
   // Default Settings
-  var PEN_COLOR = "#000000ff";
+  var PEN_COLOR = "rgba(0,0,0,1.00)";
   var PEN_SIZE = 5;
   var TOOL_POSITION = "Bottom right";
   var LINE_SIZE_MIN = 20;
@@ -37,7 +37,7 @@ $(document).ready(function () {
   var ELLIPSE_ROUND_MAX = 85;
   var ELLIPSE_ANGLE_MIN = 0;
   var ELLIPSE_ANGLE_MAX = 90;
-  var GUIDE_LINE_COLOR = "#ff8700";
+  var GUIDE_LINE_COLOR = "rgba(255,135,0,1.00)";
   var GUIDE_LINE_SIZE = 10;
   var GUIDE_LINE_STYLE = [20, 20];
   
@@ -218,7 +218,7 @@ $(document).ready(function () {
   });
 
   $("#pencil-icon").click(function() {
-    $("#input-pen-color").val(pen_color.substring(0, 7));
+    $("#input-pen-color").val(getHexColor(pen_color));
     $("#input-pen-transparency").slider( "option", "value", getAlpha(pen_color));
     $("#input-pen-size").slider( "option", "value", pen_size);
     
@@ -238,14 +238,13 @@ $(document).ready(function () {
   });
 
   $("#input-pen-color").change(function(event) {
-    var txt = $(this).val();
-    pen_color = txt + pen_color.substring(7);
+    pen_color = setHexColor(pen_color, $(this).val());
     console.log("pen-color:" + pen_color);
   });
 
   $("#input-pen-transparency").slider({
     change: function(event, ui) {
-      pen_color = putAlpha(pen_color, ui.value);
+      pen_color = setAlpha(pen_color, ui.value);
       $("#input-pen-transparency-value").text(ui.value);
       console.log("pen-transparency:" + ui.value + " new-color:" + pen_color);
     },
@@ -277,7 +276,7 @@ $(document).ready(function () {
 
   $("#input-pencil-reset").click(function () {
     pen_color = PEN_COLOR;
-    $("#input-pen-color").val(PEN_COLOR.substring(0, 7));
+    $("#input-pen-color").val(getHexColor(PEN_COLOR));
     $("#input-pen-transparency").slider( "option", "value", getAlpha(PEN_COLOR));
     $("#input-pen-size").slider( "option", "value", PEN_SIZE);
 
@@ -593,17 +592,38 @@ $(document).ready(function () {
   }
   
   function getAlpha(color) {
-    return Math.floor(parseInt(color.substring(7), 16) * 100 / 255);
+    var c = getRgbColorList(color);
+    return c[3] * 100.0;
+  }
+
+  function getHexColor(color) {
+    var c = getRgbColorList(color);
+    var hex = "#"
+    for (var i = 0; i < 3; i++) {
+      var singleHex = parseInt(c[i]).toString(16);
+      (singleHex.length < 2) ? hex += "0" + singleHex : hex += singleHex;
+    }
+    return hex;
+  }
+
+  function getRgbColorList(color) {
+    var i = color.indexOf("(") + 1;
+    return color.substring(i, color.indexOf(")", i)).split(",");
   }
   
-  function putAlpha(color, alpha) {
-    if (alpha == 100) {
-      return color.substring(0, 7) + "ff";
-    } else {
-      alpha = Math.floor(alpha * 255 / 100.0).toString(16);
-      if (alpha.length == 1) { alpha = "0" + alpha; }
-      return color.substring(0, 7) + alpha;
+  function setAlpha(color, alpha) {
+    var c = getRgbColorList(color);
+    c[3] = (alpha / 100.0).toFixed(2).toString();
+    return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + c[3] + ")";
+  }
+
+  function setHexColor(color, hexColor) {
+    var c = getRgbColorList(color);
+    for (var i = 0; i < 3; i++) {
+      var channel = parseInt(hexColor.substring(1 + (i * 2), 3 + (i * 2)), 16);
+      c[i] = channel;
     }
+    return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + c[3] + ")";
   }
   
   
@@ -644,6 +664,7 @@ $(document).ready(function () {
     front_context.strokeStyle = pen_color;
     front_context.lineWidth = pen_size;
 
+    // $("#sometext").html("onmousedown pen_color=" + pen_color + " pen_size=" + pen_size);
     console.log("onmousedown: pen_color=" + pen_color + " pen_size=" + pen_size);
 
     e = getMousePoint(e);
@@ -660,7 +681,9 @@ $(document).ready(function () {
     front_context.strokeStyle = pen_color;
     front_context.lineWidth = pen_size;
 
-    console.log("ontouchdown: pen_color=" + pen_color + " pen_size=" + pen_size);
+    // $("#sometext").html("ontouchstart pen_color=" + pen_color + " pen_size=" + pen_size);
+    console.log("ontouchstart: pen_color=" + pen_color + " pen_size=" + pen_size);
+
 
     e = getTouchPoint(e);
     is_drawing = true;
@@ -791,6 +814,9 @@ $(document).ready(function () {
     main_context.strokeStyle = pen_color;
     main_context.lineWidth = pen_size;
     main_context.setLineDash([]);
+
+    // var prevtext = $("#sometext").html();
+    // $("#sometext").html(prevtext + "<p>copytomaincanvas pen_color=" + pen_color + " pen_size=" + pen_size);
     console.log("copyToMainCanvas: pen_color=" + pen_color + " pen_size=" + pen_size);
     main_context.beginPath();
 
@@ -838,7 +864,7 @@ $(document).ready(function () {
     drawDot(main_context, p1.x, p1.y, guide_line_size*2);
     drawDot(main_context, p2.x, p2.y, guide_line_size*2);
     
-    console.log("Drawing line: length=" + size + " angle=" + degree + " p1=" + JSON.stringify(p1) + " p2=" + JSON.stringify(p2));
+    console.log("Drawing line: length=" + size + " angle=" + degree + " p1=" + JSON.stringify(p1) + " p2=" + JSON.stringify(p2) + " color=" + guide_line_color);
 
     main_context.strokeStyle = guide_line_color;
     main_context.lineWidth = guide_line_size;
@@ -867,20 +893,20 @@ $(document).ready(function () {
       var color;
 
       if (err < 3.0) {
-        color = "rgb(0,255,0)";
+        color = "rgba(0,255,0,1.00)";
       } else if (err < 9.0) {
-        color = "rgb(" + Math.floor((err-3.0)*20 + 135) + ",255,0)";
+        color = "rgba(" + Math.floor((err-3.0)*20 + 135) + ",255,0,1.00)";
       } else if (err < 19.0) {
-        color = "rgb(255," + Math.floor((19.0-err)*25) + ",0)";
+        color = "rgba(255," + Math.floor((19.0-err)*25) + ",0,1.00)";
       } else {
-        color = "rgb(255,0,0)";
+        color = "rgba(255,0,0,1.00)";
       }
       main_context.strokeStyle = color;
       main_context.moveTo(start.x, start.y);
       main_context.lineTo(last.x, last.y);
       main_context.stroke();
 
-      main_context.strokeStyle = "#000000";
+      main_context.strokeStyle = "#rgba(0,0,0,1.00)";
     } catch (e) {
       $("#sometext").html("error=" + 0);
     }
@@ -946,12 +972,12 @@ $(document).ready(function () {
 
     // console.log("y=(" + cofb + ")x + (" + cofa + ") " + err);
 
-    plotLine(-cofb, 1, -cofa, "#ff0000");
+    plotLine(-cofb, 1, -cofa, "rgba(255,0,0,1.00)");
 
     cofb = (-B) - Math.sqrt(B**2 + 1);
     cofa = y_sum / n - cofb * x_sum / n;
     // console.log("y=(" + cofb + ")x + (" + cofa + ")" + err);
-    plotLine(-cofb, 1, -cofa, "#00ff00");
+    plotLine(-cofb, 1, -cofa, "rgba(0,255,0,1.00)");
   }
 
   function plotLine(xcof, ycof, cof) {
@@ -993,13 +1019,13 @@ $(document).ready(function () {
       $("#sometext").html("err=" + err);
 
       if (err < 12) {
-        color = "rgb(0,255,0)";
+        color = "rgba(0,255,0,1.00)";
       } else if (err < 20) {
-        color = "rgb(255,255,0)";
+        color = "rgba(255,255,0,1.00)";
       } else if (err < 30) {
-        color = "rgb(255,127,0)";
+        color = "rgba(255,127,0,1.00)";
       } else {
-        color = "rgb(255,0,0)";
+        color = "rgba(255,0,0,1.00)";
       }
 
       main_context.strokeStyle = color;
@@ -1023,18 +1049,7 @@ $(document).ready(function () {
     var ymax = 1000+(800*s/100);
     
     var xc = (xmax-xmin)*(c+1)/11;
-    var yc = (ymax-ymin)*(c+1)/11;
-    
-    1500, 1000
-//    
-//    drawX(xmin, 10);
-//    drawX(xmin+xc, 5);
-//    drawX(xmax-xc, 5);
-//    drawX(xmax, 10);
-//    drawY(ymin, 10);
-//    drawY(ymax, 10);
-//    drawY(ymin+yc, 5);
-//    drawY(ymax-yc, 5);
+    var yc = (ymax-ymin);
 
 
     p1 = { x:ranv(xmin, xmin+xc), y:ranv(ymin, ymax) };
@@ -1279,31 +1294,67 @@ $(document).ready(function () {
   //
   //  init();
   
-  var initial_status = window.location.hash;
-  
-  console.log("link to: " + initial_status);
+  function init() {
+    var initial_status = window.location.hash;
+    
+    console.log("link to: " + initial_status);
 
-  if (initial_status == "#line") {
-    status = "line";
-    menuItemClick($("#nav-line-menu-item"));
-    drawRandomLine();
-  } else if (initial_status == "#curve") {
-    status = "curve";
-    menuItemClick($("#nav-curve-menu-item"));
-    drawRandomCurve();
-  } else if (initial_status == "#ellipse") {
-    status = "ellipse";
-    menuItemClick($("#nav-ellipse-menu-item"));
-    drawRandomEllipse();
-  } else if (initial_status == "#more-stuffff") {
-    status = "note";
-    menuItemClick($("#nav-note-menu-item"));
-    hideCanvas();
-  } else {
-    status = "line";
-    menuItemClick($("#nav-line-menu-item"));
-    drawRandomLine();
+    if (initial_status == "#line") {
+      status = "line";
+      menuItemClick($("#nav-line-menu-item"));
+      drawRandomLine();
+    } else if (initial_status == "#curve") {
+      status = "curve";
+      menuItemClick($("#nav-curve-menu-item"));
+      drawRandomCurve();
+    } else if (initial_status == "#ellipse") {
+      status = "ellipse";
+      menuItemClick($("#nav-ellipse-menu-item"));
+      drawRandomEllipse();
+    } else if (initial_status == "#more-stuffff") {
+      status = "note";
+      menuItemClick($("#nav-note-menu-item"));
+      hideCanvas();
+    } else {
+      status = "line";
+      menuItemClick($("#nav-line-menu-item"));
+      drawRandomLine();
+    }
   }
+
+  function unitTest() {
+    console.log("*** UNITTEST ***");
+
+    console.log("FUNCTION: getAlpha(color)");
+    console.assert(getAlpha("rgba(0,0,0,1.00)") == 100, "alpha 100 test");
+    console.assert(getAlpha("rgba(0,0,0,0.30)") == 30, "alpha 30 test");
+    console.assert(getAlpha("rgba(0,0,0,0.00)") == 0, "alpha 0 test");
+
+    console.log("FUNCTION: getHexColor(color)");
+    console.assert(getHexColor("rgba(0,0,0,1.00)") == "#000000", "hex black test");
+    console.assert(getHexColor("rgba(255,255,255,1.00)") == "#ffffff", "hex white test");
+    console.assert(getHexColor("rgba(255,135,0,1.00)") == "#ff8700", "hex orange test");
+    console.assert(getHexColor("rgba(215,15,40,0.50)") == "#d70f28", "hex crimson test");
+
+    console.log("FUNCTION: getRgbColorList(color)");
+    var c = getRgbColorList("rgba(0,0,0,1.00)");
+    console.assert(c[0] == "0" && c[1] == "0" && c[2] == "0" && c[3] == "1.00", "rgblist black test");
+    c = getRgbColorList("rgba(255,15,40,0.30)");
+    console.assert(c[0] == "255" && c[1] == "15" && c[2] == "40" && c[3] == "0.30", "rgblist bright red test");
+
+    console.log("FUNCTION: setAlpha(color, alpha)");
+    console.assert(setAlpha("rgba(0,0,0,0.50)", 100) == "rgba(0,0,0,1.00)", "alpha 100 test");
+    console.assert(setAlpha("rgba(0,0,0,1.00)", 30) == "rgba(0,0,0,0.30)", "alpha 30 test");
+    console.assert(setAlpha("rgba(0,0,0,1.00)", 0) == "rgba(0,0,0,0.00)", "alpha 0 test", setAlpha("rgba(0,0,0,1.00)", 0));
+
+    console.log("FUNCTION: setHexColor(color, hexColor)");
+    console.assert(setHexColor("rgba(23,45,324,0.50)", "#000000") == "rgba(0,0,0,0.50)", "hex black test", setAlpha("rgba(23,45,324,0.50)", "#000000"));
+    console.assert(setHexColor("rgba(0,0,0,0.50)", "#ffffff") == "rgba(255,255,255,0.50)", "hex white test", setAlpha("rgba(0,0,0,0.50)", "#ffffff"));
+    console.assert(setHexColor("rgba(0,0,0,0.50)", "#ff8700") == "rgba(255,135,0,0.50)", "hex orange test", setAlpha("rgba(0,0,0,0.50)", "#ff8700"));
+  }
+
+  init();
+  unitTest();
 });
 
 

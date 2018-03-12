@@ -147,13 +147,15 @@ $(document).ready(function () {
   $("#copyright").html("Copyright © " + (new Date().getFullYear()) + " Sanlok Lee");
   
   $("#email-info").click(function() {
-    var t1 = "jlee", t2 = "257";
-    var t3 = "berkeley", t4 = "edu";
-    $("#email-info-text").html(t1 + t2 + "@" + t3 + "." + t4);
+    $("#email-info-text").html("jlee257@berkeley.edu");
     if ($("#email-info-text").css("display") == "none") {
       $("#email-info-text").css("display", "inline-block");
+      $("#email-info").addClass("glyphicons-message-empty");
+      $("#email-info").removeClass("glyphicons-envelope");
     } else {
       $("#email-info-text").css("display", "none");
+      $("#email-info").addClass("glyphicons-envelope");
+      $("#email-info").removeClass("glyphicons-message-empty");
     }
   });
 
@@ -664,7 +666,7 @@ $(document).ready(function () {
     front_context.strokeStyle = pen_color;
     front_context.lineWidth = pen_size;
 
-    // $("#sometext").html("onmousedown pen_color=" + pen_color + " pen_size=" + pen_size);
+    $("#sometext").html("onmousedown pen_color=" + pen_color + " pen_size=" + pen_size);
     console.log("onmousedown: pen_color=" + pen_color + " pen_size=" + pen_size);
 
     e = getMousePoint(e);
@@ -681,7 +683,7 @@ $(document).ready(function () {
     front_context.strokeStyle = pen_color;
     front_context.lineWidth = pen_size;
 
-    // $("#sometext").html("ontouchstart pen_color=" + pen_color + " pen_size=" + pen_size);
+    $("#sometext").html("ontouchstart pen_color=" + pen_color + " pen_size=" + pen_size);
     console.log("ontouchstart: pen_color=" + pen_color + " pen_size=" + pen_size);
 
 
@@ -815,8 +817,8 @@ $(document).ready(function () {
     main_context.lineWidth = pen_size;
     main_context.setLineDash([]);
 
-    // var prevtext = $("#sometext").html();
-    // $("#sometext").html(prevtext + "<p>copytomaincanvas pen_color=" + pen_color + " pen_size=" + pen_size);
+    var prevtext = $("#sometext").html();
+    $("#sometext").html(prevtext + "<p>copytomaincanvas pen_color=" + pen_color + " pen_size=" + pen_size);
     console.log("copyToMainCanvas: pen_color=" + pen_color + " pen_size=" + pen_size);
     main_context.beginPath();
 
@@ -1016,7 +1018,8 @@ $(document).ready(function () {
         err += distanceFromLine(coor[0].x, coor[0].y, coor[1].x, coor[1].y, points[i].x, points[i].y)**2;
       }
       err = err / points.length;
-      $("#sometext").html("err=" + err);
+      var prevtext = $("#sometext").html();
+      $("#sometext").html(prevtext + "<br>err=" + err);
 
       if (err < 12) {
         color = "rgba(0,255,0,1.00)";

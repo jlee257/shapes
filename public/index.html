@@ -1,260 +1,322 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Practice drawing shapes</title>
-    
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/glyphicons.css">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
-  </head>
-  <body>
+  <title>Practice drawing shapes</title>
 
-    <div id="nav-bar" class="transform lvl2 transform-active">
-      <div id="nav-expand-menu-item">
-        <span id="nav-expand-button-icon" class="glyphicons glyphicons-chevron-left menu-icon"></span>
-      </div>
-      <div class="separator"></div>
 
-      <div id="nav-line-menu-item" class="menu-item nav-selected">
-        <span id="nav-line-button-icon" class="glyphicons glyphicons-vector-path-line menu-icon"></span>
-        <span class="menu-item-text">Draw lines</span>
-      </div>
-      <div class="separator"></div>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 
-      <div id="nav-curve-menu-item" class="menu-item">
-        <span id="nav-line-button-icon" class="glyphicons glyphicons-vector-path-curve menu-icon"></span>
-        <span class="menu-item-text">Draw curves</span>
-      </div>
-      <div class="separator"></div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
+  <script type="text/javascript" src="js/script.js"></script>
+</head>
+<body>
 
-      <div id="nav-ellipse-menu-item" class="menu-item">
-        <span id="nav-line-button-icon" class="glyphicons glyphicons-vector-path-circle menu-icon"></span>
-        <span class="menu-item-text">Draw ellipses</span>
-      </div>
-      <div class="separator"></div>
+  <div id="nav-bar" class="transform shadow-lg transform-active">
+    <div id="nav-expand-menu-item">
+      <img id="nav-expand-button-icon-chevron" class="menu-icon nav-expand-button-icon" src="img/glyphicons-225-chevron-left.svg" alt="refresh icon" />
+      <img id="nav-expand-button-icon-hamburger" class="menu-icon nav-expand-button-icon" src="img/glyphicons-517-menu-hamburger.svg" alt="refresh icon" />
+    </div>
+    <div class="separator"></div>
 
-      <div id="nav-note-menu-item" class="menu-item">
-        <span id="nav-note-button-icon" class="glyphicons glyphicons-puzzle-2 menu-icon"></span>
-        <span class="menu-item-text">More stuffff</span>
-      </div>
-      <div class="separator"></div>
+    <div id="nav-line-menu-item" class="menu-item nav-selected">
+      <svg version="1.1" id="nav-line-button-icon" class="menu-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+        <g id="vector-path-line_2_">
+          <path d="M32,12v2.586L14.586,32H12v4h4v-2.586L33.414,16H36v-4H32z M15,35h-2v-2h2V35z M35,15h-2v-2h2V15z"/>
+        </g>
+      </svg>
+
+      <span class="menu-item-text">Draw lines</span>
+    </div>
+    <div class="separator"></div>
+
+    <div id="nav-curve-menu-item" class="menu-item">
+      <svg version="1.1" id="nav-line-button-icon" class="menu-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+        <g id="vector-path-curve_2_">
+          <path d="M32,12v1.356C22.484,15.021,15.021,22.484,13.357,32H12v4h4v-4h-0.606C17.01,23.594,23.594,17.009,32,15.394V16h4v-4H32z
+             M15,35h-2v-2h2V35z M35,15h-2v-2h2V15z"/>
+        </g>
+      </svg>
+      <span class="menu-item-text">Draw curves</span>
+    </div>
+    <div class="separator"></div>
+
+    <div id="nav-ellipse-menu-item" class="menu-item">
+      <svg version="1.1" id="nav-line-button-icon" class="menu-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+        <g id="vector-path-circle_2_">
+          <g>
+            <path d="M34.809,22c-0.824-4.463-4.346-7.984-8.809-8.809V12h-4v1.191c-4.463,0.824-7.984,4.346-8.809,8.809H12v4h1.191
+              c0.824,4.463,4.346,7.984,8.809,8.809V36h4v-1.191c4.463-0.824,7.984-4.346,8.809-8.809H36v-4H34.809z M23,13h2v2h-2V13z M15,25
+              h-2v-2h2V25z M25,35h-2v-2h2V35z M32.768,26c-0.766,3.357-3.41,6.002-6.768,6.769V32h-4v0.769
+              c-3.357-0.767-6.002-3.411-6.768-6.769H16v-4h-0.768c0.766-3.357,3.41-6.002,6.768-6.769V16h4v-0.769
+              c3.357,0.767,6.002,3.411,6.768,6.769H32v4H32.768z M35,25h-2v-2h2V25z"/>
+          </g>
+          <path style="opacity:0.0;" d="M32,26v-4h0.768c-0.094-0.411-0.217-0.81-0.365-1.198c-0.005-0.014-0.01-0.026-0.015-0.04
+            c-0.299-0.772-0.703-1.492-1.191-2.143c-0.015-0.02-0.029-0.039-0.044-0.059c-0.491-0.645-1.067-1.22-1.711-1.711
+            c-0.021-0.016-0.042-0.031-0.062-0.047c-0.649-0.486-1.366-0.889-2.135-1.187c-0.019-0.008-0.039-0.015-0.058-0.021
+            c-0.382-0.146-0.776-0.268-1.182-0.36c-0.002-0.001-0.004-0.001-0.006-0.002V16h-4v-0.769c-0.002,0.001-0.004,0.001-0.006,0.002
+            c-0.405,0.093-0.799,0.215-1.182,0.36c-0.019,0.008-0.039,0.014-0.058,0.021c-0.769,0.298-1.485,0.7-2.135,1.187
+            c-0.021,0.016-0.042,0.031-0.062,0.047c-0.644,0.491-1.22,1.066-1.711,1.711c-0.015,0.019-0.029,0.039-0.044,0.059
+            c-0.489,0.651-0.892,1.371-1.191,2.143c-0.005,0.013-0.01,0.027-0.015,0.04C15.45,21.19,15.326,21.589,15.232,22H16v4h-0.768
+            c0.094,0.411,0.217,0.81,0.365,1.197c0.005,0.014,0.01,0.028,0.015,0.042c0.299,0.771,0.702,1.491,1.191,2.142
+            c0.015,0.02,0.029,0.039,0.044,0.059c0.491,0.645,1.067,1.22,1.711,1.711c0.021,0.016,0.042,0.031,0.062,0.047
+            c0.649,0.486,1.366,0.888,2.134,1.187c0.019,0.008,0.039,0.015,0.059,0.021c0.382,0.146,0.776,0.268,1.181,0.36
+            c0.002,0.001,0.004,0.001,0.006,0.002V32h4v0.769c0.002-0.001,0.004-0.001,0.006-0.002c0.405-0.093,0.799-0.215,1.181-0.36
+            c0.019-0.007,0.039-0.014,0.058-0.021c0.769-0.298,1.485-0.7,2.135-1.187c0.021-0.016,0.042-0.031,0.062-0.047
+            c0.644-0.491,1.22-1.066,1.711-1.711c0.015-0.019,0.029-0.039,0.044-0.059c0.489-0.651,0.893-1.371,1.191-2.143
+            c0.005-0.013,0.01-0.026,0.015-0.04c0.148-0.388,0.272-0.787,0.365-1.198H32z"/>
+        </g>
+      </svg>
+
+      <span class="menu-item-text">Draw ellipses</span>
+    </div>
+    <div class="separator"></div>
+
+    <div id="nav-note-menu-item" class="menu-item">
+      <svg version="1.1" id="nav-note-button-icon" class="menu-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+        <g id="puzzle-2_2_">
+          <path d="M35.777,25.76c-0.315,0.522-0.716,1.146-1.215,1.851c-0.956,1.353-2.07,1.542-2.573,0.608
+            c-0.351-0.652-0.746-1.217-1.096-1.567c-1.172-1.171-3.071-1.171-4.243,0c-1.172,1.172-1.172,3.071,0,4.243
+            c0.35,0.35,0.915,0.745,1.567,1.096c0.934,0.502,0.744,1.616-0.609,2.572c-0.705,0.499-1.329,0.9-1.851,1.215
+            c-0.946,0.571-2.393,0.317-3.174-0.464l-9.899-9.899c-0.781-0.781-0.781-2.047,0-2.828l9.899-9.9
+            c0.781-0.781,1.794-0.6,2.365,0.345c0.315,0.522,0.716,1.146,1.215,1.851c0.956,1.353,2.07,1.542,2.572,0.609
+            c0.351-0.652,0.746-1.217,1.096-1.567c1.171-1.172,3.071-1.172,4.243,0c1.172,1.171,1.172,3.071,0,4.243
+            c-0.35,0.35-0.915,0.745-1.567,1.096c-0.934,0.502-0.744,1.616,0.609,2.573c0.705,0.498,1.329,0.899,1.851,1.215
+            C35.914,23.621,36.348,24.814,35.777,25.76z"/>
+        </g>
+      </svg>
+      <span class="menu-item-text">More stuffff</span>
+    </div>
+    <div class="separator"></div>
+  </div>
+
+
+  <!--Canvas-->
+  <div id="canvas-container" class="shadow">
+
+    <div id="sometext">err</div>
+
+    <canvas id="main-canvas" width="3000" height="2000">Unfortunately, your browser is currently unsupported by our web application.</canvas>
+
+    <div id="intro-overlay">
+      <div>The Ultimate Online Drawing Practice Tool</div>
+      <div>- For Digital Artists -</div>
+      <div>Start drawing here!</div>
     </div>
 
+    <canvas id="front-canvas" width="3000" height="2000"></canvas>
 
-    <!--Canvas-->
-    <div id="canvas-container" class="lvl1">
-
-      <div id="sometext">err</div>
-
-      <canvas id="main-canvas" width="3000" height="2000">Unfortunately, your browser is currently unsupported by our web application.</canvas>
-
-      <div id="intro-overlay">
-        <div>The Ultimate Online Drawing Practice Tool</div>
-        <div>- For Digital Artists -</div>
-        <div>Start drawing here!</div>
-      </div>
-      
-      <canvas id="front-canvas" width="3000" height="2000"></canvas>
-
-      <div id="side-icon-container" class="position4">
-        <div id="refresh-icon" class="glyphicons glyphicons-refresh side-icon"></div>
-        <div id="pencil-icon" class="glyphicons glyphicons-pencil side-icon"></div>
-        <div id="function-icon" class="glyphicons glyphicons-cogwheel side-icon"></div>
-      </div>
+    <div id="side-icon-container" class="position4">
+      <img id="refresh-icon" class="side-icon" src="img/glyphicons-82-refresh.svg" alt="refresh icon" />
+      <img id="pencil-icon" class="side-icon" src="img/glyphicons-31-pencil.svg" alt="pencil icon" />
+      <img id="function-icon" class="side-icon" src="img/glyphicons-137-cogwheel.svg" alt="Image description" />
     </div>
-    
-    
-    
-    <!--Note-->
-    <div id="note" class="lvl1 nav-open">
-      <div id="note-header" class="lvl1">
-        Thank you for using this tool! YAY!
-      </div>
-      
-      <div id="note-body">
-        <h1>Practice digital drawing everyday</h1>
-        A free online drawing practice tool for digital artists of all skill levels. Get familiarize with your new digital art tool by practicing drawing lines, curves, and ellipses. Spend 5-10 minuates every day to complete practice challenges, get score, and track your progress toward your ultimate goal.
-        <br>
-        <br>
-        Start your day by doing:
+  </div>
+
+
+
+  <!--Note-->
+  <div id="note" class="shadow nav-open">
+    <div id="note-header" class="shadow">
+      Thank you for using this tool! YAY!
+    </div>
+
+    <div id="note-body">
+      <h1>Practice digital drawing everyday</h1>
+      A free online drawing practice tool for digital artists of all skill levels. Get familiarize with your new digital art tool by practicing drawing lines, curves, and ellipses. Spend 5-10 minuates every day to complete practice challenges, get score, and track your progress toward your ultimate goal.
+      <br>
+      <br>
+      Start your day by doing:
+      <ul>
+        <li>20 Straight lines</li>
+        <li>20 Curved lines</li>
+        <li>20 Ellipses</li>
+      </ul>
+
+      New to pens or digitizers? New to drawing completely? Start drawing TODAY!
+
+
+      <h1>Looking for more free materials?</h1>
+      There are tons of free materials that can help you boast your drawing skill. Here are some of my favorites:
+      <br>
+      <ul>
+        <li>Draw a Box by Irshad Karim: <a href="https://drawabox.com/">https://drawabox.com/</a></li>
+        <li>Ctrl+Paint by Matt Kohr: <a href="https://www.ctrlpaint.com/">https://www.ctrlpaint.com/</a></li>
+      </ul>
+      If you know more sources, please let me know so that I can add on to this list.
+
+
+      <h1>Support</h1>
+      Need more features? If you have any suggestion or found, although I am pretty sure there's none, any bug, feel free to reach out to the developer using the contact information at the bottom of the page.
+    </div>
+
+    <div id="note-footer" class="shadow">
+      <span id="license-info" class="height-align">license information</span>
+      <div style="float:right">
+        <span id="copyright" class="height-align">Copyright &copy; 2017 Sanlok Lee</span>
+        <span id="email-info" class="glyphicons glyphicons-envelope"></span>
+        <span id="email-info-text" class="page-load-hide height-align"></span></div>
+      <br>
+      <div id="license-info-text" class="page-load-hide">
         <ul>
-          <li>20 Straight lines</li>
-          <li>20 Curved lines</li>
-          <li>20 Ellipses</li>
+          <li>JQuery: <a href="https://jquery.org/license/">https://jquery.org/license/</a></li>
+          <li>Glyphicons: <a href="http://glyphicons.com/license/">http://glyphicons.com/license/</a></li>
         </ul>
-        
-        New to pens or digitizers? New to drawing completely? Start drawing TODAY!
-        
-        
-        <h1>Looking for more free materials?</h1>
-        There are tons of free materials that can help you boast your drawing skill. Here are some of my favorites:
-        <br>
-        <ul>
-          <li>Draw a Box by Irshad Karim: <a href="https://drawabox.com/">https://drawabox.com/</a></li>
-          <li>Ctrl+Paint by Matt Kohr: <a href="https://www.ctrlpaint.com/">https://www.ctrlpaint.com/</a></li>
-        </ul>
-        If you know more sources, please let me know so that I can add on to this list.
-        
-        
-        <h1>Support</h1>
-        Need more features? If you have any suggestion or found, although I am pretty sure there's none, any bug, feel free to reach out to the developer using the contact information at the bottom of the page.
-      </div>
-      
-      <div id="note-footer" class="lvl1">
-        <span id="license-info" class="height-align">license information</span>
-        <div style="float:right">
-          <span id="copyright" class="height-align">Copyright &copy; 2017 Sanlok Lee</span>
-          <span id="email-info" class="glyphicons glyphicons-envelope"></span>
-          <span id="email-info-text" class="page-load-hide height-align"></span></div>
-        <br>
-        <div id="license-info-text" class="page-load-hide">
-          <ul>
-            <li>JQuery: <a href="https://jquery.org/license/">https://jquery.org/license/</a></li>
-            <li>Glyphicons: <a href="http://glyphicons.com/license/">http://glyphicons.com/license/</a></li>
-          </ul>
-        </div>
       </div>
     </div>
+  </div>
 
-    <!--Pencil Modal-->
-    <div id="pencil-modal" class="modal">
-      <div class="modal-padding"></div>
-      <div id="pencil-modal-content" class="modal-content">
-        <div class="modal-header lvl1">
-          <span>Pencil Settings</span>
-          <span class="close-button glyphicons glyphicons-remove"></span>
+  <!--Pencil Modal-->
+  <div id="pencil-modal" class="modal">
+    <div class="modal-padding"></div>
+    <div id="pencil-modal-content" class="modal-content">
+      <div class="modal-header shadow">
+        <span>Pencil Settings</span>
+        <span class="close-button glyphicons glyphicons-remove"></span>
+      </div>
+      <div class="modal-body-content">
+        <label for="input-pen-color">Pen color</label>
+        <input type="color" id="input-pen-color" value="#000000" placeholder="#rrggbb[aa]" />
+        <div class="modal-separator"></div>
+
+
+        <label>Pen Transparency</label>
+        <div id="input-pen-transparency" class="slider"></div>
+        <div id="input-pen-transparency-value" class="slider-value">100</div>
+        <div class="modal-separator"></div>
+
+        <label>Pen Size</label>
+        <div id="input-pen-size" class="slider"></div>
+        <div id="input-pen-size-value" class="slider-value">5</div>
+
+        <button id="input-pencil-reset" class="btn btn-primary input-reset-new">Reset to default</button>
+
+      </div>
+    </div>
+    <div class="modal-padding"></div>
+  </div>
+
+
+  <div id="settings-modal" class="modal">
+    <div class="modal-padding"></div>
+    <div id="settings-modal-content" class="modal-content">
+      <div class="modal-header shadow">
+        <span class="modal-title">Ellipse Settings</span>
+        <span class="close-button glyphicons glyphicons-remove"></span>
+      </div>
+      <div class="modal-body-content">
+        <div id="wacom-warning-setting">
+          If you are using Wacom tablet or digitizer, disable <b>Use Windows Ink</b> feature, if you have not already. More information on this in the "<a href="#more-stuffff">More Stuff</a>" section.
         </div>
-        <div class="modal-body-content">
-          <label for="input-pen-color">Pen color</label>
-          <input type="color" id="input-pen-color" value="#000000" placeholder="#rrggbb[aa]" />
+
+        <div id="input-line-record" class="modal-setting modal-line">
+          <h3>Line records</h3>
+          <label>Count</label>
+          <div class="input-record-count"></div>
+          <label>Average</label>
+          <div class="input-record-average"></div>
+          <label>Best</label>
+          <div class="input-record-best"></div>
+          <div id="input-record-clear-button" class="input-record-clear">
+            <span>Clear</span>
+            <span class="glyphicons glyphicons-floppy-remove input-record-clear-icon"></span>
+            <span class="glyphicons glyphicons-erase input-record-clear-icon"></span>
+            <span class="glyphicons glyphicons-bin input-record-clear-icon"></span>
+          </div>
+          <div class="modal-separator"></div>
+        </div>
+
+        <div id="input-line-setting" class="modal-setting modal-line">
+          <h3>Line settings</h3>
+          <label>Length</label>
+          <div id="input-line-size-min-value" class="slider-value">1</div>
+          <div id="input-line-size" class="slider"></div>
+          <div id="input-line-size-max-value" class="slider-value">100</div>
           <div class="modal-separator"></div>
 
-          
-          <label>Pen Transparency</label>
-          <div id="input-pen-transparency" class="slider"></div>
-          <div id="input-pen-transparency-value" class="slider-value">100</div>
+          <label>Angle</label>
+          <div id="input-line-angle-min-value" class="slider-value">0</div>
+          <div id="input-line-angle" class="slider"></div>
+          <div id="input-line-angle-max-value" class="slider-value">180</div>
+          <div class="modal-separator"></div>
+        </div>
+
+        <div id="input-curve-setting" class="modal-setting modal-curve">
+          <h3>Curve settings</h3>
+          <label>Size</label>
+          <div id="input-curve-size-min-value" class="slider-value">1</div>
+          <div id="input-curve-size" class="slider"></div>
+          <div id="input-curve-size-max-value" class="slider-value">100</div>
           <div class="modal-separator"></div>
 
-          <label>Pen Size</label>
-          <div id="input-pen-size" class="slider"></div>
-          <div id="input-pen-size-value" class="slider-value">5</div>
+          <label>Randomness</label>
+          <div id="input-curve-complex-min-value" class="slider-value">1</div>
+          <div id="input-curve-complex" class="slider"></div>
+          <div id="input-curve-complex-max-value" class="slider-value">3</div>
+          <div class="modal-separator"></div>
+        </div>
 
-          <div id="input-pencil-reset" class="input-reset">
-            <p>Reset to default</p>
-            <span class="glyphicons glyphicons-restart input-reset-icon"></span>
-          </div>
+        <button id="input-ellipse-reset" class="btn btn-primary input-reset">Reset to default</button>
+
+        <div id="input-ellipse-setting" class="modal-setting modal-ellipse">
+          <h3>Ellipses settings</h3>
+          <label>Size</label>
+          <div id="input-ellipse-size-min-value" class="slider-value">1</div>
+          <div id="input-ellipse-size" class="slider"></div>
+          <div id="input-ellipse-size-max-value" class="slider-value">100</div>
+          <div class="modal-separator"></div>
+
+          <label>Roundness</label>
+          <div id="input-ellipse-round-min-value" class="slider-value">1</div>
+          <div id="input-ellipse-round" class="slider"></div>
+          <div id="input-ellipse-round-max-value" class="slider-value">100</div>
+          <label class="checkbox-container">
+            <input id="input-ellipse-force-round" type="checkbox">
+            <span class="checkmark"></span>
+            Practice circles only
+          </label>
+          <div class="modal-separator"></div>
+
+          <label>Rotation</label>
+          <div id="input-ellipse-angle-min-value" class="slider-value">0</div>
+          <div id="input-ellipse-angle" class="slider"></div>
+          <div id="input-ellipse-angle-max-value" class="slider-value">180</div>
+          <div class="modal-separator"></div>
+        </div>
+
+        <div id="input-common-setting" class="modal-setting modal-common">
+          <h3>Common</h3>
+          <label>Side tool position</label>
+          <select name="speed" id="input-tool-position">
+            <option>Top left</option>
+            <option>Top right</option>
+            <option>Bottom left</option>
+            <option selected="selected">Bottom right</option>
+          </select>
+          <div class="modal-separator"></div>
+        </div>
+
+        <div id="input-settings-reset" class="input-reset">
+          <p>Reset to default</p>
+          <span class="glyphicons glyphicons-restart input-reset-icon"></span>
         </div>
       </div>
-      <div class="modal-padding"></div>
     </div>
-    
-    
-    <div id="settings-modal" class="modal">
-      <div class="modal-padding"></div>
-      <div id="settings-modal-content" class="modal-content">
-        <div class="modal-header lvl1">
-          <span class="modal-title">Ellipse Settings</span>
-          <span class="close-button glyphicons glyphicons-remove"></span>
-        </div>
-        <div class="modal-body-content">
-          <div id="wacom-warning-setting">
-            If you are using Wacom tablet or digitizer, disable <b>Use Windows Ink</b> feature, if you have not already. More information on this in the "<a href="#more-stuffff">More Stuff</a>" section.
-          </div>
-          
-          
-          <div id="input-common-setting" class="modal-setting modal-common">
-            <h3>Common</h3>
-            <label>Side tool position</label>
-            <select name="speed" id="input-tool-position">
-              <option>Top left</option>
-              <option>Top right</option>
-              <option>Bottom left</option>
-              <option selected="selected">Bottom right</option>
-            </select>
-            <div class="modal-separator"></div>
-          </div>
-          
-          <div id="input-line-setting" class="modal-setting modal-line">
-            <h3>Line Settings</h3>
-            <label>Length</label>
-            <div id="input-line-size-min-value" class="slider-value">1</div>
-            <div id="input-line-size" class="slider"></div>
-            <div id="input-line-size-max-value" class="slider-value">100</div>
-            <div class="modal-separator"></div>
-
-            <label>Angle</label>
-            <div id="input-line-angle-min-value" class="slider-value">0</div>
-            <div id="input-line-angle" class="slider"></div>
-            <div id="input-line-angle-max-value" class="slider-value">180</div>
-            <div class="modal-separator"></div>
-          </div>
-          
-          <div id="input-curve-setting" class="modal-setting modal-curve">
-            <h3>Curve Settings</h3>
-            <label>Size</label>
-            <div id="input-curve-size-min-value" class="slider-value">1</div>
-            <div id="input-curve-size" class="slider"></div>
-            <div id="input-curve-size-max-value" class="slider-value">100</div>
-            <div class="modal-separator"></div>
-
-            <label>Randomness</label>
-            <div id="input-curve-complex-min-value" class="slider-value">1</div>
-            <div id="input-curve-complex" class="slider"></div>
-            <div id="input-curve-complex-max-value" class="slider-value">3</div>
-            <div class="modal-separator"></div>
-          </div>
-
-          <div id="input-ellipse-reset" class="input-reset">
-            <p>Reset to default</p>
-            <span class="glyphicons glyphicons-restart input-reset-icon"></span>
-          </div>
-          
-          <div id="input-ellipse-setting" class="modal-setting modal-ellipse">
-            <h3>Ellipses Settings</h3>
-            <label>Size</label>
-            <div id="input-ellipse-size-min-value" class="slider-value">1</div>
-            <div id="input-ellipse-size" class="slider"></div>
-            <div id="input-ellipse-size-max-value" class="slider-value">100</div>
-            <div class="modal-separator"></div>
-          
-            <label>Roundness</label>
-            <div id="input-ellipse-round-min-value" class="slider-value">1</div>
-            <div id="input-ellipse-round" class="slider"></div>
-            <div id="input-ellipse-round-max-value" class="slider-value">100</div>
-            <label class="checkbox-container">
-              <input id="input-ellipse-force-round" type="checkbox">
-              <span class="checkmark"></span>
-              Practice circles only
-            </label>
-            <div class="modal-separator"></div>
-
-            <label>Rotation</label>
-            <div id="input-ellipse-angle-min-value" class="slider-value">0</div>
-            <div id="input-ellipse-angle" class="slider"></div>
-            <div id="input-ellipse-angle-max-value" class="slider-value">180</div>
-          </div>
-
-          <div id="input-settings-reset" class="input-reset">
-            <p>Reset to default</p>
-            <span class="glyphicons glyphicons-restart input-reset-icon"></span>
-          </div>
-        </div>
-      </div>
-      <div class="modal-padding"></div>
-    </div>
-    <!--
+    <div class="modal-padding"></div>
+  </div>
+  <!--
 <h1>Welcome to Thimble</h1>
 <p>
 Make something <strong>amazing</strong> with the web!
 </p>
 -->
-  </body>
+</body>
 </html>

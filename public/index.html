@@ -116,8 +116,8 @@
 
     <div id="side-icon-container" class="position4">
       <img id="refresh-icon" class="side-icon" src="img/glyphicons-82-refresh.svg" alt="refresh icon" />
-      <img id="pencil-icon" class="side-icon" src="img/glyphicons-31-pencil.svg" alt="pencil icon" />
-      <img id="function-icon" class="side-icon" src="img/glyphicons-137-cogwheel.svg" alt="Image description" />
+      <img id="pencil-icon" class="side-icon" src="img/glyphicons-31-pencil.svg" alt="pencil icon"/>
+      <img id="function-icon" class="side-icon" src="img/glyphicons-137-cogwheel.svg" alt="Image description"/>
     </div>
   </div>
 
@@ -175,142 +175,156 @@
   </div>
 
   <!--Pencil Modal-->
-  <div id="pencil-modal" class="modal">
-    <div class="modal-padding"></div>
-    <div id="pencil-modal-content" class="modal-content">
-      <div class="modal-header shadow">
-        <span>Pencil Settings</span>
-        <span class="close-button glyphicons glyphicons-remove"></span>
-      </div>
-      <div class="modal-body-content">
-        <label for="input-pen-color">Pen color</label>
-        <input type="color" id="input-pen-color" value="#000000" placeholder="#rrggbb[aa]" />
-        <div class="modal-separator"></div>
+  <div id="pencil-modal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div id="pencil-modal-content" class="modal-content">
+        <div class="modal-header bg-app-primary text-white">
+          <h5 class="modal-title">Pencil Settings</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label for="input-pen-color">Pen color</label>
+          <input type="color" id="input-pen-color" value="#000000" placeholder="#rrggbb[aa]" />
+          <div class="modal-separator"></div>
 
 
-        <label>Pen Transparency</label>
-        <div id="input-pen-transparency" class="slider"></div>
-        <div id="input-pen-transparency-value" class="slider-value">100</div>
-        <div class="modal-separator"></div>
+          <label>Pen Transparency</label>
+          <div id="input-pen-transparency" class="slider"></div>
+          <div id="input-pen-transparency-value" class="slider-value">100</div>
+          <div class="modal-separator"></div>
 
-        <label>Pen Size</label>
-        <div id="input-pen-size" class="slider"></div>
-        <div id="input-pen-size-value" class="slider-value">5</div>
+          <label>Pen Size</label>
+          <div id="input-pen-size" class="slider"></div>
+          <div id="input-pen-size-value" class="slider-value">5</div>
 
-        <button id="input-pencil-reset" class="btn btn-primary input-reset-new">Reset to default</button>
+          <button id="input-pencil-reset" class="btn btn-app-primary float-right">Reset to default</button>
 
+        </div>
       </div>
     </div>
-    <div class="modal-padding"></div>
   </div>
 
-
-  <div id="settings-modal" class="modal">
-    <div class="modal-padding"></div>
-    <div id="settings-modal-content" class="modal-content">
-      <div class="modal-header shadow">
-        <span class="modal-title">Ellipse Settings</span>
-        <span class="close-button glyphicons glyphicons-remove"></span>
-      </div>
-      <div class="modal-body-content">
-        <div id="wacom-warning-setting">
-          If you are using Wacom tablet or digitizer, disable <b>Use Windows Ink</b> feature, if you have not already. More information on this in the "<a href="#more-stuffff">More Stuff</a>" section.
+  <div id="settings-modal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div id="settings-modal-content" class="modal-content">
+        <div class="modal-header bg-app-primary text-white">
+          <h5 class="modal-title" id="settings-modal-title">Ellipse Settings</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-
-        <div id="input-line-record" class="modal-setting modal-line">
-          <h3>Line records</h3>
-          <label>Count</label>
-          <div class="input-record-count"></div>
-          <label>Average</label>
-          <div class="input-record-average"></div>
-          <label>Best</label>
-          <div class="input-record-best"></div>
-          <div id="input-record-clear-button" class="input-record-clear">
-            <span>Clear</span>
-            <span class="glyphicons glyphicons-floppy-remove input-record-clear-icon"></span>
-            <span class="glyphicons glyphicons-erase input-record-clear-icon"></span>
-            <span class="glyphicons glyphicons-bin input-record-clear-icon"></span>
+        <div class="modal-body">
+          <div class="alert alert-danger">
+            If you are using Wacom tablet or digitizer, disable <b>Use Windows Ink</b> feature, if you havn't already. More information on this in the "<a href="#more-stuffff">More Stuff</a>" section.
           </div>
-          <div class="modal-separator"></div>
-        </div>
 
-        <div id="input-line-setting" class="modal-setting modal-line">
-          <h3>Line settings</h3>
-          <label>Length</label>
-          <div id="input-line-size-min-value" class="slider-value">1</div>
-          <div id="input-line-size" class="slider"></div>
-          <div id="input-line-size-max-value" class="slider-value">100</div>
-          <div class="modal-separator"></div>
+          <div id="input-line-record" class="modal-setting modal-line">
+            <h3>Line records</h3>
+            <label>Count</label>
+            <div class="input-record-count"></div>
+            <label>Average</label>
+            <div class="input-record-average"></div>
+            <label>Best</label>
+            <div class="input-record-best"></div>
+            <div id="input-record-clear-button" class="input-record-clear">
+              <span>Clear</span>
+              <span class="glyphicons glyphicons-floppy-remove input-record-clear-icon"></span>
+              <span class="glyphicons glyphicons-erase input-record-clear-icon"></span>
+              <span class="glyphicons glyphicons-bin input-record-clear-icon"></span>
+            </div>
+            <div class="modal-separator"></div>
+          </div>
 
-          <label>Angle</label>
-          <div id="input-line-angle-min-value" class="slider-value">0</div>
-          <div id="input-line-angle" class="slider"></div>
-          <div id="input-line-angle-max-value" class="slider-value">180</div>
-          <div class="modal-separator"></div>
-        </div>
+          <div id="input-line-setting" class="modal-setting modal-line">
+            <h3>Line settings</h3>
+            <label>Length</label>
+            <div id="input-line-size-min-value" class="slider-value">1</div>
+            <div id="input-line-size" class="slider"></div>
+            <div id="input-line-size-max-value" class="slider-value">100</div>
+            <div class="modal-separator"></div>
 
-        <div id="input-curve-setting" class="modal-setting modal-curve">
-          <h3>Curve settings</h3>
-          <label>Size</label>
-          <div id="input-curve-size-min-value" class="slider-value">1</div>
-          <div id="input-curve-size" class="slider"></div>
-          <div id="input-curve-size-max-value" class="slider-value">100</div>
-          <div class="modal-separator"></div>
+            <label>Angle</label>
+            <div id="input-line-angle-min-value" class="slider-value">0</div>
+            <div id="input-line-angle" class="slider"></div>
+            <div id="input-line-angle-max-value" class="slider-value">180</div>
+            <div class="modal-separator"></div>
+          </div>
 
-          <label>Randomness</label>
-          <div id="input-curve-complex-min-value" class="slider-value">1</div>
-          <div id="input-curve-complex" class="slider"></div>
-          <div id="input-curve-complex-max-value" class="slider-value">3</div>
-          <div class="modal-separator"></div>
-        </div>
+          <div id="input-curve-setting" class="modal-setting modal-curve">
+            <h3>Curve settings</h3>
+            <label>Size</label>
+            <div id="input-curve-size-min-value" class="slider-value">1</div>
+            <div id="input-curve-size" class="slider"></div>
+            <div id="input-curve-size-max-value" class="slider-value">100</div>
+            <div class="modal-separator"></div>
 
-        <button id="input-ellipse-reset" class="btn btn-primary input-reset">Reset to default</button>
+            <label>Randomness</label>
+            <div id="input-curve-complex-min-value" class="slider-value">1</div>
+            <div id="input-curve-complex" class="slider"></div>
+            <div id="input-curve-complex-max-value" class="slider-value">3</div>
+            <div class="modal-separator"></div>
+          </div>
 
-        <div id="input-ellipse-setting" class="modal-setting modal-ellipse">
-          <h3>Ellipses settings</h3>
-          <label>Size</label>
-          <div id="input-ellipse-size-min-value" class="slider-value">1</div>
-          <div id="input-ellipse-size" class="slider"></div>
-          <div id="input-ellipse-size-max-value" class="slider-value">100</div>
-          <div class="modal-separator"></div>
+          <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button>
 
-          <label>Roundness</label>
-          <div id="input-ellipse-round-min-value" class="slider-value">1</div>
-          <div id="input-ellipse-round" class="slider"></div>
-          <div id="input-ellipse-round-max-value" class="slider-value">100</div>
-          <label class="checkbox-container">
-            <input id="input-ellipse-force-round" type="checkbox">
-            <span class="checkmark"></span>
-            Practice circles only
-          </label>
-          <div class="modal-separator"></div>
+          <hr>
 
-          <label>Rotation</label>
-          <div id="input-ellipse-angle-min-value" class="slider-value">0</div>
-          <div id="input-ellipse-angle" class="slider"></div>
-          <div id="input-ellipse-angle-max-value" class="slider-value">180</div>
-          <div class="modal-separator"></div>
-        </div>
+          <div id="input-ellipse-setting" class="modal-setting modal-ellipse">
+            <h3>Ellipses settings</h3>
+            <label>Size</label>
+            <div id="input-ellipse-size-min-value" class="slider-value">1</div>
+            <div id="input-ellipse-size" class="slider"></div>
+            <div id="input-ellipse-size-max-value" class="slider-value">100</div>
+            <div class="modal-separator"></div>
 
-        <div id="input-common-setting" class="modal-setting modal-common">
-          <h3>Common</h3>
-          <label>Side tool position</label>
-          <select name="speed" id="input-tool-position">
-            <option>Top left</option>
-            <option>Top right</option>
-            <option>Bottom left</option>
-            <option selected="selected">Bottom right</option>
-          </select>
-          <div class="modal-separator"></div>
-        </div>
+            <label>Roundness</label>
+            <div id="input-ellipse-round-min-value" class="slider-value">1</div>
+            <div id="input-ellipse-round" class="slider"></div>
+            <div id="input-ellipse-round-max-value" class="slider-value">100</div>
+            <label class="checkbox-container">
+              <input id="input-ellipse-force-round" type="checkbox">
+              <span class="checkmark"></span>
+              Practice circles only
+            </label>
+            <div class="modal-separator"></div>
 
-        <div id="input-settings-reset" class="input-reset">
-          <p>Reset to default</p>
-          <span class="glyphicons glyphicons-restart input-reset-icon"></span>
+            <label>Rotation</label>
+            <div id="input-ellipse-angle-min-value" class="slider-value">0</div>
+            <div id="input-ellipse-angle" class="slider"></div>
+            <div id="input-ellipse-angle-max-value" class="slider-value">180</div>
+            <div class="modal-separator"></div>
+          </div>
+
+          <div id="input-common-setting" class="modal-setting modal-common">
+            <h3>Common</h3>
+            <label>Side tool position</label>
+            <span id="input-tool-position-dropdown" class="dropdown">
+              <button class="btn btn-outline-app-primary dropdown-toggle" type="button" id="input-tool-position-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown button
+              </button>
+              <div class="dropdown-menu" aria-labelledby="input-tool-position-dropdown-button">
+                <button class="dropdown-item input-tool-position-item position-tl">Top left</button>
+                <button class="dropdown-item input-tool-position-item position-tr">Top right</button>
+                <button class="dropdown-item input-tool-position-item position-bl">Bottom left</button>
+                <button class="dropdown-item input-tool-position-item position-br active">Bottom right</button>
+              </div>
+            </span>
+            <!-- 
+            <select name="speed" id="input-tool-position">
+              <option>Top left</option>
+              <option>Top right</option>
+              <option>Bottom left</option>
+              <option selected="selected">Bottom right</option>
+            </select>
+            <div class="modal-separator"></div> -->
+          </div>
+
+          <button id="input-settings-reset" class="btn btn-app-primary float-right">Reset to default</button>
         </div>
       </div>
     </div>
-    <div class="modal-padding"></div>
   </div>
   <!--
 <h1>Welcome to Thimble</h1>

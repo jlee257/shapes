@@ -243,29 +243,28 @@ body {
 
 
 /* Modals */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
+/*.modal {
+  display: none;
+  position: fixed;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
   z-index: 10;
-}
+}*/
 
 #settings-modal {
   display: none;
 }
 
-.modal-content {
+/*.modal-content {
   position: relative;
   background-color: #ffffff;
   margin: auto;
   padding: 0;
-  /*border: 1px solid #888;*/
   width: 80vw;
   max-width: 800px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
@@ -274,13 +273,13 @@ body {
   animation-name: animatetop;
   animation-duration: 0.4s;
   padding-bottom: 10px;
-}
+}*/
 
-.modal-padding {
+/*.modal-padding {
   height: 40px;
-}
+}*/
 
-@-webkit-keyframes animatetop {
+/*@-webkit-keyframes animatetop {
   from {top:-300px; opacity:0} 
   to {top:0; opacity:1}
 }
@@ -310,7 +309,7 @@ body {
 .modal-body-content {
   margin: 50px;
   background-color: white;
-}
+}*/
 
 #wacom-warning-setting {
   text-align: center;
@@ -321,7 +320,7 @@ body {
   margin-bottom: 40px;
 }
 
-.modal-setting > label {
+/*.modal-setting > label {
   margin-bottom: 7px;
   display: block;
 }
@@ -348,23 +347,41 @@ body {
 .input-reset {
   height: 50px;
   width: 50px;
-  /*border: 1px solid black;*/
   position: absolute;
   bottom: 50px;
   right: 50px;
   overflow: hidden;
   color: var(--primary-dark);
 }
+*/
 
-.input-reset-new {
+.btn-app-primary {
+  color: #fff;
   background-color: var(--primary-dark) !important;
   border-color: var(--primary-dark) !important;
 }
 
-.input-reset-new:hover, .input-reset-new:focus {
+.btn-app-primary:hover, .btn-app-primary:focus {
   background-color: var(--primary-base) !important;
 }
 
+.btn-outline-app-primary {
+  border-color: var(--primary-dark) !important;
+  background-color: #fff !important;
+  color: var(--primary-dark) !important;
+}
+
+.btn-outline-app-primary:hover, .btn-outline-app-primary:focus {
+  background-color: var(--primary-dark) !important;
+  color: #fff !important;
+}
+
+.dropdown-item.active {
+  background-color: var(--primary-dark) !important;
+  color: #fff !important;
+}
+
+/*
 .input-reset > p {
   text-overflow: clip;
   overflow: hidden;
@@ -408,9 +425,11 @@ body {
 @keyframes animateReset {
   from {width: 50px} 
   to {width: 190px}
+}*/
+
+.bg-app-primary {
+  background-color: var(--primary-dark);
 }
-
-
 
 
 
@@ -468,7 +487,7 @@ body {
 /* UI Elements - Checkbox*/
 .checkbox-container {
   display: block;
-  width: 140px;
+  width: 200px;
   margin: 10px 0;
   position: relative;
   padding-left: 25px;
@@ -522,11 +541,11 @@ body {
 /* Style the checkmark/indicator */
 .checkbox-container .checkmark:after {
   left: 6px;
-  top: 1px;
-  width: 5px;
+  top: 2px;
+  width: 6px;
   height: 10px;
   border: solid white;
-  border-width: 0 3px 3px 0;
+  border-width: 0 2px 2px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);

@@ -48,6 +48,35 @@ var guide_line_size = GUIDE_LINE_SIZE;
 var guide_line_style = GUIDE_LINE_STYLE;
 
 
+class AppSetting {
+  var PEN_COLOR = "rgba(0,0,0,1.00)";
+  var PEN_SIZE = 5;
+  var TOOL_POSITION = "Bottom right";
+  var LINE_SIZE_MIN = 20;
+  var LINE_SIZE_MAX = 50;
+  var LINE_ANGLE_MIN = 0;
+  var LINE_ANGLE_MAX = 180;
+  var CURVE_SIZE_MIN = 45;
+  var CURVE_SIZE_MAX = 80;
+  var CURVE_COMPLEX_MIN = 1;
+  var CURVE_COMPLEX_MAX = 3;
+  var ELLIPSE_SIZE_MIN = 20;
+  var ELLIPSE_SIZE_MAX = 50;
+  var ELLIPSE_ROUND_MIN = 50;
+  var ELLIPSE_ROUND_MAX = 85;
+  var ELLIPSE_ANGLE_MIN = 0;
+  var ELLIPSE_ANGLE_MAX = 90;
+  var GUIDE_LINE_COLOR = "rgba(255,135,0,1.00)";
+  var GUIDE_LINE_SIZE = 10;
+  var GUIDE_LINE_STYLE = [20, 20];
+
+  var STATE_LINE = 1;
+  var STATE_CURVE = 2;
+  var STATE_ELLIPSE = 3;
+  var STATE_NOTE =9;
+}
+
+
 $(document).ready(function () {
   /* Initialization */
   var state = STATE_LINE;
@@ -226,7 +255,7 @@ $(document).ready(function () {
     $("#input-pen-size").slider( "option", "value", pen_size);
 
     console.log("pencil - pen-color:" + pen_color + " pen-size:" + pen_size);
-    $("#pencil-modal").css("display", "block");
+    $("#pencil-modal").modal('show');
   });
 
   $("#refresh-icon").click(function() {
@@ -295,6 +324,7 @@ $(document).ready(function () {
     $('#input-tool-position').selectmenu("refresh");
     if (state == STATE_LINE) {
       console.log("open settings - line");
+      $("#settings-modal-title").html("Line settings");
       $("#input-line-setting").css("display", "block");
       $("#input-curve-setting").css("display", "none");
       $("#input-ellipse-setting").css("display", "none");
@@ -302,6 +332,7 @@ $(document).ready(function () {
       $("#input-line-angle").slider("option", "values", [line_angle_min, line_angle_max]);
     } else if (state == STATE_CURVE) {
       console.log("open settings - curve");
+      $("#settings-modal-title").html("Curve settings");
       $("#input-line-setting").css("display", "none");
       $("#input-curve-setting").css("display", "block");
       $("#input-ellipse-setting").css("display", "none");
@@ -309,6 +340,7 @@ $(document).ready(function () {
       $("#input-curve-complex").slider("option", "values", [curve_complex_min, curve_complex_max]);
     } else if (state == STATE_ELLIPSE) {
       console.log("open settings - ellipse");
+      $("#settings-modal-title").html("Ellipse settings");
       $("#input-line-setting").css("display", "none");
       $("#input-curve-setting").css("display", "none");
       $("#input-ellipse-setting").css("display", "block");
@@ -325,7 +357,7 @@ $(document).ready(function () {
       $(".input-record-average").html("No records found");
       $(".input-record-best").html("No records found");
     }
-    $("#settings-modal").css("display", "block");
+    $("#settings-modal").modal('show');
   });
 
   $("#input-tool-position").selectmenu({

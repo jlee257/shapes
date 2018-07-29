@@ -20,61 +20,39 @@ var GUIDE_LINE_COLOR = "rgba(255,135,0,1.00)";
 var GUIDE_LINE_SIZE = 10;
 var GUIDE_LINE_STYLE = [20, 20];
 
+var COLOR_APP = "rgba(4,147,173,1.00)";
+var COLOR_GREEN = "rgba(40,167,69,1.00)";
+var COLOR_YELLOW = "rgba(255,193,7,1.00)";
+var COLOR_RED = "rgba(220,53,69,1.00)";
+
+var STATE_LIST = [STATE_LINE, STATE_CURVE, STATE_ELLIPSE, STATE_NOTE]
 var STATE_LINE = 1;
 var STATE_CURVE = 2;
 var STATE_ELLIPSE = 3;
 var STATE_NOTE =9;
 
 // Settings
-var pen_color = PEN_COLOR;
-var pen_size = PEN_SIZE;
-var tool_position = TOOL_POSITION;
-var line_size_min = LINE_SIZE_MIN;
-var line_size_max = LINE_SIZE_MAX;
-var line_angle_min = LINE_ANGLE_MIN;
-var line_angle_max = LINE_ANGLE_MAX;
-var curve_size_min = CURVE_SIZE_MIN;
-var curve_size_max = CURVE_SIZE_MAX;
-var curve_complex_min = CURVE_COMPLEX_MIN;
-var curve_complex_max = CURVE_COMPLEX_MAX;
-var ellipse_size_min = ELLIPSE_SIZE_MIN;
-var ellipse_size_max = ELLIPSE_SIZE_MAX;
-var ellipse_round_min = ELLIPSE_ROUND_MIN;
-var ellipse_round_max = ELLIPSE_ROUND_MAX;
-var ellipse_angle_min = ELLIPSE_ANGLE_MIN;
-var ellipse_angle_max = ELLIPSE_ANGLE_MAX;
+var pen_color = localStorage["pen_color"] || PEN_COLOR;
+var pen_size = localStorage["pen_size"] || PEN_SIZE;
+var tool_position = localStorage["tool_position"] || TOOL_POSITION;
+var line_size_min = localStorage["line_size_min"] || LINE_SIZE_MIN;
+var line_size_max = localStorage["line_size_max"] || LINE_SIZE_MAX;
+var line_angle_min = localStorage["line_angle_min"] || LINE_ANGLE_MIN;
+var line_angle_max = localStorage["line_angle_max"] || LINE_ANGLE_MAX;
+var curve_size_min = localStorage["curve_size_min"] || CURVE_SIZE_MIN;
+var curve_size_max = localStorage["curve_size_max"] || CURVE_SIZE_MAX;
+var curve_complex_min = localStorage["curve_complex_min"] ||  CURVE_COMPLEX_MIN;
+var curve_complex_max = localStorage["curve_complex_max"] || CURVE_COMPLEX_MAX;
+var ellipse_size_min = localStorage["ellipse_size_min"] || ELLIPSE_SIZE_MIN;
+var ellipse_size_max = localStorage["ellipse_size_max"] || ELLIPSE_SIZE_MAX;
+var ellipse_round_min = localStorage["ellipse_round_min"] || ELLIPSE_ROUND_MIN;
+var ellipse_round_max = localStorage["ellipse_round_max"] || ELLIPSE_ROUND_MAX;
+var ellipse_angle_min = localStorage["ellipse_angle_min"] || ELLIPSE_ANGLE_MIN;
+var ellipse_angle_max = localStorage["ellipse_angle_max"] || ELLIPSE_ANGLE_MAX;
 var guide_line_color = GUIDE_LINE_COLOR;
 var guide_line_size = GUIDE_LINE_SIZE;
 var guide_line_style = GUIDE_LINE_STYLE;
 
-
-class AppSetting {
-  var PEN_COLOR = "rgba(0,0,0,1.00)";
-  var PEN_SIZE = 5;
-  var TOOL_POSITION = "Bottom right";
-  var LINE_SIZE_MIN = 20;
-  var LINE_SIZE_MAX = 50;
-  var LINE_ANGLE_MIN = 0;
-  var LINE_ANGLE_MAX = 180;
-  var CURVE_SIZE_MIN = 45;
-  var CURVE_SIZE_MAX = 80;
-  var CURVE_COMPLEX_MIN = 1;
-  var CURVE_COMPLEX_MAX = 3;
-  var ELLIPSE_SIZE_MIN = 20;
-  var ELLIPSE_SIZE_MAX = 50;
-  var ELLIPSE_ROUND_MIN = 50;
-  var ELLIPSE_ROUND_MAX = 85;
-  var ELLIPSE_ANGLE_MIN = 0;
-  var ELLIPSE_ANGLE_MAX = 90;
-  var GUIDE_LINE_COLOR = "rgba(255,135,0,1.00)";
-  var GUIDE_LINE_SIZE = 10;
-  var GUIDE_LINE_STYLE = [20, 20];
-
-  var STATE_LINE = 1;
-  var STATE_CURVE = 2;
-  var STATE_ELLIPSE = 3;
-  var STATE_NOTE =9;
-}
 
 
 $(document).ready(function () {
@@ -84,8 +62,6 @@ $(document).ready(function () {
   var front_canvas = document.getElementById('front-canvas');
   var main_context = main_canvas.getContext('2d');
   var front_context = front_canvas.getContext('2d');
-
-
 
 
 
@@ -135,7 +111,7 @@ $(document).ready(function () {
   $("#nav-line-menu-item").click(function() {
     menuItemClick($(this));
     state = STATE_LINE;
-    refreshCookieRecord(state);
+    refreshRecord(state);
     showCanvas();
     drawRandomLine();
   });
@@ -143,7 +119,7 @@ $(document).ready(function () {
   $("#nav-curve-menu-item").click(function() {
     menuItemClick($(this));
     state = STATE_CURVE;
-    refreshCookieRecord(state);
+    refreshRecord(state);
     showCanvas();
     drawRandomCurve();
   });
@@ -151,7 +127,7 @@ $(document).ready(function () {
   $("#nav-ellipse-menu-item").click(function() {
     menuItemClick($(this));
     state = STATE_ELLIPSE;
-    refreshCookieRecord(state);
+    refreshRecord(state);
     showCanvas();
     drawRandomEllipse();
   });
@@ -159,7 +135,7 @@ $(document).ready(function () {
   $("#nav-note-menu-item").click(function() {
     menuItemClick($(this));
     state = STATE_NOTE;
-    refreshCookieRecord(state);
+    refreshRecord(state);
     hideCanvas();
   });
 
@@ -213,7 +189,7 @@ $(document).ready(function () {
     $("#nav-bar").removeClass('transform-active');
     $('#nav-expand-button-icon-chevron').hide();
     $('#nav-expand-button-icon-hamburger').show();
-    console.log("removing nav-open");
+    // console.log("removing nav-open");
     $("#note").removeClass("nav-open");
   }
 
@@ -271,12 +247,14 @@ $(document).ready(function () {
 
   $("#input-pen-color").change(function(event) {
     pen_color = setHexColor(pen_color, $(this).val());
+    localStorage.setItem("pen_color", pen_color);
     console.log("pen-color:" + pen_color);
   });
 
   $("#input-pen-transparency").slider({
     change: function(event, ui) {
       pen_color = setAlpha(pen_color, ui.value);
+      localStorage.setItem("pen_color", pen_color);
       $("#input-pen-transparency-value").text(ui.value);
       console.log("pen-transparency:" + ui.value + " new-color:" + pen_color);
     },
@@ -284,7 +262,7 @@ $(document).ready(function () {
     orientation: "horizontal",
     min: 0,
     max: 100,
-    value: getAlpha(PEN_COLOR),
+    value: getAlpha(pen_color),
     slide: function(event, ui) {
       $("#input-pen-transparency-value").text(ui.value);
     }
@@ -293,6 +271,7 @@ $(document).ready(function () {
   $("#input-pen-size").slider({
     change: function(event, ui) {
       pen_size = ui.value;
+      localStorage.setItem("pen_size", ui.value);
       console.log("pen-size:" + pen_size);
       $("#input-pen-size-value").text(ui.value);
     },
@@ -300,7 +279,7 @@ $(document).ready(function () {
     orientation: "horizontal",
     min: 1,
     max: 60,
-    value: PEN_SIZE,
+    value: pen_size,
     slide: function(event, ui) {
       $("#input-pen-size-value").text(ui.value);
     }
@@ -308,6 +287,7 @@ $(document).ready(function () {
 
   $("#input-pencil-reset").click(function () {
     pen_color = PEN_COLOR;
+    localStorage.setItem("pen_color", PEN_COLOR);
     $("#input-pen-color").val(getHexColor(PEN_COLOR));
     $("#input-pen-transparency").slider( "option", "value", getAlpha(PEN_COLOR));
     $("#input-pen-size").slider( "option", "value", PEN_SIZE);
@@ -320,11 +300,20 @@ $(document).ready(function () {
 
   /* Side Icon Modals - CircleSettings */
   $("#function-icon").click(function() {
-    $('#input-tool-position').val(tool_position);
-    $('#input-tool-position').selectmenu("refresh");
+    $('#input-tool-position-dropdown-button').text(tool_position);
+    if (tool_position == "Top left") {
+      $(".position-tl").addClass("active");
+    } else if (tool_position == "Top right") {
+      $(".position-tr").addClass("active");
+    } else if (tool_position == "Bottom left") {
+      $(".position-bl").addClass("active");
+    } else {
+      $(".position-br").addClass("active");
+    }
     if (state == STATE_LINE) {
       console.log("open settings - line");
       $("#settings-modal-title").html("Line settings");
+      $("#record-title").html("Line records");
       $("#input-line-setting").css("display", "block");
       $("#input-curve-setting").css("display", "none");
       $("#input-ellipse-setting").css("display", "none");
@@ -333,6 +322,7 @@ $(document).ready(function () {
     } else if (state == STATE_CURVE) {
       console.log("open settings - curve");
       $("#settings-modal-title").html("Curve settings");
+      $("#record-title").html("Curve records");
       $("#input-line-setting").css("display", "none");
       $("#input-curve-setting").css("display", "block");
       $("#input-ellipse-setting").css("display", "none");
@@ -341,6 +331,7 @@ $(document).ready(function () {
     } else if (state == STATE_ELLIPSE) {
       console.log("open settings - ellipse");
       $("#settings-modal-title").html("Ellipse settings");
+      $("#record-title").html("Ellipse records");
       $("#input-line-setting").css("display", "none");
       $("#input-curve-setting").css("display", "none");
       $("#input-ellipse-setting").css("display", "block");
@@ -348,10 +339,10 @@ $(document).ready(function () {
       $("#input-ellipse-round").slider("option", "values", [ellipse_round_min, ellipse_round_max]);
       $("#input-ellipse-angle").slider("option", "values", [ellipse_angle_min, ellipse_angle_max]);
     }
-    if (cookie_count > 0) {
-      $(".input-record-count").html(cookie_count.toString());
-      $(".input-record-average").html(cookie_average.toFixed(4));
-      $(".input-record-best").html(cookie_best.toFixed(4));
+    if (record_count > 0) {
+      $(".input-record-count").html(record_count.toString());
+      $(".input-record-average").html(record_average.toFixed(4));
+      $(".input-record-best").html(record_best.toFixed(4));
     } else {
       $(".input-record-count").html("0");
       $(".input-record-average").html("No records found");
@@ -360,23 +351,26 @@ $(document).ready(function () {
     $("#settings-modal").modal('show');
   });
 
-  $("#input-tool-position").selectmenu({
-    change: function( event, ui ) {
-      console.log("tool position=" + ui.item.value);
-      $("#side-icon-container").removeClass("position1");
-      $("#side-icon-container").removeClass("position2");
-      $("#side-icon-container").removeClass("position3");
-      $("#side-icon-container").removeClass("position4");
+  $(".input-tool-position-item").click(function() {
+    $(".input-tool-position-item").removeClass("active");
+    $(this).addClass("active");
+    tool_position = $(this).text();
+    localStorage.setItem("tool_position", tool_position);
+    $("#input-tool-position-dropdown-button").text(tool_position);
 
-      if (ui.item.value == "Top left") {
-        $("#side-icon-container").addClass("position1");
-      } else if (ui.item.value == "Top right") {
-        $("#side-icon-container").addClass("position2");
-      } else if (ui.item.value == "Bottom left") {
-        $("#side-icon-container").addClass("position3");
-      } else {
-        $("#side-icon-container").addClass("position4");
-      }
+    $("#side-icon-container").removeClass("position1");
+    $("#side-icon-container").removeClass("position2");
+    $("#side-icon-container").removeClass("position3");
+    $("#side-icon-container").removeClass("position4");
+
+    if (tool_position == "Top left") {
+      $("#side-icon-container").addClass("position1");
+    } else if (tool_position == "Top right") {
+      $("#side-icon-container").addClass("position2");
+    } else if (tool_position == "Bottom left") {
+      $("#side-icon-container").addClass("position3");
+    } else {
+      $("#side-icon-container").addClass("position4");
     }
   });
 
@@ -384,6 +378,8 @@ $(document).ready(function () {
     change: function(event, ui) {
       line_size_min = ui.values[0];
       line_size_max = ui.values[1];
+      localStorage.setItem("line_size_min", ui.values[0]);
+      localStorage.setItem("line_size_max", ui.values[1]);
       $("#input-line-size-min-value").text(ui.values[0]);
       $("#input-line-size-max-value").text(ui.values[1]);
       console.log("line-size:" + line_size_min + "-" + line_size_max);
@@ -403,6 +399,8 @@ $(document).ready(function () {
     change: function(event, ui) {
       line_angle_min = ui.values[0];
       line_angle_max = ui.values[1];
+      localStorage.setItem("line_angle_min", ui.values[0]);
+      localStorage.setItem("line_angle_max", ui.values[1]);
       $("#input-line-angle-min-value").text(ui.values[0]);
       $("#input-line-angle-max-value").text(ui.values[1]);
       console.log("line-angle:" + line_angle_min + "-" + line_angle_max);
@@ -422,6 +420,8 @@ $(document).ready(function () {
     change: function(event, ui) {
       curve_size_min = ui.values[0];
       curve_size_max = ui.values[1];
+      localStorage.setItem("curve_size_min", ui.values[0]);
+      localStorage.setItem("curve_size_max", ui.values[1]);
       $("#input-curve-size-min-value").text(ui.values[0]);
       $("#input-curve-size-max-value").text(ui.values[1]);
       console.log("curve-size:" + curve_size_min + "-" + curve_size_max);
@@ -441,6 +441,8 @@ $(document).ready(function () {
     change: function(event, ui) {
       curve_complex_min = ui.values[0];
       curve_complex_max = ui.values[1];
+      localStorage.setItem("curve_complex_min", ui.values[0]);
+      localStorage.setItem("curve_complex_max", ui.values[1]);
       $("#input-curve-complex-min-value").text(ui.values[0]);
       $("#input-curve-complex-max-value").text(ui.values[1]);
       console.log("curve-complexity:" + curve_complex_min + "-" + curve_complex_max);
@@ -448,7 +450,7 @@ $(document).ready(function () {
     range: true,
     orientation: "horizontal",
     min: 1,
-    max: 10,
+    max: 5,
     values: [CURVE_COMPLEX_MIN, CURVE_COMPLEX_MAX],
     slide: function(event, ui) {
       $("#input-curve-complex-min-value").text(ui.values[0]);
@@ -460,6 +462,8 @@ $(document).ready(function () {
     change: function(event, ui) {
       ellipse_size_min = ui.values[0];
       ellipse_size_max = ui.values[1];
+      localStorage.setItem("ellipse_size_min", ui.values[0]);
+      localStorage.setItem("ellipse_size_max", ui.values[1]);
       $("#input-ellipse-size-min-value").text(ui.values[0]);
       $("#input-ellipse-size-max-value").text(ui.values[1]);
       console.log("ellipse-size:" + ellipse_size_min + "-" + ellipse_size_max);
@@ -479,6 +483,8 @@ $(document).ready(function () {
     change: function(event, ui) {
       ellipse_round_min = ui.values[0];
       ellipse_round_max = ui.values[1];
+      localStorage.setItem("ellipse_round_min", ui.values[0]);
+      localStorage.setItem("ellipse_round_max", ui.values[1]);
       $("#input-ellipse-round-min-value").text(ui.values[0]);
       $("#input-ellipse-round-max-value").text(ui.values[1]);
       console.log("ellipse-roundness:" + ellipse_round_min + "-" + ellipse_round_max);
@@ -505,6 +511,8 @@ $(document).ready(function () {
     change: function(event, ui) {
       ellipse_angle_min = ui.values[0];
       ellipse_angle_max = ui.values[1];
+      localStorage.setItem("ellipse_angle_min", ui.values[0]);
+      localStorage.setItem("ellipse_angle_max", ui.values[1]);
       $("#input-ellipse-angle-min-value").text(ui.values[0]);
       $("#input-ellipse-angle-max-value").text(ui.values[1]);
       console.log("ellipse-angle:" + ellipse_angle_min + "-" + ellipse_angle_max);
@@ -521,7 +529,7 @@ $(document).ready(function () {
   });
 
   $("#input-record-clear-button").click(function() {
-    deleteAllCookies();
+    deleteAllRecords();
     $(".input-record-count").html("0");
     $(".input-record-average").html("No records found");
     $(".input-record-best").html("No records found");
@@ -547,20 +555,13 @@ $(document).ready(function () {
     }
   });
 
-
-
-  $(".close-button").click(function() {
-    $(".modal").css("display", "none");
+  $("#input-clear-data-button").click(function() {
+    localStorage.clear();
+    $(".modal").modal("hide");
   });
 
-  $(window).click(function(e) {
-    //    console.log("window");
-    var $w = $(e.target);
-    if ($w.hasClass("modal")) {
-      console.log("window clicked");
-      $(".modal").css("display", "none");
-    }
-  });
+
+
 
 
 
@@ -685,72 +686,60 @@ $(document).ready(function () {
 
 
   /* Cookie */
-  var cookie_state = STATE_NOTE;
-  var cookie_count = -1;
-  var cookie_average = Number.MAX_VALUE;
-  var cookie_best = Number.MAX_VALUE;
+  var record_state = STATE_NOTE;
+  var record_count = -1;
+  var record_average = Number.MAX_VALUE;
+  var record_best = 0.0;
 
-  function addCookieRecord(state, score) {
-    console.assert(cookie_state == state, "invalid cookie state! cookie=" + cookie_state + " state=" + state);
+  function addRecord(state, score) {
+    console.assert(record_state == state, "invalid cookie state! cookie=" + record_state + " state=" + state);
 
-    if (cookie_count < 0) {
-      cookie_count = 1;
-      cookie_average = score;
-      cookie_best = score;
+    if (record_count < 0) {
+      record_count = 1;
+      record_average = score;
+      record_best = score;
     } else {
-      cookie_count++;
-      cookie_average = cookie_average + ((score - cookie_average) / cookie_count);
-      cookie_best = Math.min(cookie_best, score);
+      record_count++;
+      record_average = record_average + ((score - record_average) / record_count);
+      record_best = Math.max(record_best, score);
     }
-    console.log("new value: " + cookie_count + " " + cookie_average + " " + cookie_best);
-    setCookie(state, cookie_count + "z" + cookie_average + "z" + cookie_best, 730);
+    // console.log("new value: " + record_count + " " + record_average + " " + record_best);
+    putRecord(state, record_count, record_average, record_best, 730);
   }
 
-  function refreshCookieRecord(state) {
-    cookie_state = state;
-    console.log("cookie state set to:" + cookie_state);
-    console.log("coookie=" + document.cookie);
-    var ck = document.cookie.match(new RegExp(state + '=([^;]+)'));
-    if (ck) {
-      var cl = ck[1].split("z");
-      cookie_count = parseFloat(cl[0]);
-      cookie_average = parseFloat(cl[1]);
-      cookie_best = parseFloat(cl[2]);
+  function refreshRecord(state) {
+    record_state = state;
+    record_key = state + "_record";
+    console.log("cookie state set to:" + record_state);
+    var cr = localStorage[record_key];
+    console.log("record=" + cr);
+    if (cr) {
+      ck = JSON.parse(cr);
+      record_count = ck["count"];
+      record_average = ck["average"];
+      record_best = ck["best"];
     } else {
-      cookie_count = -1;
-      cookie_average = Number.MAX_VALUE;
-      cookie_best = Number.MAX_VALUE;
+      record_count = -1;
+      record_average = Number.MAX_VALUE;
+      record_best = 0.0;
     }
   }
 
-  function setCookie(state, record, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
-    console.log("set cookie: " + state + "=" + record + ";" + expires + ";path=/");
-    document.cookie = state + "=" + record + ";" + expires + ";path=/";
+  function putRecord(state, r_count, r_avg, r_best, exdays) {
+    record_key = state + "_record"
+    localStorage.setItem(record_key,  JSON.stringify({"count": r_count, "average": r_avg, "best": r_best}));
   }
 
-  function deleteAllCookies() {
-    cookie_count = -1;
-    cookie_average = Number.MAX_VALUE;
-    cookie_best = Number.MAX_VALUE;
+  function deleteAllRecords() {
+    record_count = -1;
+    record_average = Number.MAX_VALUE;
+    record_best = Number.MAX_VALUE;
 
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-      var cookie = cookies[i].trim();
-      var eqPos = cookie.indexOf("=");
-      var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-      console.log("delate:" + name);
-      document.cookie = name + "=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    for (var i = 0; i < STATE_LIST.length; i++) {
+      record_key = STATE_LIST[i] + "_record";
+      localStorage.removeItem(record_key);
     }
   }
-
-
-
-
-
 
 
 
@@ -786,13 +775,16 @@ $(document).ready(function () {
   front_canvas.onmousedown = function(e) {
 
     e.preventDefault();
+
+    clearFrontPage();
+
     closeMenu();
     clearOverlay();
 
     front_context.strokeStyle = pen_color;
     front_context.lineWidth = pen_size;
 
-    $("#sometext").html("onmousedown pen_color=" + pen_color + " pen_size=" + pen_size);
+    // $("#sometext").html("onmousedown pen_color=" + pen_color + " pen_size=" + pen_size);
     console.log("onmousedown: pen_color=" + pen_color + " pen_size=" + pen_size);
 
     e = getMousePoint(e);
@@ -803,13 +795,16 @@ $(document).ready(function () {
   front_canvas.ontouchstart = function(e) {
 
     e.preventDefault();
+
+    clearFrontPage();
+
     closeMenu();
     clearOverlay();
 
     front_context.strokeStyle = pen_color;
     front_context.lineWidth = pen_size;
 
-    $("#sometext").html("ontouchstart pen_color=" + pen_color + " pen_size=" + pen_size);
+    // $("#sometext").html("ontouchstart pen_color=" + pen_color + " pen_size=" + pen_size);
     console.log("ontouchstart: pen_color=" + pen_color + " pen_size=" + pen_size);
 
 
@@ -937,14 +932,15 @@ $(document).ready(function () {
   }
 
   function copyToMainCanvas() {
-    clearFrontPage();
+
+    return;
 
     main_context.strokeStyle = pen_color;
     main_context.lineWidth = pen_size;
     main_context.setLineDash([]);
 
     var prevtext = $("#sometext").html();
-    $("#sometext").html(prevtext + "<p>copytomaincanvas pen_color=" + pen_color + " pen_size=" + pen_size);
+    // $("#sometext").html(prevtext + "<p>copytomaincanvas pen_color=" + pen_color + " pen_size=" + pen_size);
     console.log("copyToMainCanvas: pen_color=" + pen_color + " pen_size=" + pen_size);
     main_context.beginPath();
 
@@ -1141,24 +1137,48 @@ $(document).ready(function () {
 
       var err = 0;
       for (var i = 0, len = points.length; i < len; i++) {
-        err += distanceFromLine(coor[0].x, coor[0].y, coor[1].x, coor[1].y, points[i].x, points[i].y)**2;
+        err += distanceFromLine(coor[0].x, coor[0].y, coor[1].x, coor[1].y, points[i].x, points[i].y)**1.8;
       }
       err = err / points.length;
 
-      addCookieRecord(STATE_LINE, err);
+      var raw_err = err;
 
-      var prevtext = $("#sometext").html();
-      $("#sometext").html(prevtext + "<br>err=" + err);
+      var dist_start = Math.min(
+        distanceBetween(points[0].x, points[0].y, line_points[0].x, line_points[0].y),
+        distanceBetween(points[points.length-1].x, points[points.length-1].y, line_points[0].x, line_points[0].y)
+      );
+      var dist_end = Math.min(
+        distanceBetween(points[0].x, points[0].y, line_points[1].x, line_points[1].y),
+        distanceBetween(points[points.length-1].x, points[points.length-1].y, line_points[1].x, line_points[1].y)
+      );
 
-      if (err < 12) {
-        color = "rgba(0,255,0,1.00)";
-      } else if (err < 20) {
-        color = "rgba(255,255,0,1.00)";
-      } else if (err < 30) {
-        color = "rgba(255,127,0,1.00)";
+      var correction = ((dist_start+dist_end)/40.0)**2;
+      err += correction;
+
+      console.log("line score: score=" + score + " err=" + err + " raw_error=" + raw_err + " endpoint_correction=" + correction + " length=" + points.length);
+      var score = Math.max(Math.min(56.0 - (10.0*(Math.log(err+90))), 10.0), 0.0);
+
+      // var prevtext = $("#sometext").html();
+      // $("#sometext").html(prevtext + "<br>err=" + err);
+
+      if (score > 10.0) {
+        $("#canvas-score-text").html("Perfect!");
+        color = COLOR_APP;
+      } else if (score > 9.0) {
+        $("#canvas-score-text").html("Awesome!");
+        color = COLOR_GREEN;
+      } else if (score > 7.5) {
+        $("#canvas-score-text").html("");
+        color = COLOR_YELLOW;
       } else {
-        color = "rgba(255,0,0,1.00)";
+        $("#canvas-score-text").html("");
+        color = COLOR_RED;
       }
+
+      addRecord(STATE_LINE, score);
+      $("#canvas-score-text").css("color", color);
+      $("#canvas-score").css("color", color);
+      $("#canvas-score").html("Score:" + score.toFixed(1));
 
       main_context.strokeStyle = color;
       main_context.lineWidth = 3;
@@ -1180,7 +1200,7 @@ $(document).ready(function () {
     var ymin = 1000-(800*s/100);
     var ymax = 1000+(800*s/100);
 
-    var xc = (xmax-xmin)*(c+1)/11;
+    var xc = (xmax-xmin)*(c+1)/6;
     var yc = (ymax-ymin);
 
 
@@ -1274,7 +1294,7 @@ $(document).ready(function () {
 
     var errf = err/points.length + errz/curve_points.length;
     // console.log("final e=" + (err/points.length + errz/curve_points.length) + " points=" + points.length + " errtotal=" + err);
-    addCookieRecord(STATE_CURVE, errf);
+    addRecord(STATE_CURVE, errf);
     $("#sometext").html("err=" + errf);
 
   }
@@ -1357,7 +1377,7 @@ $(document).ready(function () {
     console.log(completeness);
     console.log("error=" + errf + " n=" + points.length);
 
-    addCookieRecord(STATE_ELLIPSE, errf);
+    addRecord(STATE_ELLIPSE, errf);
     $("#sometext").html("err=" +errf);
   }
 
@@ -1457,7 +1477,7 @@ $(document).ready(function () {
     }
     console.log("link to: " + state);
     document.cookie = "username=John Smith; expires=Thu, 18 Dec 2019 12:00:00 UTC; path=/";
-    refreshCookieRecord(state);
+    refreshRecord(state);
   }
 
   function unitTest() {

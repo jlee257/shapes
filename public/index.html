@@ -101,8 +101,10 @@
 
   <!--Canvas-->
   <div id="canvas-container" class="shadow">
-
-    <div id="sometext">err</div>
+    <div id="canvas-score-board">
+      <h2 id="canvas-score"></h2>
+      <h2 id="canvas-score-text"></h2>
+    </div>
 
     <canvas id="main-canvas" width="3000" height="2000">Unfortunately, your browser is currently unsupported by our web application.</canvas>
 
@@ -161,8 +163,10 @@
     <div id="note-footer" class="shadow">
       <span id="license-info" class="height-align">license information</span>
       <div style="float:right">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
         <span id="copyright" class="height-align">Copyright &copy; 2017 Sanlok Lee</span>
-        <span id="email-info" class="glyphicons glyphicons-envelope"></span>
+        <img id="email-info" src="img/glyphicons-11-envelope.svg" alt="email icon" />
+        <!-- <span id="email-info" class="glyphicons glyphicons-envelope"></span> -->
         <span id="email-info-text" class="page-load-hide height-align"></span></div>
       <br>
       <div id="license-info-text" class="page-load-hide">
@@ -210,7 +214,7 @@
     <div class="modal-dialog modal-lg">
       <div id="settings-modal-content" class="modal-content">
         <div class="modal-header bg-app-primary text-white">
-          <h5 class="modal-title" id="settings-modal-title">Ellipse Settings</h5>
+          <h5 class="modal-title" id="settings-modal-title">Ellipse settings</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -221,24 +225,20 @@
           </div>
 
           <div id="input-line-record" class="modal-setting modal-line">
-            <h3>Line records</h3>
+            <h5 id="record-title">Records</h5>
             <label>Count</label>
             <div class="input-record-count"></div>
             <label>Average</label>
             <div class="input-record-average"></div>
             <label>Best</label>
             <div class="input-record-best"></div>
-            <div id="input-record-clear-button" class="input-record-clear">
-              <span>Clear</span>
-              <span class="glyphicons glyphicons-floppy-remove input-record-clear-icon"></span>
-              <span class="glyphicons glyphicons-erase input-record-clear-icon"></span>
-              <span class="glyphicons glyphicons-bin input-record-clear-icon"></span>
-            </div>
-            <div class="modal-separator"></div>
+            <button id="input-record-clear-button" class="btn btn-app-primary float-right input-record-clear">Clear records</button>
+
+            <hr class="mt-5">
           </div>
 
           <div id="input-line-setting" class="modal-setting modal-line">
-            <h3>Line settings</h3>
+            <h5>Line settings</h5>
             <label>Length</label>
             <div id="input-line-size-min-value" class="slider-value">1</div>
             <div id="input-line-size" class="slider"></div>
@@ -250,10 +250,14 @@
             <div id="input-line-angle" class="slider"></div>
             <div id="input-line-angle-max-value" class="slider-value">180</div>
             <div class="modal-separator"></div>
+
+            <!-- <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
+
+            <hr class="mt-5">
           </div>
 
           <div id="input-curve-setting" class="modal-setting modal-curve">
-            <h3>Curve settings</h3>
+            <h5>Curve settings</h5>
             <label>Size</label>
             <div id="input-curve-size-min-value" class="slider-value">1</div>
             <div id="input-curve-size" class="slider"></div>
@@ -265,14 +269,15 @@
             <div id="input-curve-complex" class="slider"></div>
             <div id="input-curve-complex-max-value" class="slider-value">3</div>
             <div class="modal-separator"></div>
+
+            <!-- <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
+
+            <hr class="mt-5">
           </div>
 
-          <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button>
-
-          <hr>
 
           <div id="input-ellipse-setting" class="modal-setting modal-ellipse">
-            <h3>Ellipses settings</h3>
+            <h5>Ellipses settings</h5>
             <label>Size</label>
             <div id="input-ellipse-size-min-value" class="slider-value">1</div>
             <div id="input-ellipse-size" class="slider"></div>
@@ -295,14 +300,19 @@
             <div id="input-ellipse-angle" class="slider"></div>
             <div id="input-ellipse-angle-max-value" class="slider-value">180</div>
             <div class="modal-separator"></div>
+
+
+            <!-- <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
+
+            <hr class="mt-5">
           </div>
 
           <div id="input-common-setting" class="modal-setting modal-common">
-            <h3>Common</h3>
+            <h5>Common</h5>
             <label>Side tool position</label>
             <span id="input-tool-position-dropdown" class="dropdown">
               <button class="btn btn-outline-app-primary dropdown-toggle" type="button" id="input-tool-position-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown button
+                Side tool position
               </button>
               <div class="dropdown-menu" aria-labelledby="input-tool-position-dropdown-button">
                 <button class="dropdown-item input-tool-position-item position-tl">Top left</button>
@@ -311,6 +321,10 @@
                 <button class="dropdown-item input-tool-position-item position-br active">Bottom right</button>
               </div>
             </span>
+            <div class="modal-separator"></div>
+
+            <label class="d-block">Saved data</label>
+            <button id="input-clear-data-button" class="btn btn-danger">Delete all stored configuration and records</button>
             <!-- 
             <select name="speed" id="input-tool-position">
               <option>Top left</option>
@@ -321,7 +335,7 @@
             <div class="modal-separator"></div> -->
           </div>
 
-          <button id="input-settings-reset" class="btn btn-app-primary float-right">Reset to default</button>
+          <!-- <button id="input-settings-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
         </div>
       </div>
     </div>

@@ -188,49 +188,42 @@ body {
 
 /* Note */
 #note {
-  margin-top: 30px;
   position: absolute;
   display: none;
-  left: calc(50% + 30px);
-  transform: translate(-50%, 0);
-
-  width: calc(90vw - 60px);
-  max-width: 1200px;
+  left: 60px;
+  width: calc(100% - 60px);
+  min-height: 100vh;
   background-color: white;
 }
 
-#note.nav-open {
-  left: calc(50% + 105px);
-  width: calc(90vw - 210px);
-}
-
-#note-header {
+.note-header {
   font-size: 1.7em;
   padding: 30px;
   background-color: var(--primary-base);
   color: white;
 }
 
-#note-body {
-  font-family: Arial, sans-serif;
-  color: var(--font-gray);
-  padding: 0px 70px 100px;
+.note-body {
+  padding-bottom: 300px;
 }
 
-#note-body h1 {
+.note-body h1 {
   margin-top: 60px;
   border-bottom: 1px solid #eaecef;
   padding-bottom: 7px;
 }
 
-#note-footer {
+.note-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   padding: 17px 25px 15px;
   font-size: 0.8em;
   color: #888888;
   background-color: var(--dark-gray);
 }
 
-#note-footer .height-align {
+.note-footer .height-align {
   line-height: 1.9em;
 }
 
@@ -242,6 +235,7 @@ body {
   width: 30px;
   height: 30px;
   margin-top: -3px;
+  cursor: pointer;
 }
 
 
@@ -251,7 +245,7 @@ body {
 
 /* Modals */
 .modal-body label {
-  margin-top: 8px;
+  margin-top: 20px;
   margin-right: 12px;
 }
 

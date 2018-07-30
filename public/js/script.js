@@ -1,7 +1,9 @@
 // Default Settings
 var PEN_COLOR = "rgba(0,0,0,1.00)";
 var PEN_SIZE = 5;
-var TOOL_POSITION = "Bottom right";
+var TOOL_POSITION = "Top right";
+var KEEP_STROKE = true;
+var PEN_SMOOTHING = true;
 var LINE_SIZE_MIN = 20;
 var LINE_SIZE_MAX = 50;
 var LINE_ANGLE_MIN = 0;
@@ -35,6 +37,14 @@ var STATE_NOTE =9;
 var pen_color = localStorage["pen_color"] || PEN_COLOR;
 var pen_size = localStorage["pen_size"] || PEN_SIZE;
 var tool_position = localStorage["tool_position"] || TOOL_POSITION;
+var pen_smoothing = localStorage["pen_smoothing"] || PEN_SMOOTHING;
+if (localStorage["pen_smoothing"]) {
+  pen_smoothing = localStorage["pen_smoothing"] === "true"; // Boolean stored as string;
+}
+var keep_stroke = TOOL_POSITION;
+if (localStorage["keep_stroke"]) {
+  keep_stroke = localStorage["keep_stroke"] === "true"; // Boolean stored as string;
+}
 var line_size_min = localStorage["line_size_min"] || LINE_SIZE_MIN;
 var line_size_max = localStorage["line_size_max"] || LINE_SIZE_MAX;
 var line_angle_min = localStorage["line_angle_min"] || LINE_ANGLE_MIN;
@@ -227,11 +237,13 @@ $(document).ready(function () {
 
   $("#pencil-icon").click(function() {
     $("#input-pen-color").val(getHexColor(pen_color));
-    $("#input-pen-transparency").slider( "option", "value", getAlpha(pen_color));
-    $("#input-pen-size").slider( "option", "value", pen_size);
-
-    console.log("pencil - pen-color:" + pen_color + " pen-size:" + pen_size);
+    $("#input-pen-transparency").slider("option", "value", getAlpha(pen_color));
+    $("#input-pen-size").slider("option", "value", pen_size);
+    $("#input-pen-enable-smoothing").prop("checked", pen_smoothing);
+    $("#input-pen-keep-stroke").prop("checked", !keep_stroke);
+    console.log("pencil: pen-color=" + pen_color + " pen-size=" + pen_size + " pen-smoothing=" + pen_smoothing + " keep_stroke=" + keep_stroke);
     $("#pencil-modal").modal('show');
+
   });
 
   $("#refresh-icon").click(function() {
@@ -287,12 +299,28 @@ $(document).ready(function () {
 
   $("#input-pencil-reset").click(function () {
     pen_color = PEN_COLOR;
-    localStorage.setItem("pen_color", PEN_COLOR);
+    pen_smoothing = PEN_SMOOTHING;
+    keep_stroke = KEEP_STROKE;
     $("#input-pen-color").val(getHexColor(PEN_COLOR));
     $("#input-pen-transparency").slider( "option", "value", getAlpha(PEN_COLOR));
     $("#input-pen-size").slider( "option", "value", PEN_SIZE);
+    $("#input-pen-enable-smoothing").prop("checked", PEN_SMOOTHING);
+    $("#input-pen-keep-stroke").prop("checked", !KEEP_STROKE);
 
+    localStorage.setItem("pen_color", PEN_COLOR);
+    localStorage.setItem("pen_smoothing", PEN_SMOOTHING);
+    localStorage.setItem("keep_stroke", KEEP_STROKE);
     console.log("reset - pen-color:" + pen_color + " pen-size:" + pen_size);
+  });
+
+  $("#input-pen-enable-smoothing").change(function() {
+    pen_smoothing = this.checked;
+    localStorage.setItem("pen_smoothing", pen_smoothing);
+  });
+
+  $("#input-pen-keep-stroke").change(function() {
+    keep_stroke = !this.checked;
+    localStorage.setItem("keep_stroke", keep_stroke);
   });
 
 
@@ -557,7 +585,7 @@ $(document).ready(function () {
 
   $("#input-clear-data-button").click(function() {
     localStorage.clear();
-    $(".modal").modal("hide");
+    location.reload();
   });
 
 
@@ -777,6 +805,7 @@ $(document).ready(function () {
     e.preventDefault();
 
     clearFrontPage();
+    points.length = 0;
 
     closeMenu();
     clearOverlay();
@@ -797,6 +826,7 @@ $(document).ready(function () {
     e.preventDefault();
 
     clearFrontPage();
+    points.length = 0;
 
     closeMenu();
     clearOverlay();
@@ -823,51 +853,7 @@ $(document).ready(function () {
     points.push({ x: e._x, y: e._y });
 
     clearFrontPage();
-    front_context.beginPath();
-
-    var p1 = points[0];
-    var p2 = points[1];
-
-    front_context.moveTo(p1.x, p1.y);
-    //    console.log(points);
-
-    for (var i = 1, len = points.length; i < len; i++) {
-      // we pick the point between pi+1 & pi+2 as the
-      // end point and p1 as our control point
-      var mid_point = midPointBtw(p1, p2);
-      //      drawDot(ctx, p1.x, p1.y, 6);
-      //      drawDot(ctx, midPoint.x, midPoint.y, 12);
-      front_context.quadraticCurveTo(p1.x, p1.y, mid_point.x, mid_point.y);
-      p1 = points[i];
-      p2 = points[i+1];
-    }
-    // Draw last line as a straight line while
-    // we wait for the next point to be able to calculate
-    // the bezier control point
-    //    ctx.lineTo(p1.x, p1.y);
-    front_context.stroke();
-
-
-    //    var len = points.length;
-    //    if (len >= 3) {
-    //
-    //
-    //      var p1 = midPointBtw(points[len-3], points[len-2]);
-    ////      drawDot(ctx, p1.x, p1.y, pen_size/2);
-    //
-    //      ctx.beginPath();
-    //      ctx.moveTo(p1.x, p1.y);
-    //      var midPoint = midPointBtw(points[len-2], points[len-1]);
-    //      ctx.quadraticCurveTo(points[len-2].x, points[len-2].y, midPoint.x, midPoint.y);
-    //      ctx.stroke();
-    //    } else if (len == 2) {
-    //      ctx.beginPath();
-    //      ctx.moveTo(points[0].x, points[0].y);
-    //      ctx.lineTo(points[1].x, points[1].y);
-    //      ctx.stroke();
-    //    } else {
-    //      return;
-    //    }
+    drawOnCanvas(front_context, points);
   };
 
   front_canvas.ontouchmove = function(e) {
@@ -880,25 +866,9 @@ $(document).ready(function () {
 
 
     clearFrontPage();
-    front_context.beginPath();
-
-    var p1 = points[0];
-    var p2 = points[1];
-
-    front_context.moveTo(p1.x, p1.y);
-    //    console.log(points);
-
-    for (var i = 1, len = points.length; i < len; i++) {
-
-      var mid_point = midPointBtw(p1, p2);
-
-      front_context.quadraticCurveTo(p1.x, p1.y, mid_point.x, mid_point.y);
-      p1 = points[i];
-      p2 = points[i+1];
-    }
-
-    front_context.stroke();
+    drawOnCanvas(front_context, points);
   };
+
 
 
   front_canvas.onmouseup = function() {
@@ -933,8 +903,12 @@ $(document).ready(function () {
 
   function copyToMainCanvas() {
 
-    return;
+    if (!keep_stroke) {
+      // don't copy to main canvas if not keep_stroke
+      return;
+    }
 
+    clearFrontPage();
     main_context.strokeStyle = pen_color;
     main_context.lineWidth = pen_size;
     main_context.setLineDash([]);
@@ -942,25 +916,45 @@ $(document).ready(function () {
     var prevtext = $("#sometext").html();
     // $("#sometext").html(prevtext + "<p>copytomaincanvas pen_color=" + pen_color + " pen_size=" + pen_size);
     console.log("copyToMainCanvas: pen_color=" + pen_color + " pen_size=" + pen_size);
-    main_context.beginPath();
 
-    var p1 = points[0];
-    var p2 = points[1];
+    drawOnCanvas(main_context, points);
+  }
 
-    main_context.moveTo(p1.x, p1.y);
+
+  function drawOnCanvas(canvas_context, canvas_points) {
+
+    if (canvas_points.length < 2) {
+      return;
+    }
+
+    canvas_context.beginPath();
+
+    var p1 = canvas_points[0];
+    var p2 = canvas_points[1];
+
+    canvas_context.moveTo(p1.x, p1.y);
     //    console.log(points);
 
-    for (var i = 1, len = points.length; i < len; i++) {
-      // we pick the point between pi+1 & pi+2 as the
-      // end point and p1 as our control point
-      var mid_point = midPointBtw(p1, p2);
-      //      drawDot(ctx, p1.x, p1.y, 6);
-      //      drawDot(ctx, midPoint.x, midPoint.y, 12);
-      main_context.quadraticCurveTo(p1.x, p1.y, mid_point.x, mid_point.y);
-      p1 = points[i];
-      p2 = points[i+1];
+    if (pen_smoothing) {
+      console.log("drawOnCanvas: quadratic");
+      // If pen_smoothing is enabled, use quadratic curve to smoothen strokes
+      for (var i = 1, len = canvas_points.length; i < len; i++) {
+        var mid_point = midPointBtw(p1, p2);
+
+        canvas_context.quadraticCurveTo(p1.x, p1.y, mid_point.x, mid_point.y);
+        p1 = canvas_points[i];
+        p2 = canvas_points[i+1];
+      }
+    } else {
+      console.log("drawOnCanvas: straight");
+      // If pen_smoothing is disabled, use straight lines
+      for (var i = 1, len = canvas_points.length; i < len; i++) {
+        p1 = canvas_points[i];
+        canvas_context.lineTo(p1.x, p1.y);
+      }
     }
-    main_context.stroke();
+
+    canvas_context.stroke();
   }
 
 
@@ -1160,8 +1154,7 @@ $(document).ready(function () {
 
       // var prevtext = $("#sometext").html();
       // $("#sometext").html(prevtext + "<br>err=" + err);
-
-      if (score > 10.0) {
+      if (score > 9.95) {
         $("#canvas-score-text").html("Perfect!");
         color = COLOR_APP;
       } else if (score > 9.0) {
@@ -1178,7 +1171,7 @@ $(document).ready(function () {
       addRecord(STATE_LINE, score);
       $("#canvas-score-text").css("color", color);
       $("#canvas-score").css("color", color);
-      $("#canvas-score").html("Score:" + score.toFixed(1));
+      $("#canvas-score").html("Score: " + score.toFixed(1));
 
       main_context.strokeStyle = color;
       main_context.lineWidth = 3;
@@ -1363,7 +1356,7 @@ $(document).ready(function () {
       err += e;
 
       var bucket = getRotationBucket(center.x, center.y, points[i].x, points[i].y);
-      console.log("x:" + (points[i].x - center.x) + " y:" + (points[i].y - center.y) + " bucket=" + bucket);
+      // console.log("x:" + (points[i].x - center.x) + " y:" + (points[i].y - center.y) + " bucket=" + bucket);
       if (completeness[bucket] > e) {
         completeness[bucket] = e;
       }

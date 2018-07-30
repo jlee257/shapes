@@ -6,7 +6,7 @@
 
   <title>Practice drawing shapes</title>
 
-
+  <link rel="icon" href="img/favicon.ico" />
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -127,11 +127,14 @@
 
   <!--Note-->
   <div id="note" class="shadow nav-open">
-    <div id="note-header" class="shadow">
-      Thank you for using this tool! YAY!
+    <div class="note-header shadow">
+      <div class="container">
+        Thank you for using this tool! YAY!
+      </div>
     </div>
 
-    <div id="note-body">
+    <div class="container note-body">
+
       <h1>Practice digital drawing everyday</h1>
       A free online drawing practice tool for digital artists of all skill levels. Get familiarize with your new digital art tool by practicing drawing lines, curves, and ellipses. Spend 5-10 minuates every day to complete practice challenges, get score, and track your progress toward your ultimate goal.
       <br>
@@ -142,9 +145,7 @@
         <li>20 Curved lines</li>
         <li>20 Ellipses</li>
       </ul>
-
       New to pens or digitizers? New to drawing completely? Start drawing TODAY!
-
 
       <h1>Looking for more free materials?</h1>
       There are tons of free materials that can help you boast your drawing skill. Here are some of my favorites:
@@ -157,23 +158,47 @@
 
 
       <h1>Support</h1>
-      Need more features? If you have any suggestion or found, although I am pretty sure there's none, any bug, feel free to reach out to the developer using the contact information at the bottom of the page.
+      Need more features? If you have any suggestion or found, although I am pretty sure there's none, any bug, feel free to reach out to the developer using the contact information at the bottom of this page.
     </div>
 
-    <div id="note-footer" class="shadow">
-      <span id="license-info" class="height-align">license information</span>
-      <div style="float:right">
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
-        <span id="copyright" class="height-align">Copyright &copy; 2017 Sanlok Lee</span>
-        <img id="email-info" src="img/glyphicons-11-envelope.svg" alt="email icon" />
-        <!-- <span id="email-info" class="glyphicons glyphicons-envelope"></span> -->
-        <span id="email-info-text" class="page-load-hide height-align"></span></div>
-      <br>
-      <div id="license-info-text" class="page-load-hide">
-        <ul>
-          <li>JQuery: <a href="https://jquery.org/license/">https://jquery.org/license/</a></li>
-          <li>Glyphicons: <a href="http://glyphicons.com/license/">http://glyphicons.com/license/</a></li>
-        </ul>
+    <div class="note-footer shadow">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-md mb-4">
+            <img width="36" height="36" src="/img/logo_white.svg" >
+            <div id="copyright" class="height-align">Copyright &copy; 2017 Sanlok Lee</div>
+            <img id="email-info" src="img/glyphicons-11-envelope.svg" alt="email icon" />
+            <span id="email-info-text" class="page-load-hide height-align"></span>
+          </div>
+          <div class="col-6 col-md">
+            <h5>Links</h5>
+            <ul class="text-small list-unstyled">
+              <li><a class="text-muted" href="#line">Draw lines</a></li>
+              <li><a class="text-muted" href="#curve">Draw curves</a></li>
+              <li><a class="text-muted" href="#ellipse">Draw ellipses</a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-md">
+            <h5>Libraries</h5>
+            <ul class="text-small list-unstyled">
+              <li><a class="text-muted" href="https://github.com/twbs/bootstrap/blob/v4.1.2/LICENSE">Bootstrap 4.1</a></li>
+              <li><a class="text-muted" href="https://jquery.org/license/">JQuery</a></li>
+              <li><a class="text-muted" href="http://glyphicons.com/license/">Glyphicons</a></li>
+            </ul>
+          </div>
+        </div>
+        <!-- <span id="license-info" class="height-align">Libraries</span>
+        <div style="float:right">
+          <span id="copyright" class="height-align">Copyright &copy; 2017 Sanlok Lee</span>
+          <img id="email-info" src="img/glyphicons-11-envelope.svg" alt="email icon" />
+          <span id="email-info-text" class="page-load-hide height-align"></span></div>
+        <br>
+        <div id="license-info-text" class="page-load-hide">
+          <ul>
+            <li>JQuery: <a href="https://jquery.org/license/">https://jquery.org/license/</a></li>
+            <li>Glyphicons: <a href="http://glyphicons.com/license/">http://glyphicons.com/license/</a></li>
+          </ul>
+        </div> -->
       </div>
     </div>
   </div>
@@ -189,22 +214,41 @@
           </button>
         </div>
         <div class="modal-body">
-          <label for="input-pen-color">Pen color</label>
-          <input type="color" id="input-pen-color" value="#000000" placeholder="#rrggbb[aa]" />
-          <div class="modal-separator"></div>
+          <div class="container">
+            <label for="input-pen-color">Pen color</label>
+            <input type="color" id="input-pen-color" value="#000000" placeholder="#rrggbb[aa]" />
+            <br>
 
+            <label>Pen transparency</label>
+            <div id="input-pen-transparency" class="slider"></div>
+            <div id="input-pen-transparency-value" class="slider-value">100</div>
+            <br>
 
-          <label>Pen Transparency</label>
-          <div id="input-pen-transparency" class="slider"></div>
-          <div id="input-pen-transparency-value" class="slider-value">100</div>
-          <div class="modal-separator"></div>
+            <label>Pen size</label>
+            <div id="input-pen-size" class="slider"></div>
+            <div id="input-pen-size-value" class="slider-value">5</div>
+            <br>
 
-          <label>Pen Size</label>
-          <div id="input-pen-size" class="slider"></div>
-          <div id="input-pen-size-value" class="slider-value">5</div>
+            <label>Stroke smoothing</label>
+            <br>
+            <label class="checkbox-container">
+              <input id="input-pen-enable-smoothing" type="checkbox">
+              <span class="checkmark"></span>
+              Enable stroke smoothing
+            </label>
+            <br>
 
-          <button id="input-pencil-reset" class="btn btn-app-primary float-right">Reset to default</button>
+            <label>Auto clear canvas</label>
+            <br>
+            <label class="checkbox-container">
+              <input id="input-pen-keep-stroke" type="checkbox">
+              <span class="checkmark"></span>
+              Clear canvas before each stroke. Don't keep previous strokes.
+            </label>
+            <br>
 
+            <button id="input-pencil-reset" class="btn btn-app-primary float-right">Reset to default</button>
+          </div>
         </div>
       </div>
     </div>
@@ -220,122 +264,130 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-danger">
-            If you are using Wacom tablet or digitizer, disable <b>Use Windows Ink</b> feature, if you havn't already. More information on this in the "<a href="#more-stuffff">More Stuff</a>" section.
-          </div>
+          <div class="container py-4">
+            <div class="alert alert-danger">
+              If you are using Wacom tablet or digitizer, disable <b>Use Windows Ink</b> feature, if you havn't already. More information on this in the "<a href="#more-stuffff">More Stuff</a>" section.
+            </div>
 
-          <div id="input-line-record" class="modal-setting modal-line">
             <h5 id="record-title">Records</h5>
-            <label>Count</label>
-            <div class="input-record-count"></div>
-            <label>Average</label>
-            <div class="input-record-average"></div>
-            <label>Best</label>
-            <div class="input-record-best"></div>
-            <button id="input-record-clear-button" class="btn btn-app-primary float-right input-record-clear">Clear records</button>
 
-            <hr class="mt-5">
-          </div>
-
-          <div id="input-line-setting" class="modal-setting modal-line">
-            <h5>Line settings</h5>
-            <label>Length</label>
-            <div id="input-line-size-min-value" class="slider-value">1</div>
-            <div id="input-line-size" class="slider"></div>
-            <div id="input-line-size-max-value" class="slider-value">100</div>
-            <div class="modal-separator"></div>
-
-            <label>Angle</label>
-            <div id="input-line-angle-min-value" class="slider-value">0</div>
-            <div id="input-line-angle" class="slider"></div>
-            <div id="input-line-angle-max-value" class="slider-value">180</div>
-            <div class="modal-separator"></div>
-
-            <!-- <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
-
-            <hr class="mt-5">
-          </div>
-
-          <div id="input-curve-setting" class="modal-setting modal-curve">
-            <h5>Curve settings</h5>
-            <label>Size</label>
-            <div id="input-curve-size-min-value" class="slider-value">1</div>
-            <div id="input-curve-size" class="slider"></div>
-            <div id="input-curve-size-max-value" class="slider-value">100</div>
-            <div class="modal-separator"></div>
-
-            <label>Randomness</label>
-            <div id="input-curve-complex-min-value" class="slider-value">1</div>
-            <div id="input-curve-complex" class="slider"></div>
-            <div id="input-curve-complex-max-value" class="slider-value">3</div>
-            <div class="modal-separator"></div>
-
-            <!-- <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
-
-            <hr class="mt-5">
-          </div>
-
-
-          <div id="input-ellipse-setting" class="modal-setting modal-ellipse">
-            <h5>Ellipses settings</h5>
-            <label>Size</label>
-            <div id="input-ellipse-size-min-value" class="slider-value">1</div>
-            <div id="input-ellipse-size" class="slider"></div>
-            <div id="input-ellipse-size-max-value" class="slider-value">100</div>
-            <div class="modal-separator"></div>
-
-            <label>Roundness</label>
-            <div id="input-ellipse-round-min-value" class="slider-value">1</div>
-            <div id="input-ellipse-round" class="slider"></div>
-            <div id="input-ellipse-round-max-value" class="slider-value">100</div>
-            <label class="checkbox-container">
-              <input id="input-ellipse-force-round" type="checkbox">
-              <span class="checkmark"></span>
-              Practice circles only
-            </label>
-            <div class="modal-separator"></div>
-
-            <label>Rotation</label>
-            <div id="input-ellipse-angle-min-value" class="slider-value">0</div>
-            <div id="input-ellipse-angle" class="slider"></div>
-            <div id="input-ellipse-angle-max-value" class="slider-value">180</div>
-            <div class="modal-separator"></div>
-
-
-            <!-- <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
-
-            <hr class="mt-5">
-          </div>
-
-          <div id="input-common-setting" class="modal-setting modal-common">
-            <h5>Common</h5>
-            <label>Side tool position</label>
-            <span id="input-tool-position-dropdown" class="dropdown">
-              <button class="btn btn-outline-app-primary dropdown-toggle" type="button" id="input-tool-position-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Side tool position
-              </button>
-              <div class="dropdown-menu" aria-labelledby="input-tool-position-dropdown-button">
-                <button class="dropdown-item input-tool-position-item position-tl">Top left</button>
-                <button class="dropdown-item input-tool-position-item position-tr">Top right</button>
-                <button class="dropdown-item input-tool-position-item position-bl">Bottom left</button>
-                <button class="dropdown-item input-tool-position-item position-br active">Bottom right</button>
+            <div class="row">
+              <div class="col-4">
+                <label>Count</label>
+                <div class="input-record-count"></div>
               </div>
-            </span>
-            <div class="modal-separator"></div>
+              <div class="col-4">
+                <label>Average</label>
+                <div class="input-record-average"></div>
+              </div>
+              <div class="col-4">
+                <label>Best</label>
+                <div class="input-record-best"></div>
+              </div>
+            </div>
+            <button id="input-record-clear-button" class="btn btn-app-primary float-right input-record-clear">Clear records</button>
+            <hr class="mt-5">
 
-            <label class="d-block">Saved data</label>
-            <button id="input-clear-data-button" class="btn btn-danger">Delete all stored configuration and records</button>
-            <!-- 
-            <select name="speed" id="input-tool-position">
-              <option>Top left</option>
-              <option>Top right</option>
-              <option>Bottom left</option>
-              <option selected="selected">Bottom right</option>
-            </select>
-            <div class="modal-separator"></div> -->
+            <div id="input-line-setting" class="modal-setting modal-line">
+              <h5>Line settings</h5>
+              <label>Length</label>
+              <div id="input-line-size-min-value" class="slider-value">1</div>
+              <div id="input-line-size" class="slider"></div>
+              <div id="input-line-size-max-value" class="slider-value">100</div>
+              <br>
+
+              <label>Angle</label>
+              <div id="input-line-angle-min-value" class="slider-value">0</div>
+              <div id="input-line-angle" class="slider"></div>
+              <div id="input-line-angle-max-value" class="slider-value">180</div>
+              <br>
+
+              <!-- <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
+
+              <hr class="mt-5">
+            </div>
+
+            <div id="input-curve-setting" class="modal-setting modal-curve">
+              <h5>Curve settings</h5>
+              <label>Size</label>
+              <div id="input-curve-size-min-value" class="slider-value">1</div>
+              <div id="input-curve-size" class="slider"></div>
+              <div id="input-curve-size-max-value" class="slider-value">100</div>
+              <br>
+
+              <label>Randomness</label>
+              <div id="input-curve-complex-min-value" class="slider-value">1</div>
+              <div id="input-curve-complex" class="slider"></div>
+              <div id="input-curve-complex-max-value" class="slider-value">3</div>
+              <br>
+
+              <!-- <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
+
+              <hr class="mt-5">
+            </div>
+
+
+            <div id="input-ellipse-setting" class="modal-setting modal-ellipse">
+              <h5>Ellipses settings</h5>
+              <label>Size</label>
+              <div id="input-ellipse-size-min-value" class="slider-value">1</div>
+              <div id="input-ellipse-size" class="slider"></div>
+              <div id="input-ellipse-size-max-value" class="slider-value">100</div>
+              <br>
+
+              <label>Roundness</label>
+              <div id="input-ellipse-round-min-value" class="slider-value">1</div>
+              <div id="input-ellipse-round" class="slider"></div>
+              <div id="input-ellipse-round-max-value" class="slider-value">100</div>
+              <label class="checkbox-container">
+                <input id="input-ellipse-force-round" type="checkbox">
+                <span class="checkmark"></span>
+                Practice circles only
+              </label>
+              <br>
+
+              <label>Rotation</label>
+              <div id="input-ellipse-angle-min-value" class="slider-value">0</div>
+              <div id="input-ellipse-angle" class="slider"></div>
+              <div id="input-ellipse-angle-max-value" class="slider-value">180</div>
+              <br>
+
+
+              <!-- <button id="input-ellipse-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
+
+              <hr class="mt-5">
+            </div>
+
+            <div id="input-common-setting" class="modal-setting modal-common">
+              <h5>Common</h5>
+              <label>Side tool position</label>
+              <span id="input-tool-position-dropdown" class="dropdown">
+                <button class="btn btn-outline-app-primary dropdown-toggle" type="button" id="input-tool-position-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Side tool position
+                </button>
+                <div class="dropdown-menu" aria-labelledby="input-tool-position-dropdown-button">
+                  <button class="dropdown-item input-tool-position-item position-tl">Top left</button>
+                  <button class="dropdown-item input-tool-position-item position-tr">Top right</button>
+                  <button class="dropdown-item input-tool-position-item position-bl">Bottom left</button>
+                  <button class="dropdown-item input-tool-position-item position-br active">Bottom right</button>
+                </div>
+              </span>
+              <br>
+
+              <label class="d-block">Saved data</label>
+              <button id="input-clear-data-button" class="btn btn-danger">Delete all stored configuration and records</button>
+              <!-- 
+              <select name="speed" id="input-tool-position">
+                <option>Top left</option>
+                <option>Top right</option>
+                <option>Bottom left</option>
+                <option selected="selected">Bottom right</option>
+              </select>
+              <div class="modal-separator"></div> -->
+            </div>
+
+            <!-- <button id="input-settings-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
           </div>
-
-          <!-- <button id="input-settings-reset" class="btn btn-app-primary float-right">Reset to default</button> -->
         </div>
       </div>
     </div>

@@ -2,8 +2,8 @@
 var PEN_COLOR = "rgba(0,0,0,1.00)";
 var PEN_SIZE = 5;
 var TOOL_POSITION = "Top right";
-var KEEP_STROKE = true;
 var PEN_SMOOTHING = true;
+var KEEP_STROKE = true;
 var LINE_SIZE_MIN = 20;
 var LINE_SIZE_MAX = 50;
 var LINE_ANGLE_MIN = 0;
@@ -34,34 +34,60 @@ var STATE_ELLIPSE = 3;
 var STATE_NOTE =9;
 
 // Settings
-var pen_color = localStorage["pen_color"] || PEN_COLOR;
-var pen_size = localStorage["pen_size"] || PEN_SIZE;
-var tool_position = localStorage["tool_position"] || TOOL_POSITION;
-var pen_smoothing = localStorage["pen_smoothing"] || PEN_SMOOTHING;
-if (localStorage["pen_smoothing"]) {
-  pen_smoothing = localStorage["pen_smoothing"] === "true"; // Boolean stored as string;
+
+var local_storage_settings;
+if (localStorage["settings"]) {
+  local_storage_settings = JSON.parse(localStorage["settings"]);
+} else {
+  local_storage_settings = {
+    "pen_color": PEN_COLOR,
+    "pen_size": PEN_SIZE,
+    "tool_position": TOOL_POSITION,
+    "pen_smoothing": PEN_SMOOTHING,
+    "keep_stroke": KEEP_STROKE,
+    "line_size_min": LINE_SIZE_MIN,
+    "line_size_max": LINE_SIZE_MAX,
+    "line_angle_min": LINE_ANGLE_MIN,
+    "line_angle_max": LINE_ANGLE_MAX,
+    "curve_size_min": CURVE_SIZE_MIN,
+    "curve_size_max": CURVE_SIZE_MAX,
+    "curve_complex_min": CURVE_COMPLEX_MIN,
+    "curve_complex_max": CURVE_COMPLEX_MAX,
+    "ellipse_size_min": ELLIPSE_SIZE_MIN,
+    "ellipse_size_max": ELLIPSE_SIZE_MAX,
+    "ellipse_round_min": ELLIPSE_ROUND_MIN,
+    "ellipse_round_max": ELLIPSE_ROUND_MAX,
+    "ellipse_angle_min": ELLIPSE_ANGLE_MIN,
+    "ellipse_angle_max": ELLIPSE_ANGLE_MAX,
+    "guide_line_color": GUIDE_LINE_COLOR,
+    "guide_line_size": GUIDE_LINE_SIZE,
+    "guide_line_style": GUIDE_LINE_STYLE
+  }
 }
-var keep_stroke = TOOL_POSITION;
-if (localStorage["keep_stroke"]) {
-  keep_stroke = localStorage["keep_stroke"] === "true"; // Boolean stored as string;
-}
-var line_size_min = localStorage["line_size_min"] || LINE_SIZE_MIN;
-var line_size_max = localStorage["line_size_max"] || LINE_SIZE_MAX;
-var line_angle_min = localStorage["line_angle_min"] || LINE_ANGLE_MIN;
-var line_angle_max = localStorage["line_angle_max"] || LINE_ANGLE_MAX;
-var curve_size_min = localStorage["curve_size_min"] || CURVE_SIZE_MIN;
-var curve_size_max = localStorage["curve_size_max"] || CURVE_SIZE_MAX;
-var curve_complex_min = localStorage["curve_complex_min"] ||  CURVE_COMPLEX_MIN;
-var curve_complex_max = localStorage["curve_complex_max"] || CURVE_COMPLEX_MAX;
-var ellipse_size_min = localStorage["ellipse_size_min"] || ELLIPSE_SIZE_MIN;
-var ellipse_size_max = localStorage["ellipse_size_max"] || ELLIPSE_SIZE_MAX;
-var ellipse_round_min = localStorage["ellipse_round_min"] || ELLIPSE_ROUND_MIN;
-var ellipse_round_max = localStorage["ellipse_round_max"] || ELLIPSE_ROUND_MAX;
-var ellipse_angle_min = localStorage["ellipse_angle_min"] || ELLIPSE_ANGLE_MIN;
-var ellipse_angle_max = localStorage["ellipse_angle_max"] || ELLIPSE_ANGLE_MAX;
-var guide_line_color = GUIDE_LINE_COLOR;
-var guide_line_size = GUIDE_LINE_SIZE;
-var guide_line_style = GUIDE_LINE_STYLE;
+
+var pen_color = local_storage_settings["pen_color"];
+var pen_size = local_storage_settings["pen_size"];
+var tool_position = local_storage_settings["tool_position"];
+var pen_smoothing = local_storage_settings["pen_smoothing"];
+var pen_smoothing = local_storage_settings["pen_smoothing"];
+var keep_stroke = local_storage_settings["keep_stroke"];
+var line_size_min = local_storage_settings["line_size_min"];
+var line_size_max = local_storage_settings["line_size_max"];
+var line_angle_min = local_storage_settings["line_angle_min"];
+var line_angle_max = local_storage_settings["line_angle_max"];
+var curve_size_min = local_storage_settings["curve_size_min"];
+var curve_size_max = local_storage_settings["curve_size_max"];
+var curve_complex_min = local_storage_settings["curve_complex_min"];
+var curve_complex_max = local_storage_settings["curve_complex_max"];
+var ellipse_size_min = local_storage_settings["ellipse_size_min"];
+var ellipse_size_max = local_storage_settings["ellipse_size_max"];
+var ellipse_round_min = local_storage_settings["ellipse_round_min"];
+var ellipse_round_max = local_storage_settings["ellipse_round_max"];
+var ellipse_angle_min = local_storage_settings["ellipse_angle_min"];
+var ellipse_angle_max = local_storage_settings["ellipse_angle_max"];
+var guide_line_color = local_storage_settings["guide_line_color"];
+var guide_line_size = local_storage_settings["guide_line_size"];
+var guide_line_style = local_storage_settings["guide_line_style"];
 
 
 
@@ -108,6 +134,8 @@ $(document).ready(function () {
 
   function clearOverlay() {
     $("#intro-overlay").css("display", "none");
+    $("#canvas-score").html("");
+    $("#canvas-score-text").html("");
   }
 
 
@@ -214,6 +242,10 @@ $(document).ready(function () {
     $("#note").css("display", "block");
   }
 
+  function saveCurrentSettings() {
+    localStorage.setItem("settings", JSON.stringify(local_storage_settings));
+  }
+
 
 
   /* Side Icon Modals - Pencil */
@@ -259,14 +291,16 @@ $(document).ready(function () {
 
   $("#input-pen-color").change(function(event) {
     pen_color = setHexColor(pen_color, $(this).val());
-    localStorage.setItem("pen_color", pen_color);
+    local_storage_settings["pen_color"] = pen_color;
+    saveCurrentSettings();
     console.log("pen-color:" + pen_color);
   });
 
   $("#input-pen-transparency").slider({
     change: function(event, ui) {
       pen_color = setAlpha(pen_color, ui.value);
-      localStorage.setItem("pen_color", pen_color);
+      local_storage_settings["pen_color"] = pen_color;
+      saveCurrentSettings();
       $("#input-pen-transparency-value").text(ui.value);
       console.log("pen-transparency:" + ui.value + " new-color:" + pen_color);
     },
@@ -283,7 +317,8 @@ $(document).ready(function () {
   $("#input-pen-size").slider({
     change: function(event, ui) {
       pen_size = ui.value;
-      localStorage.setItem("pen_size", ui.value);
+      local_storage_settings["pen_size"] = pen_size;
+      saveCurrentSettings();
       console.log("pen-size:" + pen_size);
       $("#input-pen-size-value").text(ui.value);
     },
@@ -307,20 +342,23 @@ $(document).ready(function () {
     $("#input-pen-enable-smoothing").prop("checked", PEN_SMOOTHING);
     $("#input-pen-keep-stroke").prop("checked", !KEEP_STROKE);
 
-    localStorage.setItem("pen_color", PEN_COLOR);
-    localStorage.setItem("pen_smoothing", PEN_SMOOTHING);
-    localStorage.setItem("keep_stroke", KEEP_STROKE);
+    local_storage_settings["pen_color"] = pen_color;
+    local_storage_settings["pen_smoothing"] = pen_smoothing;
+    local_storage_settings["keep_stroke"] = keep_stroke;
+    saveCurrentSettings();
     console.log("reset - pen-color:" + pen_color + " pen-size:" + pen_size);
   });
 
   $("#input-pen-enable-smoothing").change(function() {
     pen_smoothing = this.checked;
-    localStorage.setItem("pen_smoothing", pen_smoothing);
+    local_storage_settings["pen_smoothing"] = pen_smoothing;
+    saveCurrentSettings();
   });
 
   $("#input-pen-keep-stroke").change(function() {
     keep_stroke = !this.checked;
-    localStorage.setItem("keep_stroke", keep_stroke);
+    local_storage_settings["keep_stroke"] = keep_stroke;
+    saveCurrentSettings();
   });
 
 
@@ -383,7 +421,8 @@ $(document).ready(function () {
     $(".input-tool-position-item").removeClass("active");
     $(this).addClass("active");
     tool_position = $(this).text();
-    localStorage.setItem("tool_position", tool_position);
+    local_storage_settings["tool_position"] = tool_position;
+    saveCurrentSettings();
     $("#input-tool-position-dropdown-button").text(tool_position);
 
     $("#side-icon-container").removeClass("position1");
@@ -406,11 +445,12 @@ $(document).ready(function () {
     change: function(event, ui) {
       line_size_min = ui.values[0];
       line_size_max = ui.values[1];
-      localStorage.setItem("line_size_min", ui.values[0]);
-      localStorage.setItem("line_size_max", ui.values[1]);
+      local_storage_settings["line_size_min"] = line_size_min;
+      local_storage_settings["line_size_max"] = line_size_max;
+      saveCurrentSettings();
+      console.log("line-size:" + line_size_min + "-" + line_size_max);
       $("#input-line-size-min-value").text(ui.values[0]);
       $("#input-line-size-max-value").text(ui.values[1]);
-      console.log("line-size:" + line_size_min + "-" + line_size_max);
     },
     range: true,
     orientation: "horizontal",
@@ -427,11 +467,12 @@ $(document).ready(function () {
     change: function(event, ui) {
       line_angle_min = ui.values[0];
       line_angle_max = ui.values[1];
-      localStorage.setItem("line_angle_min", ui.values[0]);
-      localStorage.setItem("line_angle_max", ui.values[1]);
+      local_storage_settings["line_angle_min"] = line_angle_min;
+      local_storage_settings["line_angle_max"] = line_angle_max;
+      saveCurrentSettings();
+      console.log("line-angle:" + line_angle_min + "-" + line_angle_max);
       $("#input-line-angle-min-value").text(ui.values[0]);
       $("#input-line-angle-max-value").text(ui.values[1]);
-      console.log("line-angle:" + line_angle_min + "-" + line_angle_max);
     },
     range: true,
     orientation: "horizontal",
@@ -448,11 +489,12 @@ $(document).ready(function () {
     change: function(event, ui) {
       curve_size_min = ui.values[0];
       curve_size_max = ui.values[1];
-      localStorage.setItem("curve_size_min", ui.values[0]);
-      localStorage.setItem("curve_size_max", ui.values[1]);
+      local_storage_settings["curve_size_min"] = curve_size_min;
+      local_storage_settings["curve_size_max"] = curve_size_max;
+      saveCurrentSettings();
+      console.log("curve-size:" + curve_size_min + "-" + curve_size_max);
       $("#input-curve-size-min-value").text(ui.values[0]);
       $("#input-curve-size-max-value").text(ui.values[1]);
-      console.log("curve-size:" + curve_size_min + "-" + curve_size_max);
     },
     range: true,
     orientation: "horizontal",
@@ -469,11 +511,12 @@ $(document).ready(function () {
     change: function(event, ui) {
       curve_complex_min = ui.values[0];
       curve_complex_max = ui.values[1];
-      localStorage.setItem("curve_complex_min", ui.values[0]);
-      localStorage.setItem("curve_complex_max", ui.values[1]);
+      local_storage_settings["curve_complex_min"] = curve_complex_min;
+      local_storage_settings["curve_complex_max"] = curve_complex_max;
+      saveCurrentSettings();
+      console.log("curve-complexity:" + curve_complex_min + "-" + curve_complex_max);
       $("#input-curve-complex-min-value").text(ui.values[0]);
       $("#input-curve-complex-max-value").text(ui.values[1]);
-      console.log("curve-complexity:" + curve_complex_min + "-" + curve_complex_max);
     },
     range: true,
     orientation: "horizontal",
@@ -490,11 +533,12 @@ $(document).ready(function () {
     change: function(event, ui) {
       ellipse_size_min = ui.values[0];
       ellipse_size_max = ui.values[1];
-      localStorage.setItem("ellipse_size_min", ui.values[0]);
-      localStorage.setItem("ellipse_size_max", ui.values[1]);
+      local_storage_settings["ellipse_size_min"] = ellipse_size_min;
+      local_storage_settings["ellipse_size_max"] = ellipse_size_max;
+      saveCurrentSettings();
+      console.log("ellipse-size:" + ellipse_size_min + "-" + ellipse_size_max);
       $("#input-ellipse-size-min-value").text(ui.values[0]);
       $("#input-ellipse-size-max-value").text(ui.values[1]);
-      console.log("ellipse-size:" + ellipse_size_min + "-" + ellipse_size_max);
     },
     range: true,
     orientation: "horizontal",
@@ -511,11 +555,12 @@ $(document).ready(function () {
     change: function(event, ui) {
       ellipse_round_min = ui.values[0];
       ellipse_round_max = ui.values[1];
-      localStorage.setItem("ellipse_round_min", ui.values[0]);
-      localStorage.setItem("ellipse_round_max", ui.values[1]);
+      local_storage_settings["ellipse_round_min"] = ellipse_round_min;
+      local_storage_settings["ellipse_round_max"] = ellipse_round_max;
+      saveCurrentSettings();
+      console.log("ellipse-roundness:" + ellipse_round_min + "-" + ellipse_round_max);
       $("#input-ellipse-round-min-value").text(ui.values[0]);
       $("#input-ellipse-round-max-value").text(ui.values[1]);
-      console.log("ellipse-roundness:" + ellipse_round_min + "-" + ellipse_round_max);
     },
     range: true,
     orientation: "horizontal",
@@ -539,11 +584,12 @@ $(document).ready(function () {
     change: function(event, ui) {
       ellipse_angle_min = ui.values[0];
       ellipse_angle_max = ui.values[1];
-      localStorage.setItem("ellipse_angle_min", ui.values[0]);
-      localStorage.setItem("ellipse_angle_max", ui.values[1]);
+      local_storage_settings["ellipse_angle_min"] = ellipse_angle_min;
+      local_storage_settings["ellipse_angle_max"] = ellipse_angle_max;
+      saveCurrentSettings();
+      console.log("ellipse-angle:" + ellipse_angle_min + "-" + ellipse_angle_max);
       $("#input-ellipse-angle-min-value").text(ui.values[0]);
       $("#input-ellipse-angle-max-value").text(ui.values[1]);
-      console.log("ellipse-angle:" + ellipse_angle_min + "-" + ellipse_angle_max);
     },
     range: true,
     orientation: "horizontal",
@@ -936,7 +982,6 @@ $(document).ready(function () {
     //    console.log(points);
 
     if (pen_smoothing) {
-      console.log("drawOnCanvas: quadratic");
       // If pen_smoothing is enabled, use quadratic curve to smoothen strokes
       for (var i = 1, len = canvas_points.length; i < len; i++) {
         var mid_point = midPointBtw(p1, p2);
@@ -946,7 +991,6 @@ $(document).ready(function () {
         p2 = canvas_points[i+1];
       }
     } else {
-      console.log("drawOnCanvas: straight");
       // If pen_smoothing is disabled, use straight lines
       for (var i = 1, len = canvas_points.length; i < len; i++) {
         p1 = canvas_points[i];
@@ -1175,6 +1219,7 @@ $(document).ready(function () {
 
       main_context.strokeStyle = color;
       main_context.lineWidth = 3;
+      main_context.setLineDash(guide_line_style);
       main_context.moveTo(coor[0].x, coor[0].y);
       main_context.lineTo(coor[1].x, coor[1].y);
       main_context.stroke();
@@ -1182,6 +1227,7 @@ $(document).ready(function () {
   }
 
   function drawRandomCurve() {
+    // Draw two qudratic bezier curves and store points between them.
     curve_points.length = 0;
 
     var p1, p2, p3, p4, p5;
@@ -1257,26 +1303,22 @@ $(document).ready(function () {
 
   function curveApproximation() {
 
-    var err = 0;
-    var errz = 0;
+    console.log("CUR " + JSON.stringify(points));
+    console.log("CUR " + JSON.stringify(curve_points));
+
+
+    var err = 0; // error from point to the closest curve
+    var errz = 0; // error from curve to the closest point
     for (var i = 0, ilen = points.length; i < ilen; i++) {
-
       var e = 3000*3000;
-
       for (var j = 0, jlen = curve_points.length; j < jlen; j++) {
 
         var dist = distanceBetweenSquared(points[i].x, points[i].y, curve_points[j].x, curve_points[j].y);
 
-        if (dist < curve_points[j].z) {
-          curve_points[j].z = dist;
-        }
-
-        if (dist < e) {
-          e = dist;
-        }
+        curve_points[j].z = Math.min(dist, curve_points[j].z);
+        e = Math.min(e, dist);
       }
 
-      // console.log("point=" + i + "{" + points[i].x + "," + points[i].y + "} err=" + e);
       err += e;
     }
 
@@ -1287,9 +1329,82 @@ $(document).ready(function () {
 
     var errf = err/points.length + errz/curve_points.length;
     // console.log("final e=" + (err/points.length + errz/curve_points.length) + " points=" + points.length + " errtotal=" + err);
-    addRecord(STATE_CURVE, errf);
-    $("#sometext").html("err=" + errf);
+    // var score = Math.max(Math.min(56.0 - (10.0*(Math.log(err+90))), 10.0), 0.0);
+    var score = 1000 - errf;
+    console.log("curve score: score=" + score + " errf=" + errf + " err=" + err + " errz=" + errz + " length=" + points.length);
+    addRecord(STATE_CURVE, score);
 
+    if (score > 9.95) {
+      $("#canvas-score-text").html("Perfect!");
+      color = COLOR_APP;
+    } else if (score > 9.0) {
+      $("#canvas-score-text").html("Awesome!");
+      color = COLOR_GREEN;
+    } else if (score > 7.5) {
+      $("#canvas-score-text").html("");
+      color = COLOR_YELLOW;
+    } else {
+      $("#canvas-score-text").html("");
+      color = COLOR_RED;
+    }
+
+    $("#canvas-score-text").css("color", color);
+    $("#canvas-score").css("color", color);
+    $("#canvas-score").html("Score: " + score.toFixed(1));
+  }
+
+  function cuberoot(x) {
+    var y = Math.pow(Math.abs(x), 1/3);
+    return x < 0 ? -y : y;
+  }
+
+  function solveCubic(a, b, c, d) {
+    if (Math.abs(a) < 1e-8) { // Quadratic case, ax^2+bx+c=0
+        a = b; b = c; c = d;
+        if (Math.abs(a) < 1e-8) { // Linear case, ax+b=0
+            a = b; b = c;
+            if (Math.abs(a) < 1e-8) // Degenerate case
+                return [];
+            return [-b/a];
+        }
+
+        var D = b*b - 4*a*c;
+        if (Math.abs(D) < 1e-8)
+            return [-b/(2*a)];
+        else if (D > 0)
+            return [(-b+Math.sqrt(D))/(2*a), (-b-Math.sqrt(D))/(2*a)];
+        return [];
+    }
+
+    // Convert to depressed cubic t^3+pt+q = 0 (subst x = t - b/3a)
+    var p = (3*a*c - b*b)/(3*a*a);
+    var q = (2*b*b*b - 9*a*b*c + 27*a*a*d)/(27*a*a*a);
+    var roots;
+
+    if (Math.abs(p) < 1e-8) { // p = 0 -> t^3 = -q -> t = -q^1/3
+        roots = [cuberoot(-q)];
+    } else if (Math.abs(q) < 1e-8) { // q = 0 -> t^3 + pt = 0 -> t(t^2+p)=0
+        roots = [0].concat(p < 0 ? [Math.sqrt(-p), -Math.sqrt(-p)] : []);
+    } else {
+        var D = q*q/4 + p*p*p/27;
+        if (Math.abs(D) < 1e-8) {       // D = 0 -> two roots
+            roots = [-1.5*q/p, 3*q/p];
+        } else if (D > 0) {             // Only one real root
+            var u = cuberoot(-q/2 - Math.sqrt(D));
+            roots = [u - p/(3*u)];
+        } else {                        // D < 0, three roots, but needs to use complex numbers/trigonometric solution
+            var u = 2*Math.sqrt(-p/3);
+            var t = Math.acos(3*q/p/u)/3;  // D < 0 implies p < 0 and acos argument in [-1..1]
+            var k = 2*Math.PI/3;
+            roots = [u*Math.cos(t), u*Math.cos(t-k), u*Math.cos(t-2*k)];
+        }
+    }
+
+    // Convert back from depressed cubic
+    for (var i = 0; i < roots.length; i++)
+        roots[i] -= b/(3*a);
+
+    return roots;
   }
 
   function drawRandomEllipse() {
